@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TicketHive.Server.Data;
 using TicketHive.Server.Models;
@@ -9,34 +9,84 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+	options.UseSqlServer(connectionString));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<ApplicationUser>()
+	.AddRoles<IdentityRole>()
+	.AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddIdentityServer()
-    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+	.AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
+	{
+		options.IdentityResources["openid"].UserClaims.Add("role");
+		options.ApiResources.Single().UserClaims.Add("role");
+	});
 
 builder.Services.AddAuthentication()
-    .AddIdentityServerJwt();
+	.AddIdentityServerJwt();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+// Create ApplicationUser with Admin role
+using (var serviceProvider = builder.Services.BuildServiceProvider())
+{
+	// Create instances from DI container 
+	var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
+	var signInManager = serviceProvider.GetRequiredService<SignInManager<ApplicationUser>>();
+	var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+	// Create database if it doesn't already exist 
+	context.Database.Migrate();
+
+	// Create role "Admin" if it doesn't exist in the database  
+	// Check if role exists in database 
+	if (!roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult())
+	{
+		// If role "Admin" doesn't exist, create new instance of IdentityRole with name "Admin" 
+		IdentityRole adminRole = new()
+		{
+			Name = "Admin"
+		};
+
+		// ...and add to database 
+		roleManager.CreateAsync(adminRole).GetAwaiter().GetResult();
+	}
+
+	// Create an admin user if it doesn't already exist one in the database 
+	// Check if admin user exists
+
+	if (signInManager.UserManager.FindByNameAsync("admin").GetAwaiter().GetResult() == null)
+	{
+		// If admin user doesn't exist, create new ApplicationUser with name "admin"...
+		ApplicationUser admin = new()
+		{
+			UserName = "admin",
+		};
+
+		// ...add to database... 
+		signInManager.UserManager.CreateAsync(admin, "Password123!").GetAwaiter().GetResult();
+
+		// ...and add the admin user to the "Admin" role 
+		signInManager.UserManager.AddToRoleAsync(admin, "Admin").GetAwaiter().GetResult();
+	}
+}
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseMigrationsEndPoint();
-    app.UseWebAssemblyDebugging();
+	app.UseMigrationsEndPoint();
+	app.UseWebAssemblyDebugging();
 }
 else
 {
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+	app.UseExceptionHandler("/Error");
+	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+	app.UseHsts();
 }
 
 app.UseHttpsRedirection();
