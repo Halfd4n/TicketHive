@@ -1,6 +1,6 @@
 ﻿namespace TicketHive.Server.Enums
 {
-	public enum Countries
+	public enum Country
 	{
 		Austria,
 		Belgium,

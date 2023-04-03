@@ -1,11 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TicketHive.Shared.Enums;
+﻿namespace TicketHive.Shared.Enums;
 public enum EventType
 {
-
+	Concert,
+	Exhibition,
+	Tasting,
+	Fundraiser,
+	Show,
+	Cinema,
+	Festival,
+	Market,
+	Family,
+	Fair,
+	Lecture,
+	MeetUp,
+	Quiz,
+	Party,
+	Workshop,
+	Exercize
 }

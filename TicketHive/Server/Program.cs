@@ -7,9 +7,13 @@ using TicketHive.Server.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var identityConnectionString = builder.Configuration.GetConnectionString("IdentityDbConnection") ?? throw new InvalidOperationException("Connection string 'IdentityDbConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-	options.UseSqlServer(connectionString));
+	options.UseSqlServer(identityConnectionString));
+
+var mainConnectionString = builder.Configuration.GetConnectionString("MainDbConnection") ?? throw new InvalidOperationException("Connection string 'MainDbConnection' not found.");
+builder.Services.AddDbContext<MainDbContext>(options =>
+	options.UseSqlServer(mainConnectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -30,49 +34,48 @@ builder.Services.AddAuthentication()
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-// Create ApplicationUser with Admin role
-using (var serviceProvider = builder.Services.BuildServiceProvider())
-{
-	// Create instances from DI container 
-	var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
-	var signInManager = serviceProvider.GetRequiredService<SignInManager<ApplicationUser>>();
-	var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+//// Create ApplicationUser with Admin role
+//using (var serviceProvider = builder.Services.BuildServiceProvider())
+//{
+//	// Create instances from DI container 
+//	var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
+//	var signInManager = serviceProvider.GetRequiredService<SignInManager<ApplicationUser>>();
+//	var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-	// Create database if it doesn't already exist 
-	context.Database.Migrate();
+//	// Create database if it doesn't already exist 
+//	context.Database.Migrate();
 
-	// Create role "Admin" if it doesn't exist in the database  
-	// Check if role exists in database 
-	if (!roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult())
-	{
-		// If role "Admin" doesn't exist, create new instance of IdentityRole with name "Admin" 
-		IdentityRole adminRole = new()
-		{
-			Name = "Admin"
-		};
+//	// Create role "Admin" if it doesn't exist in the database  
+//	// Check if role exists in database 
+//	if (!roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult())
+//	{
+//		// If role "Admin" doesn't exist, create new instance of IdentityRole with name "Admin" 
+//		IdentityRole adminRole = new()
+//		{
+//			Name = "Admin"
+//		};
 
-		// ...and add to database 
-		roleManager.CreateAsync(adminRole).GetAwaiter().GetResult();
-	}
+//		// ...and add to database 
+//		roleManager.CreateAsync(adminRole).GetAwaiter().GetResult();
+//	}
 
-	// Create an admin user if it doesn't already exist one in the database 
-	// Check if admin user exists
+//	// Create an admin user if it doesn't already exist one in the database 
+//	// Check if admin user exists
+//	if (signInManager.UserManager.FindByNameAsync("admin").GetAwaiter().GetResult() == null)
+//	{
+//		// If admin user doesn't exist, create new ApplicationUser with name "admin"...
+//		ApplicationUser admin = new()
+//		{
+//			UserName = "admin",
+//		};
 
-	if (signInManager.UserManager.FindByNameAsync("admin").GetAwaiter().GetResult() == null)
-	{
-		// If admin user doesn't exist, create new ApplicationUser with name "admin"...
-		ApplicationUser admin = new()
-		{
-			UserName = "admin",
-		};
+//		// ...add to database... 
+//		signInManager.UserManager.CreateAsync(admin, "Password1234!").GetAwaiter().GetResult();
 
-		// ...add to database... 
-		signInManager.UserManager.CreateAsync(admin, "Password123!").GetAwaiter().GetResult();
-
-		// ...and add the admin user to the "Admin" role 
-		signInManager.UserManager.AddToRoleAsync(admin, "Admin").GetAwaiter().GetResult();
-	}
-}
+//		// ...and add the admin user to the "Admin" role 
+//		signInManager.UserManager.AddToRoleAsync(admin, "Admin").GetAwaiter().GetResult();
+//	}
+//}
 
 var app = builder.Build();
 
