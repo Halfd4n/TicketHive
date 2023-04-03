@@ -1,0 +1,22 @@
+﻿@page
+@model TicketHive.Server.Areas.Identity.Pages.Account.LoginModel
+
+
+<h1>Welcome to sign in</h1>
+
+<form method="post">
+    <input type="text" asp-for="Username" placeholder="Username"/>
+    <input type="password" asp-for="Password" placeholder="Password"/>
+    <input type="submit" value="Login"/>
+</form>
+
+@if(!ModelState.IsValid)
+{
+    <span asp-validation-for="Username"></span>
+    <br />
+    <span asp-validation-for="Password"></span>
+}
+else
+{
+    <span>@Model.InvalidCredentials</span>
+}
