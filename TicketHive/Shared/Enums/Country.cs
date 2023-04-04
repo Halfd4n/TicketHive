@@ -1,0 +1,34 @@
+﻿namespace TicketHive.Server.Enums
+{
+	public enum Country
+	{
+		Austria,
+		Belgium,
+		Bulgaria,
+		Croatia,
+		Republic_of_Cyprus,
+		Czech_Republic,
+		Denmark,
+		Estonia,
+		Finland,
+		France,
+		Germany,
+		Greece,
+		Hungary,
+		Ireland,
+		Italy,
+		Latvia,
+		Lithuania,
+		Luxembourg,
+		Malta,
+		Netherlands,
+		Poland,
+		Portugal,
+		Romania,
+		Slovakia,
+		Slovenia,
+		Spain,
+		Sweden,
+		United_Kingdom
+	}
+}

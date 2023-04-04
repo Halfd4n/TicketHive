@@ -2,14 +2,18 @@
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using TicketHive.Server.Enums;
 using TicketHive.Server.Models;
 
 namespace TicketHive.Server.Data;
 public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
 {
-    public ApplicationDbContext(
-        DbContextOptions options,
-        IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
-    {
-    }
+	public ApplicationDbContext(
+		DbContextOptions options,
+		IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+	{
+	}
+
+	public Country Country { get; set; }
+
 }
