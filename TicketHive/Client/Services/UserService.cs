@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Net.Http.Json;
+using System.Text;
 using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Services;
@@ -37,4 +38,6 @@ public class UserService : IUserService
 
         return null;
     }
+   
+
 }

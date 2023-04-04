@@ -1,0 +1,51 @@
+﻿@page "/DetailsPage"
+@using TicketHive.Shared.Models;
+
+
+
+
+<div class="headbanner d-flex justify-content-center align-items-center" style="background-image: url('@model.ImageUrl');">
+    <h1> @model.Name</h1>
+</div>
+
+<div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@code {
+    EventModel model = new()
+        {
+            Id = 1,
+            Name = "RockaBilly",
+            Description = "a festival with a lot of music with dancing and good food!",
+            StartTime = new DateTime(2023, 4, 4, 10, 30, 0),
+            EndTime = new DateTime(2023, 4, 6, 10, 30, 0),
+            ImageUrl = "https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg?cs=srgb&dl=pexels-wendy-wei-1190298.jpg&fm=jpg",
+
+
+        };
+
+    
+
+}
