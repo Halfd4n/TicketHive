@@ -77,6 +77,21 @@ using (var serviceProvider = builder.Services.BuildServiceProvider())
 		// ...and add the admin user to the "Admin" role 
 		signInManager.UserManager.AddToRoleAsync(admin, "Admin").GetAwaiter().GetResult();
 	}
+
+	// Create a regular user if it doesn't already exist one in the database
+	// Check if regular user exists
+	if (signInManager.UserManager.FindByNameAsync("user").GetAwaiter().GetResult() == null)
+	{
+		// If regular user doesn't exist, create new ApplicationUser with name "user"...
+		ApplicationUser user = new()
+		{
+			UserName = "user",
+			Country = Country.Sweden
+		};
+
+		// ...and add to database
+		signInManager.UserManager.CreateAsync(user, "Password1234!").GetAwaiter().GetResult();
+	}
 }
 
 var app = builder.Build();
@@ -110,6 +125,3 @@ app.MapControllers();
 app.MapFallbackToFile("index.html");
 
 app.Run();
-
-
-// Testing with solution..
