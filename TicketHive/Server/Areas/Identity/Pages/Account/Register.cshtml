@@ -1,0 +1,18 @@
+﻿@page
+@model TicketHive.Server.Areas.Identity.Pages.Account.RegisterModel
+
+
+<h1>Welcome to the register Page!!</h1>
+
+<form>
+    <input type="text" placeholder="Username" asp-for="Username" />
+    <input type="password" placeholder="Password" asp-for="Password" />
+    <input type="password" placeholder="Repeat password" asp-for="RepeatPassword" />
+    <input type="submit" value="Register" />
+</form>
+@if(!ModelState.IsValid) 
+{
+    <span asp-validation-for="Username"></span>
+    <span asp-validation-for="Password"></span>
+    <span asp-validation-for="RepeatPassword"></span>
+}

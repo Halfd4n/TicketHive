@@ -1,9 +1,12 @@
 ﻿@page "/"
+@inject NavigationManager navigationManager
 
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+<p>Already a member..?</p>
+<button @onclick="Login">Login</button>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<p>Else, please register here:</p>
+<button @onclick="Register">Register</button>
