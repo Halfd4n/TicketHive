@@ -18,10 +18,10 @@ namespace TicketHive.Server.Data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			// Configure the EventType enum data to be stored as strings in the database 
-			modelBuilder.Entity<EventModel>()
-				.Property(e => e.EventType)
-				.HasConversion<string>();
+			//// Configure the EventType enum data to be stored as strings in the database 
+			//modelBuilder.Entity<EventModel>()
+			//	.Property(e => e.EventType)
+			//	.HasConversion<string>();
 
 			// Configure the Price decimal data to be stored as decimal(8, 2) in the database 
 			modelBuilder.Entity<EventModel>()
@@ -307,11 +307,11 @@ namespace TicketHive.Server.Data
 				new EventModel()
 				{
 					Id = 26,
-					Name = "Art exhibit opening",
+					Name = "Contemporary Art Show",
 					EventType = EventType.Exhibition,
-					NumberOfTickets = 500,
-					Description = "A new exhibit featuring local artists",
-					Price = 100,
+					NumberOfTickets = 200,
+					Description = "An art exhibition featuring international works of art",
+					Price = 300,
 					Host = "The local art museum",
 					ImageUrl = "~/images/event images/image 26.avif"
 				});
