@@ -13,6 +13,7 @@ article {
     display: flex;
     height: 100vh !important;
     align-items: center;
+    justify-items:center;
 }
 
 .sidebar {
