@@ -21,6 +21,18 @@ builder.Services.AddIdentityServer()
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = "ShoppingCart";
+    options.IdleTimeout = TimeSpan.FromDays(31);
+});
+
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.LowercaseUrls = true;
+    options.LowercaseQueryStrings = true;
+});
+
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
 
