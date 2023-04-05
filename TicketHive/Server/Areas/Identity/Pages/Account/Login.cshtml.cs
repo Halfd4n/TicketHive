@@ -2,8 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using TicketHive.Server.Repository;
-
+using TicketHive.Server.Repositories;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace TicketHive.Server.Areas.Identity.Pages.Account 
@@ -41,7 +40,7 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
                 {
                     InvalidCredentials = null;
 
-                    RedirectToPage("~/");
+                    RedirectToPage("~/index");
                 }
                 else
                 {

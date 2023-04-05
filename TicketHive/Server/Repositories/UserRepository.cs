@@ -1,16 +1,21 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication;
 using TicketHive.Server.Models;
 using TicketHive.Shared.Models;
+using System.Security.Claims;
+using TicketHive.Server.Enums;
 
-namespace TicketHive.Server.Repository;
+namespace TicketHive.Server.Repositories;
 
 public class UserRepository : IUserRepository
 {
     private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly IHttpContextAccessor _context;
 
-    public UserRepository(SignInManager<ApplicationUser> signInManager)
+    public UserRepository(SignInManager<ApplicationUser> signInManager, IHttpContextAccessor context)
     {
         _signInManager = signInManager;
+        _context = context;
     }
 
     public async Task<bool> ChangePasswordAsync(string id, string currentPassword, string newPassword)
@@ -35,6 +40,7 @@ public class UserRepository : IUserRepository
         throw new NotImplementedException();
     }
 
+
     public async Task<UserModel?> GetUserById(string id)
     {
         ApplicationUser? user = await _signInManager.UserManager.FindByIdAsync(id);
@@ -54,11 +60,12 @@ public class UserRepository : IUserRepository
         return null;
     }
 
-    public async Task<IdentityResult> RegisterUserAsync(string username, string password)
+    public async Task<IdentityResult> RegisterUserAsync(string username, string password, Country country)
     {
         ApplicationUser newUser = new()
         {
-            UserName = username
+            UserName = username,
+            Country = country
         };
 
         return await _signInManager.UserManager.CreateAsync(newUser, password!);
@@ -67,5 +74,10 @@ public class UserRepository : IUserRepository
     public async Task<SignInResult> SignInUserAsync(string username, string password)
     {
         return await _signInManager.PasswordSignInAsync(username, password, false, false);
+    }
+    
+    public async Task<ApplicationUser?> GetSignedInUser(string userName)
+    {
+        return await _signInManager.UserManager.FindByNameAsync(userName);
     }
 }

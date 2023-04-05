@@ -22,6 +22,10 @@ namespace TicketHive.Server.Data
 				.Property(e => e.Price)
 				.HasColumnType("decimal(8, 2)");
 
+			modelBuilder.Entity<UserModel>()
+				.Property(e => e.Country)
+				.HasConversion<string>();
+
 			modelBuilder.Entity<EventModel>().HasData(
 				new EventModel()
 				{
