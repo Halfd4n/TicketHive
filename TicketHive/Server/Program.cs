@@ -5,7 +5,6 @@ using TicketHive.Server.Data;
 using TicketHive.Server.Enums;
 using TicketHive.Server.Models;
 using TicketHive.Server.Repositories;
-using TicketHive.Server.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +16,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 var mainConnectionString = builder.Configuration.GetConnectionString("MainDbConnection") ?? throw new InvalidOperationException("Connection string 'MainDbConnection' not found.");
 builder.Services.AddDbContext<MainDbContext>(options =>
 	options.UseSqlServer(mainConnectionString));
+
+
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -31,8 +32,11 @@ builder.Services.AddIdentityServer()
 		options.ApiResources.Single().UserClaims.Add("role");
 	});
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+
 
 builder.Services.AddSession(options =>
 {

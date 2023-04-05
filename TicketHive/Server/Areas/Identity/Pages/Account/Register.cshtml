@@ -1,18 +1,31 @@
 ﻿@page
+@using System.ComponentModel.DataAnnotations;
+@using System.Reflection;
+@using TicketHive.Server.Enums;
 @model TicketHive.Server.Areas.Identity.Pages.Account.RegisterModel
 
 
 <h1>Welcome to the register Page!!</h1>
 
-<form>
-    <input type="text" placeholder="Username" asp-for="Username" />
-    <input type="password" placeholder="Password" asp-for="Password" />
-    <input type="password" placeholder="Repeat password" asp-for="RepeatPassword" />
-    <input type="submit" value="Register" />
-</form>
-@if(!ModelState.IsValid) 
-{
-    <span asp-validation-for="Username"></span>
-    <span asp-validation-for="Password"></span>
-    <span asp-validation-for="RepeatPassword"></span>
-}
+<div class="row">
+    <form method="post">
+        <input type="text" asp-for="Username" placeholder="Username" />
+        <input type="password" asp-for="Password" placeholder="Password" />
+        <input type="password" asp-for="RepeatPassword" placeholder="Repeat password" />
+        <select asp-for="Country">
+            @foreach(var country in Enum.GetValues(typeof(Country)))
+            {
+                <option value="@country">@country</option>
+            }
+        </select>
+        <input type="submit" value="Register" />
+    </form>
+
+    @if (!ModelState.IsValid)
+    {
+        <span asp-validation-for="Username"></span>
+        <span asp-validation-for="Password"></span>
+        <span asp-validation-for="RepeatPassword"></span>
+        <span asp-validation-for="Country"></span>
+    }
+</div>
