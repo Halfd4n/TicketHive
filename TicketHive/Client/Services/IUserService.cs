@@ -8,5 +8,5 @@ public interface IUserService
 
     Task UpdateUserCountry();
 
-    Task<UserModel?> GetUserByIdAsync(int id);
+    Task<UserModel?> GetUserByIdAsync(string id);
 }

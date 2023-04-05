@@ -25,7 +25,7 @@ public class UserService : IUserService
         await _client.PostAsJsonAsync($"api/users/{id}", passwordStrings);
     }
 
-    public async Task<UserModel?> GetUserByIdAsync(int id)
+    public async Task<UserModel?> GetUserByIdAsync(string id)
     {
         var response = await _client.GetAsync($"api/users/{id}");
 
