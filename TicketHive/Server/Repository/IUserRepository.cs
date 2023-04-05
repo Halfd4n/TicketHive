@@ -8,12 +8,12 @@ public interface IUserRepository
 {
     Task<List<UserModel>> GetAllUsers();
 
-    Task<UserModel?> GetUserById(int id);
+    Task<UserModel?> GetUserById(string id);
 
     Task<SignInResult> SignInUserAsync(string username, string password);
 
     Task<IdentityResult> RegisterUserAsync(string username, string password);
 
-    Task<bool> ChangePasswordAsync(int id, string currentPassword, string newPassword);
+    Task<bool> ChangePasswordAsync(string id, string currentPassword, string newPassword);
 
 }

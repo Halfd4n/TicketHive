@@ -1,5 +1,19 @@
-﻿@page "/settings/{id:int}"
+﻿@page "/settings/{id:string}"
 @using TicketHive.Client.Services
+@using TicketHive.Server.Enums;
 @inject IUserService _service
 
-<h3>Welcome to you user page</h3>
+<h3>Welcome to your user page</h3>
+
+<p>Country of origin:</p>
+<InputSelect id="country" @bind-Value="CountryOfOrigin">
+    @foreach (var country in Enum.GetValues(typeof(Country)))
+    {
+        <option value="@country">@country</option>
+    }
+</InputSelect>
+
+<p>Select a new password:</p>
+<InputText type="password" @bind-Value="CurrentPassword" />
+<InputText type="password" @bind-Value="NewPassword" />
+

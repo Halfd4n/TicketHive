@@ -1,4 +1,6 @@
-﻿namespace TicketHive.Server.Enums
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TicketHive.Server.Enums
 {
 	public enum Country
 	{
@@ -6,7 +8,9 @@
 		Belgium,
 		Bulgaria,
 		Croatia,
+		[Display(Name = "Cyprus")]
 		Republic_of_Cyprus,
+		[Display( Name = "Czech Republic")]
 		Czech_Republic,
 		Denmark,
 		Estonia,
@@ -29,6 +33,7 @@
 		Slovenia,
 		Spain,
 		Sweden,
+		[Display (Name = "United Kingdom")]
 		United_Kingdom
 	}
 }

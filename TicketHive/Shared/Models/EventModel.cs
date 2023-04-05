@@ -1,8 +1,10 @@
-﻿using TicketHive.Shared.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using TicketHive.Shared.Enums;
 
 namespace TicketHive.Shared.Models;
 public class EventModel
 {
+	[Key]
 	public int Id { get; set; }
 	public string Name { get; set; } = null!;
 	public EventType EventType { get; set; }
