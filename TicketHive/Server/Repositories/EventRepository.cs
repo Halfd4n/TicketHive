@@ -40,7 +40,7 @@ public class EventRepository : IEventRepository
 
     public void BookEventAsync(EventModel eventModel, UserModel user)
     {
-        
+        return null;
     }
 
     public async void AddUserToEventDb(ApplicationUser user)
