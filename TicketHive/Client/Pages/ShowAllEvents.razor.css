@@ -42,8 +42,14 @@
     color: #fbe89c;
     text-shadow: 2px 2px 2px #000000, 1px 1px 10px #000000 !important;
     max-width: 200px;
+    word-break: break-word;
 }
 
 .AllCards {
     width: 100%;
+}
+
+.TheButton {
+    background-color: #fbe89c;
+    ba
 }
