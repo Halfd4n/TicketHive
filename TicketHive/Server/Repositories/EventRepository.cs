@@ -14,6 +14,6 @@ public class EventRepository : IEventRepository
 
     public async Task<EventModel> GetEventByIdAsync(int id)
     {
-        
+        return null;
     }
 }

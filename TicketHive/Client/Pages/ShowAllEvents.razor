@@ -1,0 +1,67 @@
+﻿@page "/Allevents"
+@using TicketHive.Client.Services;
+@using TicketHive.Shared.Models;
+@inject IEventService eventService;
+
+
+
+
+
+<div class="AllCards d-flex justify-content-center">
+
+
+        @foreach(var card in modelTest)
+        {
+            <div class="test d-flex flex-row justify-content-center align-items-center rounded-2" style="background-image: url('@card.ImageUrl');">
+                    <h1 class="CardTitle-name d-flex justify-content-center">@card.Name</h1>
+                <div class="EventCard d-flex flex-column border-2 justify-content-center align-content-center">
+                    <button type="submit">More info</button>
+                </div>
+            </div>
+        
+        }
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@code {
+
+
+    private List<EventModel> modelTest = new()
+    {
+        new EventModel()
+        {
+            Id=1,
+            Name="Star Wars",
+            Description="Big Event for Star Wars fan! meet up and show your wonderful cosplay to eachother",
+            ImageUrl = "https://wallpapercave.com/wp/wp6511672.jpg",
+        },
+        new EventModel()
+        {
+            Id=2,
+            Name="Fantastic Rangers",
+            Description="Lorem nånting bla bla bla",
+            ImageUrl = "https://images.wallpaperscraft.com/image/single/concert_crowd_people_134866_3840x2160.jpg",
+        }
+    };
+    //private List<EventModel>? allEvents;
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    allEvents = await eventService.GetAllEventsAsync();
+    //}
+}
