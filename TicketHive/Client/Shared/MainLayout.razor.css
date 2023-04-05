@@ -6,6 +6,14 @@
 
 main {
     flex: 1;
+    background-color: #305076;
+}
+
+article {
+    display: flex;
+    height: 100vh !important;
+    align-items: center;
+    justify-items:center;
 }
 
 .sidebar {
