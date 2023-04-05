@@ -4,7 +4,7 @@ namespace TicketHive.Client.Services;
 
 public interface IUserService
 {
-    Task UpdateUserPassword(int id, string currentPassword, string newPassword);
+    Task UpdateUserPassword(string id, string currentPassword, string newPassword);
 
     Task UpdateUserCountry();
 

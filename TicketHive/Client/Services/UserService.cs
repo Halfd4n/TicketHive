@@ -17,11 +17,13 @@ public class UserService : IUserService
 		throw new NotImplementedException();
 	}
 
-	public async Task UpdateUserPassword(int id, string currentPassword, string newPassword)
+	public async Task UpdateUserPassword(string id, string currentPassword, string newPassword)
 	{
 		string[] passwordStrings = new string[2] { currentPassword, newPassword };
 
-		await _client.PostAsJsonAsync($"api/users/{id}", passwordStrings);
+		await _client.PutAsJsonAsync($"api/users/{id}", passwordStrings);
+
+
 	}
 
 	public async Task<UserModel?> GetUserByIdAsync(string id)
