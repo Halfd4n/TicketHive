@@ -11,8 +11,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddHttpClient("TicketHive.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
     .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
-builder.Services.AddSingleton<IEventService, EventService>();
-builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // Supply HttpClient instances that include access tokens when making requests to the server project
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("TicketHive.ServerAPI"));
