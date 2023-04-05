@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TicketHive.Server.Repositories;
+using TicketHive.Shared.Models;
 
 namespace TicketHive.Server.Controllers
 {
@@ -6,6 +8,13 @@ namespace TicketHive.Server.Controllers
 	[ApiController]
 	public class EventsController : ControllerBase
 	{
+		private readonly IEventRepository eventRepository;
+
+		public EventsController(IEventRepository eventRepository)
+		{
+			this.eventRepository = eventRepository;
+		}
+
 		// GET: api/<EventsController>
 		[HttpGet]
 		public IEnumerable<string> Get()
@@ -15,9 +24,9 @@ namespace TicketHive.Server.Controllers
 
 		// GET api/<EventsController>/5
 		[HttpGet("{id}")]
-		public string Get(int id)
+		public async Task<EventModel> Get(int id)
 		{
-			return "value";
+			return await eventRepository.GetEventByIdAsync(id);
 		}
 
 		// POST api/<EventsController>
