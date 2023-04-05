@@ -26,6 +26,7 @@ public class UserService : IUserService
 
 	}
 
+	// TODO: fix false response.IsSuccessStatusCode 
 	public async Task<UserModel?> GetUserByIdAsync(string id)
 	{
 		var response = await _client.GetAsync($"api/users/{id}");
