@@ -19,9 +19,9 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
 		// Call base to make sure all other configurations are applied as well 
 		base.OnModelCreating(builder);
 
-		// Make enum property "Country" values to be stored as int in the database
+		// Make enum property "Country" values to be stored as string in the database
 		builder.Entity<ApplicationUser>()
 			.Property(u => u.Country)
-			.HasConversion<int>();
+			.HasConversion<string>();
 	}
 }

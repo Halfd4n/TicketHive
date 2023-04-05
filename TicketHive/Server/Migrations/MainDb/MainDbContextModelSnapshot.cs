@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TicketHive.Server.Data;
 
 #nullable disable
 
-namespace TicketHive.Server.Migrations
+namespace TicketHive.Server.Migrations.MainDb
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20230404111729_AddPropertiesMainDb")]
-    partial class AddPropertiesMainDb
+    partial class MainDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,8 +27,8 @@ namespace TicketHive.Server.Migrations
                     b.Property<int>("BookingsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("VisitorsId")
-                        .HasColumnType("int");
+                    b.Property<string>("VisitorsId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("BookingsId", "VisitorsId");
 
@@ -456,11 +453,11 @@ namespace TicketHive.Server.Migrations
 
             modelBuilder.Entity("TicketHive.Shared.Models.UserModel", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<int>("Country")
+                        .HasColumnType("int");
 
                     b.Property<string>("Username")
                         .IsRequired()

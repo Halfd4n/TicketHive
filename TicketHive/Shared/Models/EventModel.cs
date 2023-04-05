@@ -11,7 +11,11 @@ public class EventModel
 	public int NumberOfTickets { get; set; }
 	public string Description { get; set; } = null!;
 	public decimal Price { get; set; }
+
+	[DataType(DataType.DateTime)]
 	public DateTime StartTime { get; set; }
+
+	[DataType(DataType.DateTime)]
 	public DateTime EndTime { get; set; }
 	public string Location { get; set; } = null!;
 	public string Host { get; set; } = null!;

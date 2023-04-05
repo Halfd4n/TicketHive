@@ -9,11 +9,11 @@ using TicketHive.Server.Data;
 
 #nullable disable
 
-namespace TicketHive.Server.Data.Migrations
+namespace TicketHive.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230404061658_ExtendApplicationDb")]
-    partial class ExtendApplicationDb
+    [Migration("20230405084944_InitialApplicationDb")]
+    partial class InitialApplicationDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -315,8 +315,9 @@ namespace TicketHive.Server.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Country")
-                        .HasColumnType("int");
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)

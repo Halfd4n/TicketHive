@@ -11,18 +11,12 @@ namespace TicketHive.Server.Data
 
 		}
 
-
 		// Define tables in the database 
 		public DbSet<UserModel> Users { get; set; }
 		public DbSet<EventModel> Events { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			//// Configure the EventType enum data to be stored as strings in the database 
-			//modelBuilder.Entity<EventModel>()
-			//	.Property(e => e.EventType)
-			//	.HasConversion<string>();
-
 			// Configure the Price decimal data to be stored as decimal(8, 2) in the database 
 			modelBuilder.Entity<EventModel>()
 				.Property(e => e.Price)

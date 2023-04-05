@@ -34,14 +34,14 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddSession(options =>
 {
-    options.Cookie.Name = "ShoppingCart";
-    options.IdleTimeout = TimeSpan.FromDays(31);
+	options.Cookie.Name = "ShoppingCart";
+	options.IdleTimeout = TimeSpan.FromDays(31);
 });
 
 builder.Services.Configure<RouteOptions>(options =>
 {
-    options.LowercaseUrls = true;
-    options.LowercaseQueryStrings = true;
+	options.LowercaseUrls = true;
+	options.LowercaseQueryStrings = true;
 });
 
 builder.Services.AddAuthentication()
@@ -50,7 +50,7 @@ builder.Services.AddAuthentication()
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-// Create ApplicationUser with Admin role
+// Create an ApplicationUser with Admin role and an UserModel user
 using (var serviceProvider = builder.Services.BuildServiceProvider())
 {
 	// Create instances from DI container 
