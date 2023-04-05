@@ -17,7 +17,7 @@ public class UserRepository : IUserRepository
     {
         ApplicationUser? user = await _signInManager.UserManager.FindByIdAsync(id);
 
-        if(user != null)
+        if (user != null)
         {
             IdentityResult result = await _signInManager.UserManager.ChangePasswordAsync(user, currentPassword, newPassword);
 
@@ -38,14 +38,15 @@ public class UserRepository : IUserRepository
     public async Task<UserModel?> GetUserById(string id)
     {
         ApplicationUser? user = await _signInManager.UserManager.FindByIdAsync(id);
-            
 
-        if(user != null)
+
+        if (user != null)
         {
             UserModel userModel = new()
             {
                 Id = user.Id,
-                Username = user.UserName!
+                Username = user.UserName!,
+                Country = user.Country
             };
 
             return userModel;
