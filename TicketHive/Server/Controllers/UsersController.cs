@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using TicketHive.Server.Repository;
 using TicketHive.Shared.Models;
 
@@ -17,7 +18,7 @@ namespace TicketHive.Server.Controllers
 
 		// GET: api/<UsersController>
 		[HttpGet]
-		public IEnumerable<string> Get()
+		public IEnumerable<string> GetAsync()
 		{
 			return new string[] { "value1", "value2" };
 		}
@@ -26,24 +27,37 @@ namespace TicketHive.Server.Controllers
 		[HttpGet("{id}")]
 		public async Task<UserModel?> GetAsync(string id)
 		{
-			return await userRepository.GetUserById(id);
+			return await userRepository.GetUserAsync(id);
 		}
 
 		// POST api/<UsersController>
 		[HttpPost]
-		public void Post([FromBody] string value)
+		public void PostAsync([FromBody] string value)
 		{
+		}
+
+		// Declare an array of strings
+		string[] passwordStrings = new string[2];
+
+
+		// Update user password
+		[HttpPut("{id}")]
+		public async Task<bool> UpdateUserPasswordAsync(string id, string passwordsAsJson)
+		{
+			string[]? passwordStrings = JsonConvert.DeserializeObject<string[]>(passwordsAsJson);
+
+			return await userRepository.ChangePasswordAsync(id, passwordStrings[1], passwordStrings[0]);
 		}
 
 		// PUT api/<UsersController>/5
 		[HttpPut("{id}")]
-		public void Put(int id, [FromBody] string value)
+		public void PutAsync(int id, [FromBody] string value)
 		{
 		}
 
 		// DELETE api/<UsersController>/5
 		[HttpDelete("{id}")]
-		public void Delete(int id)
+		public void DeleteAsync(int id)
 		{
 		}
 	}

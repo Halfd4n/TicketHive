@@ -21,6 +21,7 @@
 @if (userModel != null)
 {
 	<p>@userModel.Username</p>
+	<p>Update password: @passwordIsUpdated</p>
 }
 @if (userModel == null)
 {
@@ -35,13 +36,13 @@
 {
 	<p>eventModel is null :-(</p>
 }
-
+<h1>Delete event: @eventIsDeleted</h1>
 @if (events != null)
 {
 	<ul>
 		@foreach (var e in events)
 		{
-		<p>@e.Name</p>
+		<li>@e.Name</li>
 		}
 	</ul>
 }
@@ -54,18 +55,27 @@
 	private UserModel? userModel;
 	private EventModel? eventModel;
 	private List<EventModel>? events;
+	private HttpResponseMessage passwordIsUpdated; 
+	private HttpResponseMessage eventIsDeleted;
 
 	protected override async Task OnInitializedAsync()
 	{
-		// USERS (get user, update password, update country, delete user, add booking/EventModel)
 		// Get user by id 
-		userModel = await userService.GetUserByIdAsync("d16b262b-e773-47d0-8383-1d694573a953");
+		userModel = await userService.GetUserAsync("cab1c166-3154-40fb-9be3-022db07d4315");
+
+		// Update user password
+		passwordIsUpdated = await userService.UpdateUserPasswordAsync("cab1c166-3154-40fb-9be3-022db07d4315", "Password1234!", "NyttPassword1234!");
+
+		//************************************************************************************ 
 
 		// EVENTS (Get one event, get all events, add event, delete event, bonus: update event)
 		// Get event by id
-		eventModel = await eventService.GetOneEventAsync(3);
+		eventModel = await eventService.GetEventAsync(3);
 
 		// Get all events 
-		events = await eventService.GetAllEventsAsync();
+		events = await eventService.GetEventsAsync();
+
+		// Delete event
+		eventIsDeleted = await eventService.DeleteEventAsync(16);
 	}
 }

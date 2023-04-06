@@ -30,14 +30,14 @@ public class UserRepository : IUserRepository
 		return false;
 	}
 
-	public Task<List<UserModel>> GetAllUsers()
+	public Task<List<UserModel>> GetUsersAsync()
 	{
 		throw new NotImplementedException();
 	}
 
-	public async Task<UserModel?> GetUserById(string id)
+	public async Task<UserModel?> GetUserAsync(string userId)
 	{
-		ApplicationUser? user = await _signInManager.UserManager.FindByIdAsync(id);
+		ApplicationUser? user = await _signInManager.UserManager.FindByIdAsync(userId);
 
 
 		if (user != null)

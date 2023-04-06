@@ -13,9 +13,21 @@ public class EventRepository : IEventRepository
 		_context = context;
 	}
 
-	public async Task<EventModel?> GetEventByIdAsync(int id)
+	public async Task DeleteEventAsync(int eventId)
 	{
-		EventModel? eventModel = await _context.Events.FindAsync(id);
+		var eventToDelete = await GetEventAsync(eventId);
+
+		if (eventToDelete != null)
+		{
+			_context.Events.Remove(eventToDelete);
+
+			await _context.SaveChangesAsync();
+		}
+	}
+
+	public async Task<EventModel?> GetEventAsync(int eventId)
+	{
+		EventModel? eventModel = await _context.Events.FindAsync(eventId);
 
 		if (eventModel != null)
 		{
@@ -25,7 +37,7 @@ public class EventRepository : IEventRepository
 		return null;
 	}
 
-	public async Task<List<EventModel>?> GetAllEventsAsync()
+	public async Task<List<EventModel>?> GetEventsAsync()
 	{
 		return await _context.Events.ToListAsync();
 	}

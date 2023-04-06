@@ -4,13 +4,9 @@ namespace TicketHive.Client.Services;
 
 public interface IEventService
 {
-    Task<List<EventModel>?> GetAllEventsAsync();
-
-    Task<EventModel?> GetOneEventAsync(int id);
-
-    Task AddEventAsync(EventModel eventModel);
-
-    Task BookEventAsync(int eventId, UserModel user);
-
-    Task DeleteEventAsync(int id);
+	Task<EventModel?> GetEventAsync(int eventId);
+	Task<List<EventModel>?> GetEventsAsync();
+	Task<bool> BookEventAsync(int eventId, UserModel user);
+	Task<bool> AddEventAsync(EventModel eventModel);
+	Task<HttpResponseMessage> DeleteEventAsync(int eventId);
 }

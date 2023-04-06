@@ -1,19 +1,18 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using TicketHive.Server.Models;
 using TicketHive.Shared.Models;
 
 namespace TicketHive.Server.Repository;
 
 public interface IUserRepository
 {
-    Task<List<UserModel>> GetAllUsers();
+	Task<List<UserModel>> GetUsersAsync();
 
-    Task<UserModel?> GetUserById(string id);
+	Task<UserModel?> GetUserAsync(string userId);
 
-    Task<SignInResult> SignInUserAsync(string username, string password);
+	Task<SignInResult> SignInUserAsync(string username, string password);
 
-    Task<IdentityResult> RegisterUserAsync(string username, string password);
+	Task<IdentityResult> RegisterUserAsync(string username, string password);
 
-    Task<bool> ChangePasswordAsync(string id, string currentPassword, string newPassword);
+	Task<bool> ChangePasswordAsync(string id, string currentPassword, string newPassword);
 
 }

@@ -17,16 +17,16 @@ namespace TicketHive.Server.Controllers
 
 		// GET: api/<EventsController>
 		[HttpGet]
-		public async Task<List<EventModel>?> GetAllAsync()
+		public async Task<List<EventModel>?> GetEventsAsync()
 		{
-			return await eventRepository.GetAllEventsAsync();
+			return await eventRepository.GetEventsAsync();
 		}
 
 		// GET api/<EventsController>/5
 		[HttpGet("{id}")]
-		public async Task<EventModel> GetByIdAsync(int id)
+		public async Task<EventModel?> GetByIdAsync(int id)
 		{
-			return await eventRepository.GetEventByIdAsync(id);
+			return await eventRepository.GetEventAsync(id);
 		}
 
 		// POST api/<EventsController>
@@ -43,8 +43,9 @@ namespace TicketHive.Server.Controllers
 
 		// DELETE api/<EventsController>/5
 		[HttpDelete("{id}")]
-		public void Delete(int id)
+		public async Task DeleteEventAsync(int id)
 		{
+			await eventRepository.DeleteEventAsync(id);
 		}
 	}
 }

@@ -6,65 +6,80 @@ namespace TicketHive.Client.Services;
 
 public class EventService : IEventService
 {
-    private readonly HttpClient _client;
+	private readonly HttpClient _client;
 
-    public EventService(HttpClient client)
-    {
-        _client = client;
-    }
+	public EventService(HttpClient client)
+	{
+		_client = client;
+	}
 
-    public async Task AddEventAsync(EventModel eventModel)
-    {
-        await _client.PostAsJsonAsync("api/events", eventModel);
-    }
+	public async Task<EventModel?> GetEventAsync(int eventId)
+	{
+		var response = await _client.GetAsync($"api/events/{eventId}");
 
-    public async Task BookEventAsync(int eventId, UserModel user)
-    {
-        // --- Osäker på vilka datatyper och objekt samt hur dessa ska passas vidare till APIt. I detta fall skickas event
-        // id med genom URL'en och UserModel som genomför bokning skickas med genom body'n. Vet ej vad som är best practice.
+		if (response.IsSuccessStatusCode)
+		{
+			var json = await response.Content.ReadAsStringAsync();
 
-        await _client.PostAsJsonAsync($"api/events/{eventId}", user);
-    }
+			return JsonConvert.DeserializeObject<EventModel>(json);
+		}
+		else
+		{
+			Console.WriteLine(response.Content);
+		}
 
+		return null;
+	}
 
-    public async Task DeleteEventAsync(int id)
-    {
-        await _client.DeleteAsync($"api/events/{id}");
-    }
+	public async Task<List<EventModel>?> GetEventsAsync()
+	{
+		var response = await _client.GetAsync("api/events");
 
-    public async Task<List<EventModel>?> GetAllEventsAsync()
-    {
-        var response = await _client.GetAsync("api/events");
+		if (response.IsSuccessStatusCode)
+		{
+			var json = await response.Content.ReadAsStringAsync();
 
-        if (response.IsSuccessStatusCode)
-        {
-            var json = await response.Content.ReadAsStringAsync();
+			return JsonConvert.DeserializeObject<List<EventModel>>(json);
+		}
+		else
+		{
+			Console.WriteLine(response.Content);
+		}
 
-            return JsonConvert.DeserializeObject<List<EventModel>>(json);
-        }
-        else
-        {
-            Console.WriteLine(response.Content);
-        }
+		return null;
+	}
 
-        return null;
-    }
+	public async Task<bool> BookEventAsync(int eventId, UserModel user)
+	{
+		// --- Osäker på vilka datatyper och objekt samt hur dessa ska passas vidare till APIt. I detta fall skickas event
+		// id med genom URL'en och UserModel som genomför bokning skickas med genom body'n. Vet ej vad som är best practice.
 
-    public async Task<EventModel?> GetOneEventAsync(int id)
-    {
-        var response = await _client.GetAsync($"api/events/{id}");
+		var response = await _client.PostAsJsonAsync($"api/events/{eventId}", user);
 
-        if (response.IsSuccessStatusCode)
-        {
-            var json = await response.Content.ReadAsStringAsync();
+		if (response.IsSuccessStatusCode)
+		{
+			return true;
+		}
 
-            return JsonConvert.DeserializeObject<EventModel>(json);
-        }
-        else
-        {
-            Console.WriteLine(response.Content);
-        }
+		return false;
+	}
 
-        return null;
-    }
+	public async Task<bool> AddEventAsync(EventModel eventModel)
+	{
+		var response = await _client.PostAsJsonAsync("api/events", eventModel);
+
+		if (response.IsSuccessStatusCode)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	public async Task<HttpResponseMessage> DeleteEventAsync(int eventId)
+	{
+		HttpResponseMessage response = await _client.DeleteAsync($"api/events/{eventId}");
+
+		return response;
+	}
 }
