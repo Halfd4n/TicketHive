@@ -37,7 +37,6 @@ public class UserRepository : IUserRepository
 
 	public async Task<UserModel?> GetUserById(string id)
 	{
-		// TODO: fix possible null reference exception 
 		ApplicationUser? user = await _signInManager.UserManager.FindByIdAsync(id);
 
 

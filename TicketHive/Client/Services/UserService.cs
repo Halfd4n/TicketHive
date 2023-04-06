@@ -22,11 +22,8 @@ public class UserService : IUserService
 		string[] passwordStrings = new string[2] { currentPassword, newPassword };
 
 		await _client.PutAsJsonAsync($"api/users/{id}", passwordStrings);
-
-
 	}
 
-	// TODO: fix false response.IsSuccessStatusCode 
 	public async Task<UserModel?> GetUserByIdAsync(string id)
 	{
 		var response = await _client.GetAsync($"api/users/{id}");

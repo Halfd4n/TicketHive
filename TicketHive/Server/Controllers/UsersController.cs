@@ -8,9 +8,9 @@ namespace TicketHive.Server.Controllers
 	[ApiController]
 	public class UsersController : ControllerBase
 	{
-		private readonly UserRepository userRepository;
+		private readonly IUserRepository userRepository;
 
-		public UsersController(UserRepository userRepository)
+		public UsersController(IUserRepository userRepository)
 		{
 			this.userRepository = userRepository;
 		}

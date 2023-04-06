@@ -1,9 +1,9 @@
 ﻿@page "/"
-@*@using TicketHive.Client.Services;
-@using TicketHive.Shared.Models;*@
+@using TicketHive.Client.Services;
+@using TicketHive.Shared.Models;
 @inject NavigationManager navigationManager
-@*@inject IUserService userService
-@inject IEventService eventService*@
+@inject IUserService userService
+@inject IEventService eventService
 
 <PageTitle>Index</PageTitle>
 
@@ -18,24 +18,23 @@
 
 </div>
 
-@*@if (userModel != null)
+@if (userModel != null)
 {
-	<h1>@userModel.Username</h1>
+	<p>@userModel.Username</p>
 
 }
 @if (userModel == null)
 {
-	<h1>userModel is null :-(</h1>
+	<p>userModel is null :-(</p>
 }
 
 @if (eventModel != null)
 {
-	<h1>@eventModel.Name</h1>
-
+	<p>@eventModel.Name</p>
 }
 @if (eventModel == null)
 {
-	<h1>eventModel is null :-(</h1>
+	<p>eventModel is null :-(</p>
 }
 
 @code {
@@ -44,8 +43,10 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		userModel = await userService.GetUserByIdAsync("c38350f6-7b83-434a-98b6-c3cd4a85e33a");
+		// USERS (get user, update password, update country, delete user)
+		userModel = await userService.GetUserByIdAsync("30c15e1b-0dc8-482d-8582-9664841823b5");
 
+		// EVENTS (one event, all events, add event, delete event, bonus: update event)
 		eventModel = await eventService.GetOneEventAsync(3);
 	}
-}*@
+}
