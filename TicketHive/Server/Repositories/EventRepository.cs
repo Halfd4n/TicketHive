@@ -1,4 +1,5 @@
-﻿using TicketHive.Server.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using TicketHive.Server.Data;
 using TicketHive.Shared.Models;
 
 namespace TicketHive.Server.Repositories;
@@ -22,5 +23,10 @@ public class EventRepository : IEventRepository
 		}
 
 		return null;
+	}
+
+	public async Task<List<EventModel>?> GetAllEventsAsync()
+	{
+		return await _context.Events.ToListAsync();
 	}
 }

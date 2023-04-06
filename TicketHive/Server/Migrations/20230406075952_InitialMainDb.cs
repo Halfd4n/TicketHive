@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace TicketHive.Server.Migrations.MainDb
+namespace TicketHive.Server.Migrations
 {
     /// <inheritdoc />
     public partial class InitialMainDb : Migration
@@ -41,7 +41,7 @@ namespace TicketHive.Server.Migrations.MainDb
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Country = table.Column<int>(type: "int", nullable: false)
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

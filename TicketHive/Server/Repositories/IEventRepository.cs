@@ -5,4 +5,5 @@ namespace TicketHive.Server.Repositories;
 public interface IEventRepository
 {
 	Task<EventModel?> GetEventByIdAsync(int id);
+	Task<List<EventModel>?> GetAllEventsAsync();
 }

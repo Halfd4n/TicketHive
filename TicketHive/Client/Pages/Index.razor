@@ -21,7 +21,6 @@
 @if (userModel != null)
 {
 	<p>@userModel.Username</p>
-
 }
 @if (userModel == null)
 {
@@ -37,16 +36,36 @@
 	<p>eventModel is null :-(</p>
 }
 
+@if (events != null)
+{
+	<ul>
+		@foreach (var e in events)
+		{
+		<p>@e.Name</p>
+		}
+	</ul>
+}
+@if (events == null)
+{
+	<p>events is null :-(</p>
+}
+
 @code {
-	private UserModel? userModel = new();
-	private EventModel? eventModel = new();
+	private UserModel? userModel;
+	private EventModel? eventModel;
+	private List<EventModel>? events;
 
 	protected override async Task OnInitializedAsync()
 	{
-		// USERS (get user, update password, update country, delete user)
-		userModel = await userService.GetUserByIdAsync("30c15e1b-0dc8-482d-8582-9664841823b5");
+		// USERS (get user, update password, update country, delete user, add booking/EventModel)
+		// Get user by id 
+		userModel = await userService.GetUserByIdAsync("d16b262b-e773-47d0-8383-1d694573a953");
 
-		// EVENTS (one event, all events, add event, delete event, bonus: update event)
+		// EVENTS (Get one event, get all events, add event, delete event, bonus: update event)
+		// Get event by id
 		eventModel = await eventService.GetOneEventAsync(3);
+
+		// Get all events 
+		events = await eventService.GetAllEventsAsync();
 	}
 }

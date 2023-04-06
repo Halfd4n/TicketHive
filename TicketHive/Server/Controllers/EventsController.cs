@@ -17,14 +17,14 @@ namespace TicketHive.Server.Controllers
 
 		// GET: api/<EventsController>
 		[HttpGet]
-		public IEnumerable<string> Get()
+		public async Task<List<EventModel>?> GetAllAsync()
 		{
-			return new string[] { "value1", "value2" };
+			return await eventRepository.GetAllEventsAsync();
 		}
 
 		// GET api/<EventsController>/5
 		[HttpGet("{id}")]
-		public async Task<EventModel> Get(int id)
+		public async Task<EventModel> GetByIdAsync(int id)
 		{
 			return await eventRepository.GetEventByIdAsync(id);
 		}
