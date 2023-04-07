@@ -14,6 +14,7 @@ public class UserService : IUserService
 		_client = client;
 	}
 
+	// Functioning, but will be changed to not having to provide user id 
 	public async Task<UserModel?> GetUserAsync(string userId)
 	{
 		var response = await _client.GetAsync($"api/users/{userId}");
@@ -28,24 +29,46 @@ public class UserService : IUserService
 		return null;
 	}
 
-	public async Task<HttpResponseMessage> UpdateUserCountryAsync(string userId, Country country)
+	// Not done yet!
+	public async Task<bool> UpdateUserCountryAsync(string userId, Country country)
 	{
-		return await _client.PutAsJsonAsync($"api/users/{userId}", country);
+		var response = await _client.PutAsJsonAsync($"api/users/{userId}", country);
+
+		if (response.IsSuccessStatusCode)
+		{
+			return true;
+		}
+
+		return false;
 	}
 
-	public async Task<HttpResponseMessage> UpdateUserPasswordAsync(string userId, string currentPassword, string newPassword)
+	// Not done yet!
+	public async Task<bool> UpdateUserPasswordAsync(string userId, string currentPassword, string newPassword)
 	{
 		string[] passwordStrings = new string[2] { currentPassword, newPassword };
 
 		var passwordsAsJson = JsonConvert.SerializeObject(passwordStrings);
 
-		HttpResponseMessage response = await _client.PutAsJsonAsync($"api/users/{userId}", passwordsAsJson);
+		var response = await _client.PutAsJsonAsync($"api/users/{userId}", passwordsAsJson);
 
-		return response;
+		if (response.IsSuccessStatusCode)
+		{
+			return true;
+		}
+
+		return false;
 	}
 
-	public async Task<HttpResponseMessage> DeleteUserAsync(string userId)
+	// Not done yet!
+	public async Task<bool> DeleteUserAsync(string userId)
 	{
-		return await _client.DeleteAsync($"api/users/{userId}");
+		var response = await _client.DeleteAsync($"api/users/{userId}");
+
+		if (response.IsSuccessStatusCode)
+		{
+			return true;
+		}
+
+		return false;
 	}
 }

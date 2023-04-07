@@ -8,5 +8,5 @@ public interface IEventService
 	Task<List<EventModel>?> GetEventsAsync();
 	Task<bool> BookEventAsync(int eventId, UserModel user);
 	Task<bool> AddEventAsync(EventModel eventModel);
-	Task<HttpResponseMessage> DeleteEventAsync(int eventId);
+	Task<bool> DeleteEventAsync(int eventId);
 }

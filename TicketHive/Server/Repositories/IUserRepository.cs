@@ -14,5 +14,4 @@ public interface IUserRepository
 	Task<IdentityResult> RegisterUserAsync(string username, string password);
 
 	Task<bool> ChangePasswordAsync(string id, string currentPassword, string newPassword);
-
 }

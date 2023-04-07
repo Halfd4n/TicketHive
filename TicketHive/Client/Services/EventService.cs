@@ -49,10 +49,11 @@ public class EventService : IEventService
 		return null;
 	}
 
+	// Not done yet!
 	public async Task<bool> BookEventAsync(int eventId, UserModel user)
 	{
 		// --- Osäker på vilka datatyper och objekt samt hur dessa ska passas vidare till APIt. I detta fall skickas event
-		// id med genom URL'en och UserModel som genomför bokning skickas med genom body'n. Vet ej vad som är best practice.
+		// id med genom URL'en och UserModel som genomför bokning skickas med genom body'n. Vet ej vad som är best practice. /Benjamin 
 
 		var response = await _client.PostAsJsonAsync($"api/events/{eventId}", user);
 
@@ -64,6 +65,7 @@ public class EventService : IEventService
 		return false;
 	}
 
+	// Not done yet!
 	public async Task<bool> AddEventAsync(EventModel eventModel)
 	{
 		var response = await _client.PostAsJsonAsync("api/events", eventModel);
@@ -76,10 +78,15 @@ public class EventService : IEventService
 		return false;
 	}
 
-	public async Task<HttpResponseMessage> DeleteEventAsync(int eventId)
+	public async Task<bool> DeleteEventAsync(int eventId)
 	{
-		HttpResponseMessage response = await _client.DeleteAsync($"api/events/{eventId}");
+		var response = await _client.DeleteAsync($"api/events/{eventId}");
 
-		return response;
+		if (response.IsSuccessStatusCode)
+		{
+			return true;
+		}
+
+		return false;
 	}
 }

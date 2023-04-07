@@ -13,6 +13,7 @@ public class UserRepository : IUserRepository
 		_signInManager = signInManager;
 	}
 
+	// Not done yet!
 	public async Task<bool> ChangePasswordAsync(string id, string currentPassword, string newPassword)
 	{
 		ApplicationUser? user = await _signInManager.UserManager.FindByIdAsync(id);
@@ -30,15 +31,16 @@ public class UserRepository : IUserRepository
 		return false;
 	}
 
+	// Not done yet!
 	public Task<List<UserModel>> GetUsersAsync()
 	{
 		throw new NotImplementedException();
 	}
 
+	// Functioning, but will be changed to not having to provide user id 
 	public async Task<UserModel?> GetUserAsync(string userId)
 	{
 		ApplicationUser? user = await _signInManager.UserManager.FindByIdAsync(userId);
-
 
 		if (user != null)
 		{
@@ -55,6 +57,7 @@ public class UserRepository : IUserRepository
 		return null;
 	}
 
+	// Not done yet!
 	public async Task<IdentityResult> RegisterUserAsync(string username, string password)
 	{
 		ApplicationUser newUser = new()
@@ -65,6 +68,7 @@ public class UserRepository : IUserRepository
 		return await _signInManager.UserManager.CreateAsync(newUser, password!);
 	}
 
+	// Not done yet!
 	public async Task<SignInResult> SignInUserAsync(string username, string password)
 	{
 		return await _signInManager.PasswordSignInAsync(username, password, false, false);

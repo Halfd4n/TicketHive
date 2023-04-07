@@ -16,13 +16,14 @@ namespace TicketHive.Server.Controllers
 			this.userRepository = userRepository;
 		}
 
+		// Not done yet!
 		// GET: api/<UsersController>
 		[HttpGet]
 		public IEnumerable<string> GetAsync()
 		{
 			return new string[] { "value1", "value2" };
 		}
-
+		// Functioning, but will be changed to not having to provide user id 
 		// GET api/<UsersController>/5
 		[HttpGet("{id}")]
 		public async Task<UserModel?> GetAsync(string id)
@@ -39,7 +40,7 @@ namespace TicketHive.Server.Controllers
 		// Declare an array of strings
 		string[] passwordStrings = new string[2];
 
-
+		// Not done yet!
 		// Update user password
 		[HttpPut("{id}")]
 		public async Task<bool> UpdateUserPasswordAsync(string id, string passwordsAsJson)
