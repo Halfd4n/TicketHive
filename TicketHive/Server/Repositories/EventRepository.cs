@@ -5,55 +5,46 @@ using TicketHive.Shared.Models;
 
 namespace TicketHive.Server.Repositories;
 
-public class EventRepository : IEventRepository 
+public class EventRepository : IEventRepository
 {
-    private readonly MainDbContext _context;
+	private readonly MainDbContext _context;
 
-    public EventRepository(MainDbContext context)
-    {
-        _context = context;
-    }
+	public EventRepository(MainDbContext context)
+	{
+		_context = context;
+	}
 
-    public EventModel? GetEventById(int id)
-    {
-        return _context.Events.FirstOrDefault(e => e.Id == id);
-    }
+	public Task AddUserToEventDb(ApplicationUser user)
+	{
+		throw new NotImplementedException();
+	}
 
-    public async Task<List<EventModel>?> GetAllEventsAsync()
-    {
-        return await _context.Events.ToListAsync();
-    }
+	public async Task DeleteEventAsync(int eventId)
+	{
+		var eventToDelete = await GetEventAsync(eventId);
 
-    public async void AddEventAsync(EventModel eventModel)
-    {
-        _context.Add(eventModel);
+		if (eventToDelete != null)
+		{
+			_context.Events.Remove(eventToDelete);
 
-        await _context.SaveChangesAsync();
-    }
+			await _context.SaveChangesAsync();
+		}
+	}
 
-    public async void DeleteEventAsync(EventModel eventModel)
-    {
-        _context.Events.Remove(eventModel);
+	public async Task<EventModel?> GetEventAsync(int eventId)
+	{
+		EventModel? eventModel = await _context.Events.FindAsync(eventId);
 
-        await _context.SaveChangesAsync();
-    }
+		if (eventModel != null)
+		{
+			return eventModel;
+		}
 
-    public void BookEventAsync(EventModel eventModel, UserModel user)
-    {
-        
-    }
+		return null;
+	}
 
-    public async void AddUserToEventDb(ApplicationUser user)
-    {
-        UserModel userModel = new()
-        {
-            Id = user.Id,
-            Username = user.UserName!,
-            Country = user.Country
-        };
-
-        await _context.Users.AddAsync(userModel);
-
-        _context.SaveChanges();
-    }
+	public async Task<List<EventModel>?> GetEventsAsync()
+	{
+		return await _context.Events.ToListAsync();
+	}
 }

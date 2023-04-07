@@ -1,5 +1,9 @@
 ﻿@page "/"
+@using TicketHive.Client.Services;
+@using TicketHive.Shared.Models;
 @inject NavigationManager navigationManager
+@inject IUserService userService
+@inject IEventService eventService
 
 
 <PageTitle>Index</PageTitle>
@@ -14,3 +18,61 @@
 <button @onclick="Register">Register</button>
 
 </div>
+
+
+@*Lite kod för att kontrollera att metoderna fungerar*@
+
+@if (userModel != null)
+{
+	<p>@userModel.Username</p>
+}
+@if (userModel == null)
+{
+	<p>userModel is null :-(</p>
+}
+
+@if (eventModel != null)
+{
+	<p>@eventModel.Name</p>
+}
+@if (eventModel == null)
+{
+	<p>eventModel is null :-(</p>
+}
+<p>Delete event: @eventIsDeleted</p>
+
+@if (events != null)
+{
+	<ul>
+		@foreach (var e in events)
+		{
+		<li>@e.Name</li>
+		}
+	</ul>
+}
+@if (events == null)
+{
+	<p>events is null :-(</p>
+}
+
+@code {
+	private UserModel? userModel;
+	private EventModel? eventModel;
+	private List<EventModel>? events;
+	private bool eventIsDeleted;
+
+	protected override async Task OnInitializedAsync()
+	{
+		// Get user by id 
+		userModel = await userService.GetUserAsync("055fb4d7-20c4-4aac-aed5-65267d11514e");
+
+		// Get event by id
+		eventModel = await eventService.GetEventAsync(3);
+
+		// Get all events 
+		events = await eventService.GetEventsAsync();
+
+		// Delete event
+		eventIsDeleted = await eventService.DeleteEventAsync(14);
+	}
+}

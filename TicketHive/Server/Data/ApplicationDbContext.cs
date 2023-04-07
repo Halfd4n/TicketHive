@@ -16,7 +16,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
 	// Add enum property "Country" to ApplicationUser in database
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
-		// Call base to make sure all other configurations are applied as well 
+		// "Call base to make sure all other configurations are applied as well"...?
 		base.OnModelCreating(builder);
 
 		// Make enum property "Country" values to be stored as string in the database
