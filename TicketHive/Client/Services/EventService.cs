@@ -80,9 +80,13 @@ public class EventService : IEventService
 
 	public async Task<bool> DeleteEventAsync(int eventId)
 	{
-		var response = await _client.DeleteAsync($"api/events/{eventId}");
+		int numberOfEventsBefore = (await GetEventsAsync()).Count;
 
-		if (response.IsSuccessStatusCode)
+		await _client.DeleteAsync($"api/events/{eventId}");
+
+		int numberOfEventsAfter = (await GetEventsAsync()).Count;
+
+		if (numberOfEventsBefore > numberOfEventsAfter)
 		{
 			return true;
 		}
