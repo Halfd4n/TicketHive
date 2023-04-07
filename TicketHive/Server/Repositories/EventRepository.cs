@@ -1,4 +1,9 @@
-﻿namespace TicketHive.Server.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using TicketHive.Server.Data;
+using TicketHive.Server.Models;
+using TicketHive.Shared.Models;
+
+namespace TicketHive.Server.Repositories;
 
 public class EventRepository : IEventRepository
 {
@@ -7,6 +12,11 @@ public class EventRepository : IEventRepository
 	public EventRepository(MainDbContext context)
 	{
 		_context = context;
+	}
+
+	public Task AddUserToEventDb(ApplicationUser user)
+	{
+		throw new NotImplementedException();
 	}
 
 	public async Task DeleteEventAsync(int eventId)

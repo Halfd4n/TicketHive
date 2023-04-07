@@ -1,4 +1,10 @@
-﻿namespace TicketHive.Server.Repositories;
+﻿using Microsoft.AspNetCore.Identity;
+using TicketHive.Server.Enums;
+using TicketHive.Server.Models;
+using TicketHive.Server.Repository;
+using TicketHive.Shared.Models;
+
+namespace TicketHive.Server.Repositories;
 
 public class UserRepository : IUserRepository
 {
@@ -71,5 +77,20 @@ public class UserRepository : IUserRepository
 	public async Task<ApplicationUser?> GetSignedInUser(string userName)
 	{
 		return await _signInManager.UserManager.FindByNameAsync(userName);
+	}
+
+	public Task<List<UserModel>> GetUsersAsync()
+	{
+		throw new NotImplementedException();
+	}
+
+	public Task<IdentityResult> RegisterUserAsync(string username, string password)
+	{
+		throw new NotImplementedException();
+	}
+
+	public Task<bool> ChangePasswordAsync(string id, string currentPassword, string newPassword, Country country)
+	{
+		throw new NotImplementedException();
 	}
 }

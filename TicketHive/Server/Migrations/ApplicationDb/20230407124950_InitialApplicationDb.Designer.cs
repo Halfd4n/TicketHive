@@ -12,7 +12,7 @@ using TicketHive.Server.Data;
 namespace TicketHive.Server.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230406080032_InitialApplicationDb")]
+    [Migration("20230407124950_InitialApplicationDb")]
     partial class InitialApplicationDb
     {
         /// <inheritdoc />

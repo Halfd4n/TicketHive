@@ -23,6 +23,7 @@ namespace TicketHive.Server.Controllers
 		{
 			return new string[] { "value1", "value2" };
 		}
+
 		// Functioning, but will be changed to not having to provide user id 
 		// GET api/<UsersController>/5
 		[HttpGet("{id}")]
@@ -37,9 +38,6 @@ namespace TicketHive.Server.Controllers
 		{
 		}
 
-		// Declare an array of strings
-		string[] passwordStrings = new string[2];
-
 		// Not done yet!
 		// Update user password
 		[HttpPut("{id}")]
@@ -47,7 +45,7 @@ namespace TicketHive.Server.Controllers
 		{
 			string[]? passwordStrings = JsonConvert.DeserializeObject<string[]>(passwordsAsJson);
 
-			return await userRepository.ChangePasswordAsync(id, passwordStrings[1], passwordStrings[0]);
+			return await userRepository.ChangePasswordAsync(id, passwordStrings[1], passwordStrings[0], Enums.Country.Denmark);
 		}
 
 		// PUT api/<UsersController>/5

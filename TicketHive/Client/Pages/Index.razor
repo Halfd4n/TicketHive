@@ -19,10 +19,12 @@
 
 </div>
 
+
+@*Lite kod för att kontrollera att metoderna fungerar*@
+
 @if (userModel != null)
 {
 	<p>@userModel.Username</p>
-	<p>Update password: @passwordIsUpdated</p>
 }
 @if (userModel == null)
 {
@@ -37,7 +39,8 @@
 {
 	<p>eventModel is null :-(</p>
 }
-<h1>Delete event: @eventIsDeleted</h1>
+<p>Delete event: @eventIsDeleted</p>
+
 @if (events != null)
 {
 	<ul>
@@ -56,20 +59,13 @@
 	private UserModel? userModel;
 	private EventModel? eventModel;
 	private List<EventModel>? events;
-	private bool passwordIsUpdated; 
 	private bool eventIsDeleted;
 
 	protected override async Task OnInitializedAsync()
 	{
 		// Get user by id 
-		userModel = await userService.GetUserAsync("cab1c166-3154-40fb-9be3-022db07d4315");
+		userModel = await userService.GetUserAsync("055fb4d7-20c4-4aac-aed5-65267d11514e");
 
-		// Update user password
-		passwordIsUpdated = await userService.UpdateUserPasswordAsync("cab1c166-3154-40fb-9be3-022db07d4315", "Password1234!", "NyttPassword1234!");
-
-		//************************************************************************************ 
-
-		// EVENTS (Get one event, get all events, add event, delete event, bonus: update event)
 		// Get event by id
 		eventModel = await eventService.GetEventAsync(3);
 
@@ -77,6 +73,6 @@
 		events = await eventService.GetEventsAsync();
 
 		// Delete event
-		eventIsDeleted = await eventService.DeleteEventAsync(16);
+		eventIsDeleted = await eventService.DeleteEventAsync(14);
 	}
 }
