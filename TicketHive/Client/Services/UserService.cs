@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Net.Http.Json;
+using TicketHive.Server.Enums;
 using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Services;
@@ -12,23 +13,11 @@ public class UserService : IUserService
 	{
 		_client = client;
 	}
-	public Task UpdateUserCountry()
+
+	// Functioning, but will be changed to not having to provide user id 
+	public async Task<UserModel?> GetUserAsync(string userId)
 	{
-		throw new NotImplementedException();
-	}
-
-	public async Task UpdateUserPassword(string id, string currentPassword, string newPassword)
-	{
-		string[] passwordStrings = new string[2] { currentPassword, newPassword };
-
-		await _client.PutAsJsonAsync($"api/users/{id}", passwordStrings);
-
-
-	}
-
-	public async Task<UserModel?> GetUserByIdAsync(string id)
-	{
-		var response = await _client.GetAsync($"api/users/{id}");
+		var response = await _client.GetAsync($"api/users/{userId}");
 
 		if (response.IsSuccessStatusCode)
 		{
@@ -38,5 +27,48 @@ public class UserService : IUserService
 		}
 
 		return null;
+	}
+
+	// Not done yet!
+	public async Task<bool> UpdateUserCountryAsync(string userId, Country country)
+	{
+		var response = await _client.PutAsJsonAsync($"api/users/{userId}", country);
+
+		if (response.IsSuccessStatusCode)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	// Not done yet!
+	public async Task<bool> UpdateUserPasswordAsync(string userId, string currentPassword, string newPassword)
+	{
+		string[] passwordStrings = new string[2] { currentPassword, newPassword };
+
+		var passwordsAsJson = JsonConvert.SerializeObject(passwordStrings);
+
+		var response = await _client.PutAsJsonAsync($"api/users/{userId}", passwordsAsJson);
+
+		if (response.IsSuccessStatusCode)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	// Not done yet!
+	public async Task<bool> DeleteUserAsync(string userId)
+	{
+		var response = await _client.DeleteAsync($"api/users/{userId}");
+
+		if (response.IsSuccessStatusCode)
+		{
+			return true;
+		}
+
+		return false;
 	}
 }

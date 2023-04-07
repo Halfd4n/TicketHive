@@ -1,59 +1,40 @@
-﻿using Microsoft.EntityFrameworkCore;
-using TicketHive.Server.Data;
-using TicketHive.Server.Models;
-using TicketHive.Shared.Models;
+﻿namespace TicketHive.Server.Repositories;
 
-namespace TicketHive.Server.Repositories;
-
-public class EventRepository : IEventRepository 
+public class EventRepository : IEventRepository
 {
-    private readonly MainDbContext _context;
+	private readonly MainDbContext _context;
 
-    public EventRepository(MainDbContext context)
-    {
-        _context = context;
-    }
+	public EventRepository(MainDbContext context)
+	{
+		_context = context;
+	}
 
-    public EventModel? GetEventById(int id)
-    {
-        return _context.Events.FirstOrDefault(e => e.Id == id);
-    }
+	public async Task DeleteEventAsync(int eventId)
+	{
+		var eventToDelete = await GetEventAsync(eventId);
 
-    public async Task<List<EventModel>?> GetAllEventsAsync()
-    {
-        return await _context.Events.ToListAsync();
-    }
+		if (eventToDelete != null)
+		{
+			_context.Events.Remove(eventToDelete);
 
-    public async void AddEventAsync(EventModel eventModel)
-    {
-        _context.Add(eventModel);
+			await _context.SaveChangesAsync();
+		}
+	}
 
-        await _context.SaveChangesAsync();
-    }
+	public async Task<EventModel?> GetEventAsync(int eventId)
+	{
+		EventModel? eventModel = await _context.Events.FindAsync(eventId);
 
-    public async void DeleteEventAsync(EventModel eventModel)
-    {
-        _context.Events.Remove(eventModel);
+		if (eventModel != null)
+		{
+			return eventModel;
+		}
 
-        await _context.SaveChangesAsync();
-    }
+		return null;
+	}
 
-    public void BookEventAsync(EventModel eventModel, UserModel user)
-    {
-        
-    }
-
-    public async void AddUserToEventDb(ApplicationUser user)
-    {
-        UserModel userModel = new()
-        {
-            Id = user.Id,
-            Username = user.UserName!,
-            Country = user.Country
-        };
-
-        await _context.Users.AddAsync(userModel);
-
-        _context.SaveChanges();
-    }
+	public async Task<List<EventModel>?> GetEventsAsync()
+	{
+		return await _context.Events.ToListAsync();
+	}
 }
