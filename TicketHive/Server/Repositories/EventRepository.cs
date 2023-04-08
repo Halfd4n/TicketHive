@@ -7,11 +7,11 @@ namespace TicketHive.Server.Repositories;
 
 public class EventRepository : IEventRepository
 {
-	private readonly MainDbContext _context;
+	private readonly MainDbContext _mainDbContext;
 
-	public EventRepository(MainDbContext context)
+	public EventRepository(MainDbContext mainDbContext)
 	{
-		_context = context;
+		_mainDbContext = mainDbContext;
 	}
 
 	public Task AddUserToEventDb(ApplicationUser user)
@@ -25,15 +25,15 @@ public class EventRepository : IEventRepository
 
 		if (eventToDelete != null)
 		{
-			_context.Events.Remove(eventToDelete);
+			_mainDbContext.Events.Remove(eventToDelete);
 
-			await _context.SaveChangesAsync();
+			await _mainDbContext.SaveChangesAsync();
 		}
 	}
 
 	public async Task<EventModel?> GetEventAsync(int eventId)
 	{
-		EventModel? eventModel = await _context.Events.FindAsync(eventId);
+		EventModel? eventModel = await _mainDbContext.Events.FindAsync(eventId);
 
 		if (eventModel != null)
 		{
@@ -45,6 +45,6 @@ public class EventRepository : IEventRepository
 
 	public async Task<List<EventModel>?> GetEventsAsync()
 	{
-		return await _context.Events.ToListAsync();
+		return await _mainDbContext.Events.ToListAsync();
 	}
 }

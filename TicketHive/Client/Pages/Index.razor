@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using TicketHive.Client.Services;
+@using TicketHive.Server.Enums;
 @using TicketHive.Shared.Models;
 @inject NavigationManager navigationManager
 @inject IUserService userService
@@ -21,6 +22,8 @@
 
 
 @*Lite kod för att kontrollera att metoderna fungerar*@
+
+<h1>Country @wasUpdated</h1>
 
 @if (userModel != null)
 {
@@ -60,11 +63,12 @@
 	private EventModel? eventModel;
 	private List<EventModel>? events;
 	private bool eventIsDeleted;
+	private bool wasUpdated;
 
 	protected override async Task OnInitializedAsync()
 	{
 		// Get user by id 
-		userModel = await userService.GetUserAsync("055fb4d7-20c4-4aac-aed5-65267d11514e");
+		userModel = await userService.GetSignedInUserAsync("4dc1904a-3f15-4896-b3c3-8c9913f39e5a");
 
 		// Get event by id
 		eventModel = await eventService.GetEventAsync(3);
@@ -74,5 +78,8 @@
 
 		// Delete event
 		eventIsDeleted = await eventService.DeleteEventAsync(7);
+
+		// Update signed in users Country
+		wasUpdated = await userService.UpdateUserCountryAsync("055fb4d7-20c4-4aac-aed5-65267d11514e", Country.Austria);
 	}
 }

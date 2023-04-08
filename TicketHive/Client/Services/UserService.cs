@@ -15,7 +15,7 @@ public class UserService : IUserService
 	}
 
 	// Functioning, but will be changed to not having to provide user id 
-	public async Task<UserModel?> GetUserAsync(string userId)
+	public async Task<UserModel?> GetSignedInUserAsync(string userId)
 	{
 		var response = await _client.GetAsync($"api/users/{userId}");
 
@@ -29,14 +29,25 @@ public class UserService : IUserService
 		return null;
 	}
 
-	// Not done yet!
+	// Not done yet!****************************************************************************************
 	public async Task<bool> UpdateUserCountryAsync(string userId, Country country)
 	{
-		var response = await _client.PutAsJsonAsync($"api/users/{userId}", country);
-
-		if (response.IsSuccessStatusCode)
+		try
 		{
-			return true;
+			var countryAsJson = JsonConvert.SerializeObject(country);
+
+			var response = await _client.PutAsJsonAsync($"api/users/{userId}", countryAsJson);
+
+			if (response.IsSuccessStatusCode)
+			{
+				return true;
+			}
+
+			return false;
+		}
+		catch (Exception ex)
+		{
+			string message = ex.Message;
 		}
 
 		return false;
