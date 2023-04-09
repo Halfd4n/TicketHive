@@ -31,23 +31,19 @@
 
     </div>
     <div class="Summarize d-flex flex-column justify-content-center align-items-center">
-
+        
         <h2>TotalPrice: @TotalPrice Kr </h2>
-        <button> Buy </button>
+        @if (modelTest != null && modelTest.Count > 0)
+        {
+            <button> Buy </button>
+            
+        }
+        else
+        {
+            <p>OPS! there is nothing in your cart</p>
+        }
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -90,5 +86,6 @@
         modelTest.Remove(item);
         ItemsInList = modelTest.Count();
         TotalPrice = modelTest.Sum(item => item.Price);
+        StateHasChanged();
     }
 }

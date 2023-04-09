@@ -13,7 +13,18 @@
             <p>@model.Description</p>
             <h3>@model.StartTime</h3>
             <p>@model.Price kr</p>
-            <button class="rounded-2"> Add to Cart </button>
+
+            @*Check if tickets are available else make button not function *@
+        @if(model.NumberOfTickets != 0)
+        {
+            @*TODO: add current event to CartList with OnClick Method *@
+            <button class="rounded-2 btn-success"> Add to Cart </button>
+        }
+        else
+        {
+            <button class="rounded-2 btn-danger disabled" > Closed </button>
+            
+        }
         </div>
     </div>
 
@@ -37,8 +48,9 @@
             Description = "a festival with a lot of music with dancing and good food!",
             StartTime = new DateTime(2023, 4, 4, 10, 30, 0),
             EndTime = new DateTime(2023, 4, 6, 10, 30, 0),
-            Price= 150,
+            Price = 150,
             ImageUrl = "https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg?cs=srgb&dl=pexels-wendy-wei-1190298.jpg&fm=jpg",
+            NumberOfTickets = 1,
 
 
         };
