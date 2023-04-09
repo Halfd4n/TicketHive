@@ -12,7 +12,7 @@
 
         @foreach(var card in modelTest)
         {
-            <div class="test d-flex flex-row justify-content-center align-items-center rounded-2" style="background-image: url('@card.ImageUrl');">
+            <div class="test d-flex flex-row mx-5 justify-content-center align-items-center rounded-2" style="background-image: url('@card.ImageUrl');">
                     <h1 class="CardTitle-name d-flex justify-content-center">@card.Name</h1>
                 <div class="EventCard d-flex flex-column border-2 justify-content-center align-content-center">
                     <button class="TheButton rounded-1" type="submit">More info</button>
@@ -56,7 +56,22 @@
             Name="Fantastic Rangers",
             Description="Lorem nånting bla bla bla",
             ImageUrl = "https://images.wallpaperscraft.com/image/single/concert_crowd_people_134866_3840x2160.jpg",
-        }
+        },
+        new EventModel()
+        {
+            Id=3,
+            Name="Harry Potter",
+            Description="Lorem nånting bla bla bla",
+            ImageUrl = "https://wallpapercave.com/wp/wp4786234.jpg",
+        }, 
+        new EventModel()
+        {
+            Id=4,
+            Name="Lord of the Rings",
+            Description="Lorem nånting bla bla bla",
+            ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxLj_itfFlUstTad6ubA54VTNeL1XAHJpp2A&usqp=CAU",
+        },
+
     };
     //private List<EventModel>? allEvents;
 
