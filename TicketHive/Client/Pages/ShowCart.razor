@@ -1,0 +1,94 @@
+﻿@using TicketHive.Shared.Models;
+
+@page "/Cart"
+
+<div class="ContainerForCart">
+
+
+    <div class="TitleCart d-flex justify-content-center align-items-center">
+        <h1>You have @ItemsInList items in your cart </h1>
+    </div>
+
+    <div class="EventCartHolder d-flex flex-column justify-content-center align-items-center">
+
+        @foreach (var E in modelTest)
+        {
+            <div class="TheEvent d-flex flex-column justify-content-center align-items-center">
+
+                <div class="d-flex flex-column mt-2">
+                    <p class="EventRead"> @E.Name @E.Location  </p>
+                </div>
+
+                <div class="d-flex flex-row">
+                    <p> @E.Price Kr</p>
+                    <button class="Btn-Delete" p @onclick="() => RemoveItem(E)">X</button>
+                </div>
+            </div>
+
+
+        }
+
+
+    </div>
+    <div class="Summarize d-flex flex-column justify-content-center align-items-center">
+
+        <h2>TotalPrice: @TotalPrice Kr </h2>
+        <button> Buy </button>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@code {
+    public decimal TotalPrice { get; set; }
+    private decimal ItemsInList { get; set; }
+    private List<EventModel> modelTest = new()
+    {
+        new EventModel()
+        {
+            Id=1,
+            Name="Star Wars",
+            Description="Big Event for Star Wars fan! meet up and show your wonderful cosplay to eachother",
+            ImageUrl = "https://wallpapercave.com/wp/wp6511672.jpg",
+            Price = 245,
+        },
+        new EventModel()
+        {
+            Id=2,
+            Name="Fantastic Rangers",
+            Description="Lorem nånting bla bla bla",
+            ImageUrl = "https://images.wallpaperscraft.com/image/single/concert_crowd_people_134866_3840x2160.jpg",
+            Price = 125,
+        }
+    };
+
+
+    protected override void OnInitialized()
+    {
+        TotalPrice = modelTest.Sum(item => item.Price);
+        ItemsInList = modelTest.Count();
+
+    }
+
+    private void RemoveItem(EventModel item)
+    {
+        modelTest.Remove(item);
+        ItemsInList = modelTest.Count();
+        TotalPrice = modelTest.Sum(item => item.Price);
+    }
+}
