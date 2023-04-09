@@ -29,25 +29,22 @@ public class UserService : IUserService
 		return null;
 	}
 
-	// Not done yet!****************************************************************************************
 	public async Task<bool> UpdateUserCountryAsync(string userId, Country country)
 	{
-		try
+		// Get signed in users country
+		var signedInUserBefore = await GetSignedInUserAsync(userId);
+		Country countryBefore = signedInUserBefore.Country;
+
+		var countryAsJson = JsonConvert.SerializeObject(country);
+
+		var response = await _client.PutAsJsonAsync($"api/users/{userId}/{countryAsJson}", countryAsJson);
+
+		var signedInUserAfter = await GetSignedInUserAsync(userId);
+		Country countryAfter = signedInUserAfter.Country;
+
+		if (countryBefore != countryAfter)
 		{
-			var countryAsJson = JsonConvert.SerializeObject(country);
-
-			var response = await _client.PutAsJsonAsync($"api/users/{userId}", countryAsJson);
-
-			if (response.IsSuccessStatusCode)
-			{
-				return true;
-			}
-
-			return false;
-		}
-		catch (Exception ex)
-		{
-			string message = ex.Message;
+			return true;
 		}
 
 		return false;

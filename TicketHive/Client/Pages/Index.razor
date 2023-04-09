@@ -23,7 +23,7 @@
 
 @*Lite kod för att kontrollera att metoderna fungerar*@
 
-<h1>Country @wasUpdated</h1>
+<p>Country was updated: @wasUpdated</p>
 
 @if (userModel != null)
 {
@@ -68,7 +68,7 @@
 	protected override async Task OnInitializedAsync()
 	{
 		// Get user by id 
-		userModel = await userService.GetSignedInUserAsync("4dc1904a-3f15-4896-b3c3-8c9913f39e5a");
+		userModel = await userService.GetSignedInUserAsync("055fb4d7-20c4-4aac-aed5-65267d11514e");
 
 		// Get event by id
 		eventModel = await eventService.GetEventAsync(3);
@@ -80,6 +80,6 @@
 		eventIsDeleted = await eventService.DeleteEventAsync(7);
 
 		// Update signed in users Country
-		wasUpdated = await userService.UpdateUserCountryAsync("055fb4d7-20c4-4aac-aed5-65267d11514e", Country.Austria);
+		wasUpdated = await userService.UpdateUserCountryAsync("055fb4d7-20c4-4aac-aed5-65267d11514e", Country.Finland);
 	}
 }

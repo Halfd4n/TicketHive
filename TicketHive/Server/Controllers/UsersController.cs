@@ -49,7 +49,6 @@ namespace TicketHive.Server.Controllers
 			return await userRepository.ChangePasswordAsync(id, passwordStrings[1], passwordStrings[0]);
 		}
 
-		// Not functioning yet!
 		// Update user Country
 		[HttpPut("{id}/{countryAsJson}")]
 		public async Task<bool> UpdateUserCountryAsync(string id, string countryAsJson)
@@ -57,12 +56,6 @@ namespace TicketHive.Server.Controllers
 			Country country = JsonConvert.DeserializeObject<Country>(countryAsJson);
 
 			return await userRepository.ChangeCountryAsync(id, country);
-		}
-
-		// PUT api/<UsersController>/5
-		[HttpPut("{id}")]
-		public void PutAsync(int id, [FromBody] string value)
-		{
 		}
 
 		// DELETE api/<UsersController>/5

@@ -19,6 +19,7 @@ public class UserRepository : IUserRepository
 		_mainDbcontext = mainDbcontext;
 	}
 
+	// Not functioning yet
 	public async Task<bool> ChangePasswordAsync(string id, string currentPassword, string newPassword)
 	{
 		ApplicationUser? user = await _signInManager.UserManager.FindByIdAsync(id);
@@ -103,12 +104,6 @@ public class UserRepository : IUserRepository
 		throw new NotImplementedException();
 	}
 
-	public Task<IdentityResult> RegisterUserAsync(string username, string password)
-	{
-		throw new NotImplementedException();
-	}
-
-	// Not functioning yet!
 	public async Task<bool> ChangeCountryAsync(string userId, Country country)
 	{
 		ApplicationUser? applicationUser = await _signInManager.UserManager.FindByIdAsync(userId);
