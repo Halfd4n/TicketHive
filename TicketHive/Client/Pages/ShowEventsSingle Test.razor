@@ -1,0 +1,55 @@
+﻿@page "/AllEvents/{id:int}"
+
+@using TicketHive.Client.Services;
+@using TicketHive.Shared.Models;
+@inject IEventService eventService;
+
+
+
+
+
+
+    <div class="headbanner d-flex rounded-2 flex-column justify-content-center align-items-center" style="background-image: url('@model.ImageUrl');">
+        <h1 class="model-title"> @model.Name</h1>
+        <div class="overlay d-flex flex-column justify-content-center align-items-center">
+            <p>@model.Description</p>
+            <h3>@model.StartTime</h3>
+            <p>@model.Price kr</p>
+
+            @*Check if tickets are available else make button not function *@
+        @if(model.NumberOfTickets != 0)
+        {
+            @*TODO: add current event to CartList with OnClick Method *@
+            <button class="rounded-2 btn-success"> Add to Cart </button>
+        }
+        else
+        {
+            <button class="rounded-2 btn-danger disabled" > Closed </button>
+            
+        }
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    private EventModel model = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        model = await eventService.GetOneEventAsync((int)Id);
+    }
+}

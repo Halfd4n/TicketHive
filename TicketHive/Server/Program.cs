@@ -30,6 +30,7 @@ builder.Services.AddIdentityServer()
 	{
 		options.IdentityResources["openid"].UserClaims.Add("role");
 		options.ApiResources.Single().UserClaims.Add("role");
+		
 	});
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
