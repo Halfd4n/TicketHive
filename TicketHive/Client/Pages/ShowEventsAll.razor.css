@@ -2,13 +2,15 @@
 
 /*div with the button that will show up when hovered*/
 .EventCard {
-    position: absolute;
+    /*position: absolute;*/
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.7);
+    margin-top: 40px;
+    /*background-color: rgba(0, 0, 0, 0.7);*/
     color: #fff;
     padding: 10px;
+    
     opacity: 0;
     transition: opacity 0.2s ease-in-out
 }
@@ -23,7 +25,7 @@
     width: 300px auto;
     text-align: center;
     word-wrap: break-word;
-    flex-wrap:wrap;
+   
     border: 5px solid black;
     margin-left: 20px;
     background-size: cover;
@@ -41,15 +43,54 @@
 .CardTitle-name {
     color: #fbe89c;
     text-shadow: 2px 2px 2px #000000, 1px 1px 10px #000000 !important;
-    max-width: 200px;
-    word-break: break-word;
+    /*max-width: 200px;
+    word-break: break-word;*/
 }
 
 .AllCards {
-    width: 100%;
+   /* width: 100%;
+    position: relative;*/
+    max-width: 1920px;
+    max-height:630px;
+    overflow-x: scroll;
+    white-space: nowrap;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none;
+}
+.AllCards::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
 }
 
 .TheButton {
     background-color: #fbe89c;
-    ba
+    
 }
+
+.scroll-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-color: transparent;
+    font-size: 1.5rem;
+    color: black;
+    cursor: pointer;
+}
+    .scroll-button.left {
+        left: 10px;
+    }
+
+    .scroll-button.right {
+        right: 10px;
+    }
+
+        .scroll-button.left:hover,
+        .scroll-button.right:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+    .scroll-button:active {
+        transform: translateY(-50%) scale(0.9);
+    }

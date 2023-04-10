@@ -7,20 +7,24 @@
 
 
 
-<div class="AllCards d-flex justify-content-center">
+<div class="AllCards d-flex flex-wrap row-cols-5 overflow-scroll justify-content-center">
 
 
         @foreach(var card in modelTest)
         {
-            <div class="test d-flex flex-row mx-5 justify-content-center align-items-center rounded-2" style="background-image: url('@card.ImageUrl');">
-                    <h1 class="CardTitle-name d-flex justify-content-center">@card.Name</h1>
-                <div class="EventCard d-flex flex-column border-2 justify-content-center align-content-center">
+            <div class="test d-flex flex-column flex-wrap  mx-5 mb-5 justify-content-center align-items-center rounded-2" style="background-image: url('@card.ImageUrl');">
+                <div class="d-flex flex-wrap align-items-center justify-content-center">
+                    <h1 class="CardTitle-name text-wrap">@card.Name</h1>
+
+                </div>
+                <div class="EventCard d-flex flex-column border-2 justify-content-center align-content-end">
                     <button class="TheButton rounded-1" type="submit">More info</button>
                 </div>
+
             </div>
         
         }
-
+         
 </div>
 
 
@@ -68,6 +72,61 @@
         {
             Id=4,
             Name="Lord of the Rings",
+            Description="Lorem nånting bla bla bla",
+            ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxLj_itfFlUstTad6ubA54VTNeL1XAHJpp2A&usqp=CAU",
+        },
+        new EventModel()
+        {
+            Id=1,
+            Name="Test0",
+            Description="Big Event for Star Wars fan! meet up and show your wonderful cosplay to eachother",
+            ImageUrl = "https://wallpapercave.com/wp/wp6511672.jpg",
+        },
+        new EventModel()
+        {
+            Id=2,
+            Name="Test1",
+            Description="Lorem nånting bla bla bla",
+            ImageUrl = "https://images.wallpaperscraft.com/image/single/concert_crowd_people_134866_3840x2160.jpg",
+        },
+        new EventModel()
+        {
+            Id=3,
+            Name="Test2",
+            Description="Lorem nånting bla bla bla",
+            ImageUrl = "https://wallpapercave.com/wp/wp4786234.jpg",
+        },
+        new EventModel()
+        {
+            Id=4,
+            Name="Test3",
+            Description="Lorem nånting bla bla bla",
+            ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxLj_itfFlUstTad6ubA54VTNeL1XAHJpp2A&usqp=CAU",
+        }, new EventModel()
+        {
+            Id=1,
+            Name="Test0",
+            Description="Big Event for Star Wars fan! meet up and show your wonderful cosplay to eachother",
+            ImageUrl = "https://wallpapercave.com/wp/wp6511672.jpg",
+        },
+        new EventModel()
+        {
+            Id=2,
+            Name="Test1",
+            Description="Lorem nånting bla bla bla",
+            ImageUrl = "https://images.wallpaperscraft.com/image/single/concert_crowd_people_134866_3840x2160.jpg",
+        },
+        new EventModel()
+        {
+            Id=3,
+            Name="Test2",
+            Description="Lorem nånting bla bla bla",
+            ImageUrl = "https://wallpapercave.com/wp/wp4786234.jpg",
+        },
+        new EventModel()
+        {
+            Id=4,
+            Name="Test3",
             Description="Lorem nånting bla bla bla",
             ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxLj_itfFlUstTad6ubA54VTNeL1XAHJpp2A&usqp=CAU",
         },
