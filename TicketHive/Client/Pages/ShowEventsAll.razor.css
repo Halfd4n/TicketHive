@@ -66,31 +66,22 @@
     
 }
 
-.scroll-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 30px;
-    height: 30px;
-    border: none;
-    background-color: transparent;
-    font-size: 1.5rem;
-    color: black;
-    cursor: pointer;
+.scrollable-div {
+    height: 200px;
+    overflow: auto;
 }
-    .scroll-button.left {
-        left: 10px;
+
+    .scrollable-div::-webkit-scrollbar {
+        width: 10px;
     }
 
-    .scroll-button.right {
-        right: 10px;
+    .scrollable-div::-webkit-scrollbar-thumb {
+        background-color: red;
+        border-radius: 10px;
     }
 
-        .scroll-button.left:hover,
-        .scroll-button.right:hover {
-            background-color: rgba(0, 0, 0, 0.1);
-        }
-
-    .scroll-button:active {
-        transform: translateY(-50%) scale(0.9);
-    }
+.TheBigContainer {
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}

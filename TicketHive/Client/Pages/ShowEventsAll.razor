@@ -3,14 +3,19 @@
 @using TicketHive.Shared.Models;
 @inject IEventService eventService;
 
+<div class="TheBigContainer d-flex flex-column justify-content-center align-content-center">
 
 
+    <div class="d-flex flex-column justify-content-center align-items-center">
+         <p>Search Event</p> 
+         <p>Press Enter</p>
+        <input type="search" @bind-value="@searchInput" />
+    </div>
+    <div class="AllCards d-flex flex-wrap row-cols-5 overflow-scroll justify-content-center scrollable-div" style="height: 600px; overflow: scroll; scroll-behavior: smooth;">
 
-
-<div class="AllCards d-flex flex-wrap row-cols-5 overflow-scroll justify-content-center">
-
-
-        @foreach(var card in modelTest)
+        @if (searchInput == null)
+        {
+             @foreach (var card in modelTest)
         {
             <div class="test d-flex flex-column flex-wrap  mx-5 mb-5 justify-content-center align-items-center rounded-2" style="background-image: url('@card.ImageUrl');">
                 <div class="d-flex flex-wrap align-items-center justify-content-center">
@@ -22,9 +27,32 @@
                 </div>
 
             </div>
-        
+
+            }
+
         }
-         
+        else
+        {
+            @foreach (var card in filteredModel.Where(e => e.Name.Contains(searchInput, StringComparison.OrdinalIgnoreCase)))
+            {
+                // your existing code to display the card
+                        <div class="test d-flex flex-column flex-wrap  mx-5 mb-5 justify-content-center align-items-center rounded-2" style="background-image: url('@card.ImageUrl');">
+                    <div class="d-flex flex-wrap align-items-center justify-content-center">
+                            <h1 class="CardTitle-name text-wrap">@card.Name</h1>
+
+                        </div>
+                        <div class="EventCard d-flex flex-column border-2 justify-content-center align-content-end">
+                            <button class="TheButton rounded-1" type="submit">More info</button>
+                        </div>
+
+                    </div>
+            }
+        }
+
+
+    </div>
+
+
 </div>
 
 
@@ -42,9 +70,13 @@
 
 
 
+
+
+
+
 @code {
-
-
+    private string searchInput;
+    private List<EventModel> filteredModel => modelTest.Where(e => e.Name.Contains(searchInput, StringComparison.OrdinalIgnoreCase)).ToList();
     private List<EventModel> modelTest = new()
     {
         new EventModel()
@@ -132,10 +164,5 @@
         },
 
     };
-    //private List<EventModel>? allEvents;
-
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    allEvents = await eventService.GetAllEventsAsync();
-    //}
+    
 }
