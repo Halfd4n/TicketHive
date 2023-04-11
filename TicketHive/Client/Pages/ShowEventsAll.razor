@@ -28,15 +28,15 @@
 
                 <div class="d-flex flex-row ">
                     <select class="TestEnums " @bind="eventType">
-
-                        @foreach (EventType TypeOfEvent in Enum.GetValues(typeof(EventType)))
+                        <option value="mm" selected>-- Select an event type --</option>
+                        @foreach (String TypeOfEvent in Enum.GetNames(typeof(EventType)))
                         {
                             <option value="@TypeOfEvent">@TypeOfEvent</option>
                         }
                     </select>
-
                     <select class="TestEnums " @bind="countries">
-                        @foreach (Country theCountry in Enum.GetValues(typeof(EventType)))
+                        <option value="hmm" selected>-- Select a Country type --</option>
+                        @foreach (Country theCountry in Enum.GetValues(typeof(Country)))
                         {
                             <option value="@theCountry">@theCountry</option>
                         }
