@@ -5,6 +5,7 @@ using TicketHive.Server.Data;
 using TicketHive.Server.Enums;
 using TicketHive.Server.Models;
 using TicketHive.Server.Repositories;
+using TicketHive.Server.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,8 +17,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 var mainConnectionString = builder.Configuration.GetConnectionString("MainDbConnection") ?? throw new InvalidOperationException("Connection string 'MainDbConnection' not found.");
 builder.Services.AddDbContext<MainDbContext>(options =>
 	options.UseSqlServer(mainConnectionString));
-
-
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -35,8 +34,6 @@ builder.Services.AddIdentityServer()
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-
 
 builder.Services.AddSession(options =>
 {
@@ -56,16 +53,17 @@ builder.Services.AddAuthentication()
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-// Create an ApplicationUser with Admin role and an UserModel user
+// Create an ApplicationUser with Admin role and a UserModel user
 using (var serviceProvider = builder.Services.BuildServiceProvider())
 {
 	// Create instances from DI container 
-	var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
+	var applicationDbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
+	var mainDbContext = serviceProvider.GetRequiredService<MainDbContext>();
 	var signInManager = serviceProvider.GetRequiredService<SignInManager<ApplicationUser>>();
 	var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
 	// Create database if it doesn't already exist 
-	context.Database.Migrate();
+	applicationDbContext.Database.Migrate();
 
 	// Create role "Admin" if it doesn't exist in the database  
 	// Check if role exists in database 
@@ -92,10 +90,21 @@ using (var serviceProvider = builder.Services.BuildServiceProvider())
 			Country = Country.Sweden
 		};
 
-		// ...add to database... 
+		// ...add to IdentityDb... 
 		signInManager.UserManager.CreateAsync(admin, "Password1234!").GetAwaiter().GetResult();
 
-		// ...and add the admin user to the "Admin" role 
+		// ...create new user based on admin user and add to MainDb...
+		var mainUser1 = signInManager.UserManager.FindByNameAsync("admin").GetAwaiter().GetResult();
+		mainDbContext.Users.Add(new()
+		{
+			Id = mainUser1.Id,
+			Username = mainUser1.UserName!,
+			Country = mainUser1.Country
+		});
+
+		await mainDbContext.SaveChangesAsync();
+
+		// ...and add the admin user to the "Admin" role in Identity database 
 		signInManager.UserManager.AddToRoleAsync(admin, "Admin").GetAwaiter().GetResult();
 	}
 
@@ -110,8 +119,19 @@ using (var serviceProvider = builder.Services.BuildServiceProvider())
 			Country = Country.Sweden
 		};
 
-		// ...and add to database
+		// ...and add to IdentityDb 
 		signInManager.UserManager.CreateAsync(user, "Password1234!").GetAwaiter().GetResult();
+
+		// ...create new user based on user and add to MainDb...
+		var mainUser2 = signInManager.UserManager.FindByNameAsync("user").GetAwaiter().GetResult();
+		mainDbContext.Users.Add(new()
+		{
+			Id = mainUser2.Id,
+			Username = mainUser2.UserName!,
+			Country = mainUser2.Country
+		});
+
+		await mainDbContext.SaveChangesAsync();
 	}
 }
 

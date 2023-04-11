@@ -5,55 +5,67 @@ using TicketHive.Shared.Models;
 
 namespace TicketHive.Server.Repositories;
 
-public class EventRepository : IEventRepository 
+public class EventRepository : IEventRepository
 {
-    private readonly MainDbContext _context;
+	private readonly MainDbContext _mainDbContext;
 
-    public EventRepository(MainDbContext context)
-    {
-        _context = context;
-    }
+	public EventRepository(MainDbContext mainDbContext)
+	{
+		_mainDbContext = mainDbContext;
+	}
 
-    public EventModel? GetEventById(int id)
-    {
-        return _context.Events.FirstOrDefault(e => e.Id == id);
-    }
+	public async Task AddUserToEventDb(ApplicationUser user)
+	{
+		UserModel userModel = new()
+		{
+			Id = user.Id,
+			Username = user.UserName!,
+			Country = user.Country
+		};
 
-    public async Task<List<EventModel>?> GetAllEventsAsync()
-    {
-        return await _context.Events.ToListAsync();
-    }
+		await _mainDbContext.Users.AddAsync(userModel);
 
-    public async void AddEventAsync(EventModel eventModel)
-    {
-        _context.Add(eventModel);
+		_mainDbContext.SaveChanges();
+	}
 
-        await _context.SaveChangesAsync();
-    }
+	public async Task DeleteEventAsync(int eventId)
+	{
+		var eventToDelete = await GetEventAsync(eventId);
 
-    public async void DeleteEventAsync(EventModel eventModel)
-    {
-        _context.Events.Remove(eventModel);
+		if (eventToDelete != null)
+		{
+			_mainDbContext.Events.Remove(eventToDelete);
 
-        await _context.SaveChangesAsync();
-    }
+			await _mainDbContext.SaveChangesAsync();
+		}
+	}
 
-    public void BookEventAsync(EventModel eventModel, UserModel user)
-    {
-        
-    }
+	public async Task<EventModel?> GetEventAsync(int eventId)
+	{
+		EventModel? eventModel = await _mainDbContext.Events.Include(e => e.Visitors).FirstOrDefaultAsync(e => e.Id == eventId);
 
-    public async void AddUserToEventDb(ApplicationUser user)
-    {
-        UserModel userModel = new()
-        {
-            Id = user.Id,
-            Username = user.UserName!,
-            Country = user.Country
-        };
+		if (eventModel != null)
+		{
+			return eventModel;
+		}
 
-        await _context.Users.AddAsync(userModel);
+		return null;
+	}
 
-        _context.SaveChanges();
-    }
+	public async Task<List<EventModel>?> GetEventsAsync()
+	{
+		return await _mainDbContext.Events.Include(e => e.Visitors).ToListAsync();
+	}
+
+	public async Task AddEventAsync(EventModel eventModel)
+	{
+		var eventModelNameExists = await _mainDbContext.Events.AnyAsync(e => e.Name == eventModel.Name);
+
+		if (!eventModelNameExists)
+		{
+			_mainDbContext.Add(eventModel);
+
+			await _mainDbContext.SaveChangesAsync();
+		}
+	}
 }

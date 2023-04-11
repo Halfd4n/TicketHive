@@ -1,5 +1,12 @@
 ﻿@page "/"
+@using TicketHive.Client.Services;
+@using TicketHive.Server.Enums;
+@using TicketHive.Shared.Enums;
+@using TicketHive.Shared.Models;
 @inject NavigationManager navigationManager
+@inject IUserService userService
+@inject IEventService eventService
+@inject AuthenticationStateProvider authenticationStateProvider
 
 
 <PageTitle>Index</PageTitle>
@@ -15,3 +22,93 @@
 <button @onclick="Register">Register</button>
 
 </div>
+
+@*Lite kod för att kontrollera att metoderna fungerar*@
+@*
+<p>Country was updated: @wasUpdated</p>
+<p>Event was added: @eventWasAdded</p>
+
+@if (userModel != null)
+{
+	<p>@userModel.Username</p>
+}
+@if (userModel == null)
+{
+	<p>userModel is null :-(</p>
+}
+
+@if (eventModel != null)
+{
+	<p>@eventModel.Name</p>
+}
+@if (eventModel == null)
+{
+	<p>eventModel is null :-(</p>
+}
+<p>Delete event: @eventIsDeleted</p>
+
+@if (events != null)
+{
+	<ul>
+		@foreach (var e in events)
+		{
+		<li>@e.Name</li>
+		}
+	</ul>
+
+	<p>@events[0].Name</p>
+}
+@if (events == null)
+{
+	<p>events is null :-(</p>
+}
+
+@code {
+	private UserModel? userModel;
+	private EventModel? eventModel;
+	private List<EventModel>? events;
+	private bool eventIsDeleted;
+	private bool wasUpdated;
+	private bool eventWasAdded; 
+
+	protected override async Task OnInitializedAsync()
+	{
+		// Get signed in users id 
+		var authenticationState = await authenticationStateProvider.GetAuthenticationStateAsync();
+		var userId = authenticationState.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+
+		if (authenticationState.User.Identity.IsAuthenticated)
+		{
+			// Get signed in user by userId 
+			userModel = await userService.GetUserByIdAsync(userId);
+
+			// Get event by id
+			eventModel = await eventService.GetEventAsync(11);
+
+			// Get all events
+			events = await eventService.GetEventsAsync();
+
+			// Delete event
+			eventIsDeleted = await eventService.DeleteEventAsync(9);
+
+			// Update signed in users Country
+			wasUpdated = await userService.UpdateUserCountryAsync(userId, Country.Finland);
+
+			// Add event
+var			newEvent = new EventModel
+					{
+						Name = "New Event Name",
+						EventType = EventType.Concert,	
+						Description = "Test description",
+						Location = "Test location",
+						StartTime = DateTime.Now,
+						EndTime = DateTime.Now.AddDays(1),
+						Price = 100,
+						NumberOfTickets = 100,
+						Host = "The Host",
+						ImageUrl = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+					};
+			eventWasAdded = await eventService.AddEventAsync(newEvent);
+		}
+	}
+}*@

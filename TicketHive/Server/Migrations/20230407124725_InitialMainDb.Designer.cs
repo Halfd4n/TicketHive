@@ -9,10 +9,10 @@ using TicketHive.Server.Data;
 
 #nullable disable
 
-namespace TicketHive.Server.Migrations.MainDb
+namespace TicketHive.Server.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20230405085057_InitialMainDb")]
+    [Migration("20230407124725_InitialMainDb")]
     partial class InitialMainDb
     {
         /// <inheritdoc />
@@ -459,8 +459,9 @@ namespace TicketHive.Server.Migrations.MainDb
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Country")
-                        .HasColumnType("int");
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
                         .IsRequired()
