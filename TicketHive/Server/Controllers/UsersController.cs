@@ -25,12 +25,11 @@ namespace TicketHive.Server.Controllers
 			return new string[] { "value1", "value2" };
 		}
 
-		// Functioning, but will be changed to not having to provide user id 
 		// GET api/<UsersController>/5
 		[HttpGet("{id}")]
 		public async Task<UserModel?> GetAsync(string id)
 		{
-			return await userRepository.GetUserByIdAsync(id);
+			return await userRepository.GetMainUserByIdAsync(id);
 		}
 
 		// POST api/<UsersController>
@@ -58,6 +57,7 @@ namespace TicketHive.Server.Controllers
 			return await userRepository.ChangeCountryAsync(id, country);
 		}
 
+		// Not done yet!
 		// DELETE api/<UsersController>/5
 		[HttpDelete("{id}")]
 		public void DeleteAsync(int id)

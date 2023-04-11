@@ -42,14 +42,12 @@ public class UserRepository : IUserRepository
 		throw new NotImplementedException();
 	}
 
-	public async Task<UserModel?> GetUserByIdAsync(string userId)
+	public async Task<UserModel?> GetMainUserByIdAsync(string userId)
 	{
 		ApplicationUser? applicationUser = await _signInManager.UserManager.FindByIdAsync(userId);
 
-		// If applicationUser exists in IdentityDb... 
 		if (applicationUser != null)
 		{
-			// get the corresponding user from the main database
 			UserModel? mainUser = await _mainDbcontext.Users.Include(b => b.Bookings).FirstOrDefaultAsync(u => u.Id == applicationUser.Id);
 
 			return mainUser;
@@ -74,7 +72,7 @@ public class UserRepository : IUserRepository
 		return await _signInManager.PasswordSignInAsync(username, password, false, false);
 	}
 
-	public async Task<ApplicationUser?> GetSignedInUser(string userName)
+	public async Task<ApplicationUser?> GetApplicationUserByName(string userName)
 	{
 		return await _signInManager.UserManager.FindByNameAsync(userName);
 	}

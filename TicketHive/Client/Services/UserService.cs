@@ -14,7 +14,6 @@ public class UserService : IUserService
 		_client = client;
 	}
 
-	// Functioning, but will be changed to not having to provide user id 
 	public async Task<UserModel?> GetUserByIdAsync(string userId)
 	{
 		var response = await _client.GetAsync($"api/users/{userId}");
@@ -31,7 +30,6 @@ public class UserService : IUserService
 
 	public async Task<bool> UpdateUserCountryAsync(string userId, Country country)
 	{
-		// Get signed in users country
 		var signedInUserBefore = await GetUserByIdAsync(userId);
 		Country countryBefore = signedInUserBefore.Country;
 

@@ -53,7 +53,7 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 				{
 					SignInResult signInResult = await _userRepository.SignInUserAsync(Username!, Password!);
 
-					ApplicationUser? signedInUser = await _userRepository.GetSignedInUser(Username!);
+					ApplicationUser? signedInUser = await _userRepository.GetApplicationUserByName(Username!);
 
 					if (signedInUser != null)
 					{

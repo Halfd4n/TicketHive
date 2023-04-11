@@ -42,7 +42,7 @@ public class EventRepository : IEventRepository
 
 	public async Task<EventModel?> GetEventAsync(int eventId)
 	{
-		EventModel? eventModel = await _mainDbContext.Events.FindAsync(eventId);
+		EventModel? eventModel = await _mainDbContext.Events.Include(e => e.Visitors).FirstOrDefaultAsync(e => e.Id == eventId);
 
 		if (eventModel != null)
 		{
@@ -54,12 +54,11 @@ public class EventRepository : IEventRepository
 
 	public async Task<List<EventModel>?> GetEventsAsync()
 	{
-		return await _mainDbContext.Events.ToListAsync();
+		return await _mainDbContext.Events.Include(e => e.Visitors).ToListAsync();
 	}
 
 	public async Task AddEventAsync(EventModel eventModel)
 	{
-		// Check if eventModel name exists in MainDb
 		var eventModelNameExists = await _mainDbContext.Events.AnyAsync(e => e.Name == eventModel.Name);
 
 		if (!eventModelNameExists)
