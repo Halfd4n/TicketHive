@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TicketHive.Server.Data;
 
@@ -11,9 +12,11 @@ using TicketHive.Server.Data;
 namespace TicketHive.Server.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230411170247_hmm1")]
+    partial class hmm1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,7 +95,7 @@ namespace TicketHive.Server.Migrations
                             EndTime = new DateTime(2023, 8, 1, 23, 0, 0, 0, DateTimeKind.Unspecified),
                             EventType = 0,
                             Host = "The local community council",
-                            ImageUrl = "image 1.png",
+                            ImageUrl = "image 1.avif",
                             Location = "The local park",
                             Name = "Concert in the park",
                             NumberOfTickets = 1000,
@@ -218,7 +221,7 @@ namespace TicketHive.Server.Migrations
                             EndTime = new DateTime(2023, 7, 30, 16, 0, 0, 0, DateTimeKind.Unspecified),
                             EventType = 8,
                             Host = "The local community center",
-                            ImageUrl = "image 10.png",
+                            ImageUrl = "~/images/event images/image 10.avif",
                             Location = "Community Hall",
                             Name = "Family fun day",
                             NumberOfTickets = 350,

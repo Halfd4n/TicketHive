@@ -39,7 +39,7 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 8, 1, 23, 0, 0),
 					Location = "The local park",
 					Host = "The local community council",
-					ImageUrl = "~/images/event images/image 1.avif"
+					ImageUrl = "image 1.png"
 				},
 				new EventModel()
 				{
@@ -165,7 +165,7 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 7, 30, 16, 0, 0),
 					Location = "Community Hall",
 					Host = "The local community center",
-					ImageUrl = "~/images/event images/image 10.avif"
+					ImageUrl = "image 10.png"
 				},
 				new EventModel()
 				{

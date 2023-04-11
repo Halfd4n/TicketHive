@@ -57,7 +57,7 @@ public class EventRepository : IEventRepository
 		return _mainDbContext.Events?.Include(e => e.Visitors).ToListAsync();
 	}
 
-	public async Task AddEventAsync(EventModel eventModel)
+    public async Task AddEventAsync(EventModel eventModel)
 	{
 		var eventModelNameExists = await _mainDbContext.Events.AnyAsync(e => e.Name == eventModel.Name);
 
