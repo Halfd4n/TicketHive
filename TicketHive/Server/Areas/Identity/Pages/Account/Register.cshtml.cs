@@ -57,7 +57,7 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 
 					if (signedInUser != null)
 					{
-						_eventRepository.AddUserToEventDb(signedInUser);
+						await _eventRepository.AddUserToEventDb(signedInUser);
 					}
 
 					if (signInResult.Succeeded)

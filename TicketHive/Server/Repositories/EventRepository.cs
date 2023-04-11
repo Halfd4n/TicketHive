@@ -14,9 +14,18 @@ public class EventRepository : IEventRepository
 		_mainDbContext = mainDbContext;
 	}
 
-	public Task AddUserToEventDb(ApplicationUser user)
+	public async Task AddUserToEventDb(ApplicationUser user)
 	{
-		throw new NotImplementedException();
+		UserModel userModel = new()
+		{
+			Id = user.Id,
+			Username = user.UserName!,
+			Country = user.Country
+		};
+
+		await _mainDbContext.Users.AddAsync(userModel);
+
+		_mainDbContext.SaveChanges();
 	}
 
 	public async Task DeleteEventAsync(int eventId)
