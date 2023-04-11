@@ -14,9 +14,18 @@ public class EventRepository : IEventRepository
 		_mainDbContext = mainDbContext;
 	}
 
-	public Task AddUserToEventDb(ApplicationUser user)
+	public async Task AddUserToEventDb(ApplicationUser user)
 	{
-		throw new NotImplementedException();
+		UserModel userModel = new()
+		{
+			Id = user.Id,
+			Username = user.UserName!,
+			Country = user.Country
+		};
+
+		await _mainDbContext.Users.AddAsync(userModel);
+
+		_mainDbContext.SaveChanges();
 	}
 
 	public async Task DeleteEventAsync(int eventId)
@@ -33,7 +42,7 @@ public class EventRepository : IEventRepository
 
 	public async Task<EventModel?> GetEventAsync(int eventId)
 	{
-		EventModel? eventModel = await _mainDbContext.Events.FindAsync(eventId);
+		EventModel? eventModel = await _mainDbContext.Events.Include(e => e.Visitors).FirstOrDefaultAsync(e => e.Id == eventId);
 
 		if (eventModel != null)
 		{
@@ -45,6 +54,18 @@ public class EventRepository : IEventRepository
 
 	public async Task<List<EventModel>?> GetEventsAsync()
 	{
-		return await _mainDbContext.Events.ToListAsync();
+		return await _mainDbContext.Events.Include(e => e.Visitors).ToListAsync();
+	}
+
+	public async Task AddEventAsync(EventModel eventModel)
+	{
+		var eventModelNameExists = await _mainDbContext.Events.AnyAsync(e => e.Name == eventModel.Name);
+
+		if (!eventModelNameExists)
+		{
+			_mainDbContext.Add(eventModel);
+
+			await _mainDbContext.SaveChangesAsync();
+		}
 	}
 }

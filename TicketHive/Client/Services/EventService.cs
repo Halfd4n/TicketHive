@@ -65,12 +65,15 @@ public class EventService : IEventService
 		return false;
 	}
 
-	// Not done yet!
 	public async Task<bool> AddEventAsync(EventModel eventModel)
 	{
+		int numberOfEventsBefore = (await GetEventsAsync()).Count;
+
 		var response = await _client.PostAsJsonAsync("api/events", eventModel);
 
-		if (response.IsSuccessStatusCode)
+		int numberOfEventsAfter = (await GetEventsAsync()).Count;
+
+		if (numberOfEventsBefore < numberOfEventsAfter)
 		{
 			return true;
 		}
