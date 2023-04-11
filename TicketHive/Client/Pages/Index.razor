@@ -5,6 +5,7 @@
 @inject NavigationManager navigationManager
 @inject IUserService userService
 @inject IEventService eventService
+@inject AuthenticationStateProvider authenticationStateProvider
 
 
 <PageTitle>Index</PageTitle>
@@ -67,19 +68,25 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		// Get user by id 
-		userModel = await userService.GetSignedInUserAsync("055fb4d7-20c4-4aac-aed5-65267d11514e");
+		// Get signed in users id 
+		var authenticationState = await authenticationStateProvider.GetAuthenticationStateAsync();
+		var userId = authenticationState.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
 
-		// Get event by id
-		eventModel = await eventService.GetEventAsync(3);
+		if (authenticationState.User.Identity.IsAuthenticated)
+		{
+			userModel = await userService.GetUserByIdAsync(userId);
 
-		// Get all events 
-		events = await eventService.GetEventsAsync();
+			// Get event by id
+			eventModel = await eventService.GetEventAsync(2);
 
-		// Delete event
-		eventIsDeleted = await eventService.DeleteEventAsync(7);
+			// Get all events
+			events = await eventService.GetEventsAsync();
 
-		// Update signed in users Country
-		wasUpdated = await userService.UpdateUserCountryAsync("055fb4d7-20c4-4aac-aed5-65267d11514e", Country.Finland);
+			// Delete event
+			eventIsDeleted = await eventService.DeleteEventAsync(3);
+
+			// Update signed in users Country
+			wasUpdated = await userService.UpdateUserCountryAsync(userId, Country.Ireland);
+		}
 	}
 }

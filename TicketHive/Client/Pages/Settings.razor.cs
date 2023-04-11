@@ -16,6 +16,6 @@ public partial class Settings
 
 	protected async override Task OnInitializedAsync()
 	{
-		UserModel? user = await _service.GetSignedInUserAsync(Id);
+		UserModel? user = await _service.GetUserByIdAsync(Id);
 	}
 }

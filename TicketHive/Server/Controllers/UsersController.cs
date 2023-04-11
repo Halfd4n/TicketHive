@@ -30,7 +30,7 @@ namespace TicketHive.Server.Controllers
 		[HttpGet("{id}")]
 		public async Task<UserModel?> GetAsync(string id)
 		{
-			return await userRepository.GetSignedInUserAsync(id);
+			return await userRepository.GetUserByIdAsync(id);
 		}
 
 		// POST api/<UsersController>

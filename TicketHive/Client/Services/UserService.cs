@@ -15,7 +15,7 @@ public class UserService : IUserService
 	}
 
 	// Functioning, but will be changed to not having to provide user id 
-	public async Task<UserModel?> GetSignedInUserAsync(string userId)
+	public async Task<UserModel?> GetUserByIdAsync(string userId)
 	{
 		var response = await _client.GetAsync($"api/users/{userId}");
 
@@ -32,14 +32,14 @@ public class UserService : IUserService
 	public async Task<bool> UpdateUserCountryAsync(string userId, Country country)
 	{
 		// Get signed in users country
-		var signedInUserBefore = await GetSignedInUserAsync(userId);
+		var signedInUserBefore = await GetUserByIdAsync(userId);
 		Country countryBefore = signedInUserBefore.Country;
 
 		var countryAsJson = JsonConvert.SerializeObject(country);
 
 		var response = await _client.PutAsJsonAsync($"api/users/{userId}/{countryAsJson}", countryAsJson);
 
-		var signedInUserAfter = await GetSignedInUserAsync(userId);
+		var signedInUserAfter = await GetUserByIdAsync(userId);
 		Country countryAfter = signedInUserAfter.Country;
 
 		if (countryBefore != countryAfter)

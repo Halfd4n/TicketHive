@@ -5,7 +5,7 @@ namespace TicketHive.Client.Services;
 
 public interface IUserService
 {
-	Task<UserModel?> GetSignedInUserAsync(string userId);
+	Task<UserModel?> GetUserByIdAsync(string userId);
 	Task<bool> UpdateUserCountryAsync(string userId, Country country);
 	Task<bool> UpdateUserPasswordAsync(string userId, string currentPassword, string newPassword);
 	Task<bool> DeleteUserAsync(string userId);

@@ -43,7 +43,7 @@ public class UserRepository : IUserRepository
 	}
 
 	// Functioning, but will be changed to get signed in ApplicationUser id instead of providing it manually
-	public async Task<UserModel?> GetSignedInUserAsync(string userId)
+	public async Task<UserModel?> GetUserByIdAsync(string userId)
 	{
 		// Will be changed to get user without having to provide user id
 		ApplicationUser? applicationUser = await _signInManager.UserManager.FindByIdAsync(userId);

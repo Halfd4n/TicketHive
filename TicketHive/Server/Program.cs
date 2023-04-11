@@ -53,7 +53,7 @@ builder.Services.AddAuthentication()
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-// Create an ApplicationUser with Admin role and an UserModel user
+// Create an ApplicationUser with Admin role and a UserModel user
 using (var serviceProvider = builder.Services.BuildServiceProvider())
 {
 	// Create instances from DI container 
