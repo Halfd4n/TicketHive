@@ -24,8 +24,8 @@
 </div>
 
 @*Lite kod för att kontrollera att metoderna fungerar*@
-@*
-<p>Country was updated: @wasUpdated</p>
+
+@*<p>Country was updated: @wasUpdated</p>
 <p>Event was added: @eventWasAdded</p>
 
 @if (userModel != null)
@@ -75,12 +75,12 @@
 	{
 		// Get signed in users id 
 		var authenticationState = await authenticationStateProvider.GetAuthenticationStateAsync();
-		var userId = authenticationState.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+		var signedInUsersId = authenticationState.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
 
 		if (authenticationState.User.Identity.IsAuthenticated)
 		{
 			// Get signed in user by userId 
-			userModel = await userService.GetUserByIdAsync(userId);
+			userModel = await userService.GetUserByIdAsync(signedInUsersId);
 
 			// Get event by id
 			eventModel = await eventService.GetEventAsync(11);
@@ -92,10 +92,10 @@
 			eventIsDeleted = await eventService.DeleteEventAsync(9);
 
 			// Update signed in users Country
-			wasUpdated = await userService.UpdateUserCountryAsync(userId, Country.Finland);
+			wasUpdated = await userService.UpdateUserCountryAsync(signedInUsersId, Country.Finland);
 
 			// Add event
-var			newEvent = new EventModel
+			var			newEvent = new EventModel
 					{
 						Name = "New Event Name",
 						EventType = EventType.Concert,	
@@ -109,6 +109,13 @@ var			newEvent = new EventModel
 						ImageUrl = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
 					};
 			eventWasAdded = await eventService.AddEventAsync(newEvent);
+
+			string id = "0efdbc08-54bf-493b-ae1c-a77fb4970538"; 
+			if (id != signedInUsersId)
+			{
+				await userService.DeleteUserAsync(id);
+			}
 		}
 	}
-}*@
+}
+*@

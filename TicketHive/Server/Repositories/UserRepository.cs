@@ -101,4 +101,18 @@ public class UserRepository : IUserRepository
 
 		return false;
 	}
+
+	public async Task DeleteUserAsync(string id)
+	{
+		ApplicationUser? applicationUser = await _signInManager.UserManager.FindByIdAsync(id);
+		UserModel? mainUser = await _mainDbcontext.Users.Include(b => b.Bookings).FirstOrDefaultAsync(u => u.Id == id);
+
+		if (mainUser != null && applicationUser != null)
+		{
+			_mainDbcontext.Remove(mainUser);
+			await _mainDbcontext.SaveChangesAsync();
+
+			await _signInManager.UserManager.DeleteAsync(applicationUser);
+		}
+	}
 }

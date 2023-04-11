@@ -14,4 +14,5 @@ public interface IUserRepository
 	Task<bool> ChangePasswordAsync(string id, string currentPassword, string newPassword);
 	Task<bool> ChangeCountryAsync(string id, Country country);
 	Task<ApplicationUser> GetApplicationUserByName(string userName);
+	Task DeleteUserAsync(string id);
 }

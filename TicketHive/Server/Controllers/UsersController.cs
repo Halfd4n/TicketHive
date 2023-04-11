@@ -32,12 +32,6 @@ namespace TicketHive.Server.Controllers
 			return await userRepository.GetMainUserByIdAsync(id);
 		}
 
-		// POST api/<UsersController>
-		[HttpPost]
-		public void PostAsync([FromBody] string value)
-		{
-		}
-
 		// Not done yet!
 		// Update user password
 		[HttpPut("{id}")]
@@ -57,11 +51,11 @@ namespace TicketHive.Server.Controllers
 			return await userRepository.ChangeCountryAsync(id, country);
 		}
 
-		// Not done yet!
 		// DELETE api/<UsersController>/5
 		[HttpDelete("{id}")]
-		public void DeleteAsync(int id)
+		public async Task DeleteUserAsync(string id)
 		{
+			await userRepository.DeleteUserAsync(id);
 		}
 	}
 }
