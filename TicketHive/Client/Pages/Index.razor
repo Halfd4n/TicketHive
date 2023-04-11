@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using TicketHive.Client.Services;
 @using TicketHive.Server.Enums;
+@using TicketHive.Shared.Enums;
 @using TicketHive.Shared.Models;
 @inject NavigationManager navigationManager
 @inject IUserService userService
@@ -25,6 +26,7 @@
 @*Lite kod för att kontrollera att metoderna fungerar*@
 
 <p>Country was updated: @wasUpdated</p>
+<p>Event was added: @eventWasAdded</p>
 
 @if (userModel != null)
 {
@@ -65,6 +67,7 @@
 	private List<EventModel>? events;
 	private bool eventIsDeleted;
 	private bool wasUpdated;
+	private bool eventWasAdded; 
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -78,16 +81,32 @@
 			userModel = await userService.GetUserByIdAsync(userId);
 
 			// Get event by id
-			eventModel = await eventService.GetEventAsync(6);
+			eventModel = await eventService.GetEventAsync(11);
 
 			// Get all events
 			events = await eventService.GetEventsAsync();
 
 			// Delete event
-			eventIsDeleted = await eventService.DeleteEventAsync(8);
+			eventIsDeleted = await eventService.DeleteEventAsync(9);
 
 			// Update signed in users Country
 			wasUpdated = await userService.UpdateUserCountryAsync(userId, Country.Ireland);
+
+			// Add event
+var			newEvent = new EventModel
+					{
+						Name = "New name",
+						EventType = EventType.Concert,	
+						Description = "Test description",
+						Location = "Test location",
+						StartTime = DateTime.Now,
+						EndTime = DateTime.Now.AddDays(1),
+						Price = 100,
+						NumberOfTickets = 100,
+						Host = "The Host",
+						ImageUrl = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+					};
+			eventWasAdded = await eventService.AddEventAsync(newEvent);
 		}
 	}
 }

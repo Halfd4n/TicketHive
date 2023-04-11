@@ -56,4 +56,17 @@ public class EventRepository : IEventRepository
 	{
 		return await _mainDbContext.Events.ToListAsync();
 	}
+
+	public async Task AddEventAsync(EventModel eventModel)
+	{
+		// Check if eventModel name exists in MainDb
+		var eventModelNameExists = await _mainDbContext.Events.AnyAsync(e => e.Name == eventModel.Name);
+
+		if (!eventModelNameExists)
+		{
+			_mainDbContext.Add(eventModel);
+
+			await _mainDbContext.SaveChangesAsync();
+		}
+	}
 }

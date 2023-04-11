@@ -29,11 +29,10 @@ namespace TicketHive.Server.Controllers
 			return await eventRepository.GetEventAsync(id);
 		}
 
-		// Not done yet!
-		// POST api/<EventsController>
 		[HttpPost]
-		public void Post([FromBody] string value)
+		public async Task AddEventAsync([FromBody] EventModel eventModel)
 		{
+			await eventRepository.AddEventAsync(eventModel);
 		}
 
 		// Not done yet!

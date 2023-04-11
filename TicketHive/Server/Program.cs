@@ -102,7 +102,7 @@ using (var serviceProvider = builder.Services.BuildServiceProvider())
 			Country = mainUser1.Country
 		});
 
-		mainDbContext.SaveChanges();
+		await mainDbContext.SaveChangesAsync();
 
 		// ...and add the admin user to the "Admin" role in Identity database 
 		signInManager.UserManager.AddToRoleAsync(admin, "Admin").GetAwaiter().GetResult();
@@ -131,7 +131,7 @@ using (var serviceProvider = builder.Services.BuildServiceProvider())
 			Country = mainUser2.Country
 		});
 
-		mainDbContext.SaveChanges();
+		await mainDbContext.SaveChangesAsync();
 	}
 }
 
