@@ -42,35 +42,15 @@ public class UserRepository : IUserRepository
 		throw new NotImplementedException();
 	}
 
-	// Functioning, but will be changed to get signed in ApplicationUser id instead of providing it manually
 	public async Task<UserModel?> GetUserByIdAsync(string userId)
 	{
-		// Will be changed to get user without having to provide user id
 		ApplicationUser? applicationUser = await _signInManager.UserManager.FindByIdAsync(userId);
 
 		// If applicationUser exists in IdentityDb... 
 		if (applicationUser != null)
 		{
-			// ... check if applicationUser equivalent/mirrored user exists in MainDb 
+			// get the corresponding user from the main database
 			UserModel? mainUser = await _mainDbcontext.Users.Include(b => b.Bookings).FirstOrDefaultAsync(u => u.Id == applicationUser.Id);
-
-			// If applicationUser equivalent/mirrored user doesn't exists in MainDb
-			if (mainUser == null)
-			{
-				// Create newMainUser that mirrors applicationUser 
-				UserModel newMainUser = new()
-				{
-					Id = applicationUser.Id,
-					Username = applicationUser.UserName!,
-					Country = applicationUser.Country!
-				};
-
-				// Save newMainUser to MainDb
-				await _mainDbcontext.Users.AddAsync(newMainUser);
-				await _mainDbcontext.SaveChangesAsync();
-
-				return newMainUser;
-			}
 
 			return mainUser;
 		}

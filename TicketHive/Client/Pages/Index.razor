@@ -74,16 +74,17 @@
 
 		if (authenticationState.User.Identity.IsAuthenticated)
 		{
+			// Get signed in user by userId 
 			userModel = await userService.GetUserByIdAsync(userId);
 
 			// Get event by id
-			eventModel = await eventService.GetEventAsync(2);
+			eventModel = await eventService.GetEventAsync(6);
 
 			// Get all events
 			events = await eventService.GetEventsAsync();
 
 			// Delete event
-			eventIsDeleted = await eventService.DeleteEventAsync(3);
+			eventIsDeleted = await eventService.DeleteEventAsync(8);
 
 			// Update signed in users Country
 			wasUpdated = await userService.UpdateUserCountryAsync(userId, Country.Ireland);
