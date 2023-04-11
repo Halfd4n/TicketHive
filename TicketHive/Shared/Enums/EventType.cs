@@ -1,6 +1,7 @@
 ﻿namespace TicketHive.Shared.Enums;
 public enum EventType
 {
+	EventType,
 	Concert,
 	Exhibition,
 	Tasting,

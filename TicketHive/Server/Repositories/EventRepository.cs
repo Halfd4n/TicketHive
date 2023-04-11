@@ -52,12 +52,12 @@ public class EventRepository : IEventRepository
 		return null;
 	}
 
-	public async Task<List<EventModel>?> GetEventsAsync()
+	public  Task<List<EventModel>?> GetEventsAsync()
 	{
-		return await _mainDbContext.Events.Include(e => e.Visitors).ToListAsync();
+		return _mainDbContext.Events?.Include(e => e.Visitors).ToListAsync();
 	}
 
-	public async Task AddEventAsync(EventModel eventModel)
+    public async Task AddEventAsync(EventModel eventModel)
 	{
 		var eventModelNameExists = await _mainDbContext.Events.AnyAsync(e => e.Name == eventModel.Name);
 

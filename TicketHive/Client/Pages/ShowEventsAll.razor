@@ -1,59 +1,111 @@
 ﻿@page "/Allevents"
 @using TicketHive.Client.Services;
+@using TicketHive.Server.Enums;
+@using TicketHive.Shared.Enums;
 @using TicketHive.Shared.Models;
 @inject IEventService eventService;
+@inject AuthenticationStateProvider AuthenticationStateProvider;
+@inject NavigationManager navigationManager;
 
-<div class="TheBigContainer d-flex flex-column justify-content-center align-content-center">
 
 
-    <div class="d-flex flex-column justify-content-center align-items-center">
-         <p>Search Event</p> 
-         <p>Press Enter</p>
-        <input type="search" @bind-value="@searchInput" />
-    </div>
-    <div class="AllCards d-flex flex-wrap row-cols-5 overflow-scroll justify-content-center scrollable-div" style="height: 600px; overflow: scroll; scroll-behavior: smooth;">
+<AuthorizeView>
+    <Authorized>
+        <div class="TheBigContainer d-flex flex-column justify-content-center align-items-center">
 
-        @if (searchInput == null)
-        {
-             @foreach (var card in modelTest)
-        {
-            <div class="test d-flex flex-column flex-wrap  mx-5 mb-5 justify-content-center align-items-center rounded-2" style="background-image: url('@card.ImageUrl');">
-                <div class="d-flex flex-wrap align-items-center justify-content-center">
-                    <h1 class="CardTitle-name text-wrap">@card.Name</h1>
+            <div class="d-flex flex-row justify-content-center align-items-center">
 
+
+                <div class="d-flex flex-column justify-content-center align-items-center mb-5">
+                    <p>Search Event</p>
+                    <p>Press Enter</p>
+                    <input type="search" @bind-value="@searchInput" />
                 </div>
-                <div class="EventCard d-flex flex-column border-2 justify-content-center align-content-end">
-                    <button class="TheButton rounded-1" type="submit">More info</button>
+
+
+
+
+
+                <div class="d-flex flex-row ">
+                    <select class="TestEnums " @bind="eventType">
+                        <option value="">-- Select an event type --</option>
+                        @foreach (String TypeOfEvent in Enum.GetNames(typeof(EventType)))
+                        {
+                            <option value="@TypeOfEvent">@TypeOfEvent</option>
+                        }
+                    </select>
+                    <select class="TestEnums " @bind="countries">
+                        <option value="">-- Select a Country type --</option>
+                        @foreach (Country theCountry in Enum.GetValues(typeof(Country)))
+                        {
+                            <option value="@theCountry">@theCountry</option>
+                        }
+                    </select>
                 </div>
+
+
+            </div>
+           
+
+
+
+
+
+
+            <div class="AllCards d-flex flex-wrap row-cols-5 overflow-scroll justify-content-center scrollable-div" style="height: 600px; overflow: scroll; scroll-behavior: smooth;">
+
+                @if (searchInput == null)
+                {
+                    @foreach (var card in TestEvents)
+                    {
+                        <div class="test d-flex flex-column flex-wrap  mx-5 mb-5 justify-content-center align-items-center rounded-2" style="background-image: url('https://localhost:7259/images/event%20images/@card.ImageUrl');">
+                            <div class="d-flex flex-wrap align-items-center justify-content-center">
+                                <h1 class="CardTitle-name text-wrap">@card.Name</h1>
+                                
+
+                            </div>
+                            <div class="EventCard d-flex flex-column border-2 justify-content-center align-content-end">
+                                <button class="TheButton rounded-1" @onclick="(() => NavigateToEvent(card.Id))">More info</button>
+                            </div>
+
+                        </div>
+
+                    }
+
+                }
+                else
+                {
+                    @foreach (var card in filteredModel.Where(e => e.Name.Contains(searchInput, StringComparison.OrdinalIgnoreCase)))
+                    {
+
+                        <div class="test d-flex flex-column flex-wrap  mx-5 mb-5 justify-content-center align-items-center rounded-2" style="background-image: url('https://localhost:7259/images/event%20images/@card.ImageUrl');">
+                            <div class="d-flex flex-wrap align-items-center justify-content-center">
+                                <h1 class="CardTitle-name text-wrap">@card.Name</h1>
+
+                            </div>
+                            <div class="EventCard d-flex flex-column border-2 justify-content-center align-content-end">
+                                <button class="TheButton rounded-1" @onclick="(() => NavigateToEvent(card.Id))">More info</button>
+                            </div>
+
+                        </div>
+                    }
+                }
+
 
             </div>
 
-            }
 
-        }
-        else
-        {
-            @foreach (var card in filteredModel.Where(e => e.Name.Contains(searchInput, StringComparison.OrdinalIgnoreCase)))
-            {
-                // your existing code to display the card
-                        <div class="test d-flex flex-column flex-wrap  mx-5 mb-5 justify-content-center align-items-center rounded-2" style="background-image: url('@card.ImageUrl');">
-                    <div class="d-flex flex-wrap align-items-center justify-content-center">
-                            <h1 class="CardTitle-name text-wrap">@card.Name</h1>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="NoAccsess d-flex flex-column justify-content-center align-items-center">
 
-                        </div>
-                        <div class="EventCard d-flex flex-column border-2 justify-content-center align-content-end">
-                            <button class="TheButton rounded-1" type="submit">More info</button>
-                        </div>
+            <h1 class="mb-5">You must be logged in to view events.</h1>
+            <img src="https://media4.giphy.com/media/lvQe7YwEEJoaIluvs6/giphy.gif?cid=ecf05e47mnfmryod2c45btbyf02kua8tluxbdt1j8kyj3jui&rid=giphy.gif&ct=g" />
 
-                    </div>
-            }
-        }
-
-
-    </div>
-
-
-</div>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
 
 
 
@@ -75,94 +127,25 @@
 
 
 @code {
-    private string searchInput;
-    private List<EventModel> filteredModel => modelTest.Where(e => e.Name.Contains(searchInput, StringComparison.OrdinalIgnoreCase)).ToList();
-    private List<EventModel> modelTest = new()
-    {
-        new EventModel()
-        {
-            Id=1,
-            Name="Star Wars",
-            Description="Big Event for Star Wars fan! meet up and show your wonderful cosplay to eachother",
-            ImageUrl = "https://wallpapercave.com/wp/wp6511672.jpg",
-        },
-        new EventModel()
-        {
-            Id=2,
-            Name="Fantastic Rangers",
-            Description="Lorem nånting bla bla bla",
-            ImageUrl = "https://images.wallpaperscraft.com/image/single/concert_crowd_people_134866_3840x2160.jpg",
-        },
-        new EventModel()
-        {
-            Id=3,
-            Name="Harry Potter",
-            Description="Lorem nånting bla bla bla",
-            ImageUrl = "https://wallpapercave.com/wp/wp4786234.jpg",
-        }, 
-        new EventModel()
-        {
-            Id=4,
-            Name="Lord of the Rings",
-            Description="Lorem nånting bla bla bla",
-            ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxLj_itfFlUstTad6ubA54VTNeL1XAHJpp2A&usqp=CAU",
-        },
-        new EventModel()
-        {
-            Id=1,
-            Name="Test0",
-            Description="Big Event for Star Wars fan! meet up and show your wonderful cosplay to eachother",
-            ImageUrl = "https://wallpapercave.com/wp/wp6511672.jpg",
-        },
-        new EventModel()
-        {
-            Id=2,
-            Name="Test1",
-            Description="Lorem nånting bla bla bla",
-            ImageUrl = "https://images.wallpaperscraft.com/image/single/concert_crowd_people_134866_3840x2160.jpg",
-        },
-        new EventModel()
-        {
-            Id=3,
-            Name="Test2",
-            Description="Lorem nånting bla bla bla",
-            ImageUrl = "https://wallpapercave.com/wp/wp4786234.jpg",
-        },
-        new EventModel()
-        {
-            Id=4,
-            Name="Test3",
-            Description="Lorem nånting bla bla bla",
-            ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxLj_itfFlUstTad6ubA54VTNeL1XAHJpp2A&usqp=CAU",
-        }, new EventModel()
-        {
-            Id=1,
-            Name="Test0",
-            Description="Big Event for Star Wars fan! meet up and show your wonderful cosplay to eachother",
-            ImageUrl = "https://wallpapercave.com/wp/wp6511672.jpg",
-        },
-        new EventModel()
-        {
-            Id=2,
-            Name="Test1",
-            Description="Lorem nånting bla bla bla",
-            ImageUrl = "https://images.wallpaperscraft.com/image/single/concert_crowd_people_134866_3840x2160.jpg",
-        },
-        new EventModel()
-        {
-            Id=3,
-            Name="Test2",
-            Description="Lorem nånting bla bla bla",
-            ImageUrl = "https://wallpapercave.com/wp/wp4786234.jpg",
-        },
-        new EventModel()
-        {
-            Id=4,
-            Name="Test3",
-            Description="Lorem nånting bla bla bla",
-            ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxLj_itfFlUstTad6ubA54VTNeL1XAHJpp2A&usqp=CAU",
-        },
 
-    };
-    
+    private void NavigateToEvent(int eventId)
+    {
+        navigationManager.NavigateTo($"/AllEvents/{eventId}");
+    }
+
+    private EventType eventType { get; set; }
+    private Country countries { get; set; }
+    private string searchInput;
+    private List<EventModel> filteredModel => TestEvents.Where(e => e.Name.Contains(searchInput, StringComparison.OrdinalIgnoreCase)).ToList();
+    List<EventModel> TestEvents = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+           TestEvents = await eventService.GetEventsAsync();
+        
+        
+    }
+
 }

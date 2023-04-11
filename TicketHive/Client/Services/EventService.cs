@@ -15,7 +15,7 @@ public class EventService : IEventService
 
 	public async Task<EventModel?> GetEventAsync(int eventId)
 	{
-		var response = await _client.GetAsync($"api/events/{eventId}");
+		var response = await _client.GetAsync($"api/Events/{eventId}");
 
 		if (response.IsSuccessStatusCode)
 		{
@@ -33,7 +33,7 @@ public class EventService : IEventService
 
 	public async Task<List<EventModel>?> GetEventsAsync()
 	{
-		var response = await _client.GetAsync("api/events");
+		var response = await _client.GetAsync("api/Events");
 
 		if (response.IsSuccessStatusCode)
 		{
@@ -55,7 +55,7 @@ public class EventService : IEventService
 		// --- Osäker på vilka datatyper och objekt samt hur dessa ska passas vidare till APIt. I detta fall skickas event
 		// id med genom URL'en och UserModel som genomför bokning skickas med genom body'n. Vet ej vad som är best practice. /Benjamin 
 
-		var response = await _client.PostAsJsonAsync($"api/events/{eventId}", user);
+		var response = await _client.PostAsJsonAsync($"api/Events/{eventId}", user);
 
 		if (response.IsSuccessStatusCode)
 		{
@@ -69,7 +69,7 @@ public class EventService : IEventService
 	{
 		int numberOfEventsBefore = (await GetEventsAsync()).Count;
 
-		var response = await _client.PostAsJsonAsync("api/events", eventModel);
+		var response = await _client.PostAsJsonAsync("api/Events", eventModel);
 
 		int numberOfEventsAfter = (await GetEventsAsync()).Count;
 
@@ -85,7 +85,7 @@ public class EventService : IEventService
 	{
 		int numberOfEventsBefore = (await GetEventsAsync()).Count;
 
-		await _client.DeleteAsync($"api/events/{eventId}");
+		await _client.DeleteAsync($"api/Events/{eventId}");
 
 		int numberOfEventsAfter = (await GetEventsAsync()).Count;
 
