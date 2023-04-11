@@ -53,8 +53,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 10, 14, 22, 0, 0),
 					Location = "Center Art Museum",
 					Host = "The local art museum",
-					ImageUrl = "~/images/event images/image 2.avif"
-				},
+					ImageUrl = "image 2.png"
+                },
 				new EventModel()
 				{
 					Id = 3,
@@ -67,8 +67,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 8, 20, 21, 0, 0),
 					Location = "Hillside Wine Garden",
 					Host = "The Wine Association",
-					ImageUrl = "~/images/event images/image 3.avif"
-				},
+					ImageUrl = "image 3.png"
+                },
 				new EventModel()
 				{
 					Id = 4,
@@ -81,8 +81,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 12, 31, 22, 0, 0),
 					Location = "Downtown",
 					Host = "The local sports association",
-					ImageUrl = "~/images/event images/image 4.avif"
-				},
+					ImageUrl = "image 4.png"
+                },
 				new EventModel()
 				{
 					Id = 5,
@@ -95,8 +95,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 11, 15, 21, 0, 0),
 					Location = "Central Comedy Club House",
 					Host = "The Comedy Club",
-					ImageUrl = "~/images/event images/image 5.avif"
-				},
+					ImageUrl = "image 5.png"
+                },
 				new EventModel()
 				{
 					Id = 6,
@@ -109,8 +109,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 1, 5, 22, 0, 0),
 					Location = "Film Society Cinema",
 					Host = "The Film Society",
-					ImageUrl = "~/images/event images/image 6.avif"
-				},
+					ImageUrl = "image 6.png"
+                },
 				new EventModel()
 				{
 					Id = 7,
@@ -123,8 +123,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 9, 11, 19, 0, 0),
 					Location = "The local park",
 					Host = "Music Association",
-					ImageUrl = "~/images/event images/image 7.avif"
-				},
+					ImageUrl = "image 7.png"
+                },
 				new EventModel()
 				{
 					Id = 8,
@@ -137,8 +137,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 5, 21, 22, 0, 0),
 					Location = "Downtown market place",
 					Host = "Local artisans association",
-					ImageUrl = "~/images/event images/image 8.avif"
-				},
+					ImageUrl = "image 8.png"
+                },
 				new EventModel()
 				{
 					Id = 9,
@@ -151,8 +151,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 6, 1, 13, 0, 0),
 					Location = "Central library",
 					Host = "Educate Theater Association",
-					ImageUrl = "~/images/event images/image 9.avif"
-				},
+					ImageUrl = "image 9.png"
+                },
 				new EventModel()
 				{
 					Id = 10,
@@ -179,8 +179,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 10, 18, 18, 0, 0),
 					Location = "The Central Museum",
 					Host = "The local science museum",
-					ImageUrl = "~/images/event images/image 11.avif"
-				},
+					ImageUrl = "image 11.png"
+                },
 				new EventModel()
 				{
 					Id = 12,
@@ -193,8 +193,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 12, 15, 22, 0, 0),
 					Location = "The Central Mall",
 					Host = "The Fashion association",
-					ImageUrl = "~/images/event images/image 12.avif"
-				},
+					ImageUrl = "image 12.png"
+                },
 				new EventModel()
 				{
 					Id = 13,
@@ -207,8 +207,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 6, 30, 22, 0, 0),
 					Location = "Fine Food Restaurant",
 					Host = "Food&Wine Inc",
-					ImageUrl = "~/images/event images/image 13.avif"
-				},
+					ImageUrl = "image 13.png"
+                },
 				new EventModel()
 				{
 					Id = 14,
@@ -221,8 +221,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 9, 8, 18, 0, 0),
 					Location = "Central Library",
 					Host = "The local university",
-					ImageUrl = "~/images/event images/image 14.avif"
-				},
+					ImageUrl = "image 14.png"
+                },
 				new EventModel()
 				{
 					Id = 15,
@@ -235,8 +235,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 8, 17, 18, 0, 0),
 					Location = "The House of Incubator",
 					Host = "Local startup incubator",
-					ImageUrl = "~/images/event images/image 15.avif"
-				},
+					ImageUrl = "image 15.png"
+                },
 				new EventModel()
 				{
 					Id = 16,
@@ -249,8 +249,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 10, 11, 23, 0, 0),
 					Location = "The DownTown Pub",
 					Host = "The DownTown Pub",
-					ImageUrl = "~/images/event images/image 16.avif"
-				},
+					ImageUrl = "image 16.png"
+                },
 				new EventModel()
 				{
 					Id = 17,
@@ -263,8 +263,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 11, 25, 23, 0, 0),
 					Location = "The local nightclub",
 					Host = "The local nightclub",
-					ImageUrl = "~/images/event images/image 17.avif"
-				},
+					ImageUrl = "image 17.png"
+                },
 				new EventModel()
 				{
 					Id = 18,
@@ -277,8 +277,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 12, 9, 16, 0, 0),
 					Location = "The Central School of Art",
 					Host = "The local art school",
-					ImageUrl = "~/images/event images/image 18.avif"
-				},
+					ImageUrl = "image 18.png"
+                },
 				new EventModel()
 				{
 					Id = 19,
@@ -291,8 +291,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 8, 5, 20, 0, 0),
 					Location = "The DownTown Movie Theater",
 					Host = "The local movie theatre",
-					ImageUrl = "~/images/event images/image 19.avif"
-				},
+					ImageUrl = "image 19.png"
+                },
 				new EventModel()
 				{
 					Id = 20,
@@ -305,8 +305,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 10, 20, 22, 0, 0),
 					Location = "Central town",
 					Host = "Local community organizatio",
-					ImageUrl = "~/images/event images/image 20.avif"
-				},
+					ImageUrl = "image 20.png"
+                },
 				new EventModel()
 				{
 					Id = 21,
@@ -319,8 +319,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 7, 28, 22, 0, 0),
 					Location = "The local comedy club",
 					Host = "The HaveFun Comedy Club",
-					ImageUrl = "~/images/event images/image 21.avif"
-				},
+					ImageUrl = "image 21.png"
+                },
 				new EventModel()
 				{
 					Id = 22,
@@ -333,8 +333,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 5, 5, 22, 0, 0),
 					Location = "The local park",
 					Host = "The local wine association",
-					ImageUrl = "~/images/event images/image 22.avif"
-				},
+					ImageUrl = "image 22.png"
+                },
 				new EventModel()
 				{
 					Id = 23,
@@ -347,8 +347,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 10, 12, 20, 0, 0),
 					Location = "The local park",
 					Host = "The local gym",
-					ImageUrl = "~/images/event images/image 23.avif"
-				},
+					ImageUrl = "image 23.png"
+                },
 				new EventModel()
 				{
 					Id = 24,
@@ -361,8 +361,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 8, 16, 17, 0, 0),
 					Location = "The local university",
 					Host = "International Robot Inc",
-					ImageUrl = "~/images/event images/image 24.avif"
-				},
+					ImageUrl = "image 24.png"
+                },
 				new EventModel()
 				{
 					Id = 25,
@@ -375,8 +375,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 11, 5, 22, 0, 0),
 					Location = "The local park",
 					Host = "The local community council",
-					ImageUrl = "~/images/event images/image 25.avif"
-				},
+					ImageUrl = "image 25.png"
+                },
 				new EventModel()
 				{
 					Id = 26,
@@ -389,8 +389,8 @@ namespace TicketHive.Server.Data
 					EndTime = new DateTime(2023, 9, 17, 21, 0, 0),
 					Location = "The local arts gallery",
 					Host = "Fine Arts Association",
-					ImageUrl = "~/images/event images/image 26.avif"
-				});
+					ImageUrl = "image 26.png"
+                });
 		}
 	}
 }
