@@ -80,8 +80,31 @@
 
     private EventModel eventModel { get; set; } = new();
     private EventType eventType { get; set; } = new();
-    private void HandleValidSubmit()
-    {
-        // process form data and save changes
+    //    protected override async Task OnInitializedAsync()
+    //    {
+    //        allEvents = await EventService.GetEventsAsync();
+    //    }
+
+
+
+
+    //private async Task AddEvent()
+    //    {
+    //        // Add a random picture to the event
+    //        eventModel.ImageUrl = $"image-{new Random().Next(1, 27)}";
+
+    //        var isEventAddedSuccessFully = await EventService.AddEventAsync(eventModel);
+
+    //        if (isEventAddedSuccessFully){
+    //            eventModel.Ad
+    //        }
+
+
+
+    //    }
+    private void AddEvent(){
+        throw new NotImplementedException();
     }
+
+    //}
 }
