@@ -1,4 +1,5 @@
 ﻿@page "/Allevents"
+@using Newtonsoft.Json;
 @using TicketHive.Client.Services;
 @using TicketHive.Server.Enums;
 @using TicketHive.Shared.Enums;
@@ -6,7 +7,7 @@
 @inject IEventService eventService;
 @inject AuthenticationStateProvider AuthenticationStateProvider;
 @inject NavigationManager navigationManager;
-
+@inject ILocalStorageService localStorage;
 
 
 <AuthorizeView>
@@ -128,8 +129,10 @@
 
 @code {
 
-    private void NavigateToEvent(int eventId)
+    private async void NavigateToEvent(int eventId)
     {
+        //string jsonCart = JsonConvert.SerializeObject(eventId);
+        //await localStorage.SetItemAsStringAsync("ShoppingCart", jsonCart);
         navigationManager.NavigateTo($"/AllEvents/{eventId}");
     }
 

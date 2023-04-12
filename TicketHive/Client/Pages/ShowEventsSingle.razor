@@ -1,10 +1,11 @@
 ﻿@page "/AllEvents/{id:int}"
 
+@using Newtonsoft.Json;
 @using TicketHive.Client.Services;
 @using TicketHive.Shared.Models;
 @inject IEventService eventService;
-
-
+@inject ILocalStorageService localStorage;
+@inject NavigationManager navigationManager;
 
 
 
@@ -20,7 +21,18 @@
         @if (model.NumberOfTickets != 0)
         {
             @*TODO: add current event to CartList with OnClick Method *@
-            <button class="rounded-2 btn-success"> Add to Cart </button>
+            <label for="num_tickets">Select the number of tickets:</label>
+            <input type="number" id="num_tickets" name="num_tickets" @bind-value="ticket" min="1" max="6">
+
+            @if (ticket <= 0 || ticket >= 6)
+            {
+                <button class="rounded-2 btn-danger disabled" onclick="AddToCart"> Add to Cart </button>
+
+            }else
+            {
+                <button class="rounded-2 btn-success" @onclick="(() => AddToCart(model))"> Add to Cart </button>
+
+            }
         }
         else
         {
@@ -46,10 +58,20 @@
     [Parameter]
     public int? Id { get; set; }
 
-    private EventModel model = new();
+    private int ticket { get; set; } = new();
+    private EventModel? model = new();
 
     protected override async Task OnInitializedAsync()
     {
         model = await eventService.GetEventAsync((int)Id);
+
+    }
+
+    public async void AddToCart(EventModel cookieModel)
+    {
+
+        string jsonCart = JsonConvert.SerializeObject(cookieModel);
+        await localStorage.SetItemAsStringAsync("ShoppingCart", jsonCart);
+        
     }
 }
