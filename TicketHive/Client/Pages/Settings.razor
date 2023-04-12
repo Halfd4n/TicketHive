@@ -1,19 +1,47 @@
 ﻿@page "/settings/{id}"
 @using TicketHive.Client.Services
+@using System.ComponentModel.DataAnnotations;
 @using TicketHive.Server.Enums;
 @inject IUserService _service
+@inject NavigationManager _navigation
 
-<h3>Welcome to your user page</h3>
+<div class="row">
 
-<p>Country of origin:</p>
-<InputSelect id="country" @bind-Value="CountryOfOrigin">
-    @foreach (var country in Enum.GetValues(typeof(Country)))
-    {
-        <option value="@country">@country</option>
-    }
-</InputSelect>
+<h4>Settings:</h4>
 
-<p>Select a new password:</p>
-<InputText type="password" @bind-Value="CurrentPassword" />
-<InputText type="password" @bind-Value="NewPassword" />
+    <p>Update your country of origing or set a new passwor</p>
 
+
+<hr class="my-3"/>
+    <form @onsubmit="UpdateCountryOfOrigin">
+        <div>
+            <label for="country">Country of origin:</label>
+            <select id="country" @bind="Country">
+                @foreach (var country in Enum.GetNames(typeof(Country)))
+                {
+                    <option value="@country">@country</option>
+                }
+            </select>
+
+            <button type="submit">Update country of origin</button>
+        </div>
+        <span class="text-danger my-1">@(ValidationErrors.TryGetValue("sameSelection", out var sameSelectionError) ? sameSelectionError : "")</span>
+        <span class="text-danger my-1">@(ValidationErrors.TryGetValue("noSelection", out var noSelectionError) ? noSelectionError : "")</span>
+    </form>
+
+    <hr class ="my-3" />
+
+    <form @onsubmit="UpdatePassword">
+        <p>Select a new password:</p>
+
+        <input type="password" placeholder="Current password" @bind="CurrentPassword" />
+        <input type="password" placeholder="New password" @bind="NewPassword" />
+        <button type="submit">Update password</button>
+    </form>
+    <span class="text-danger">@(ValidationErrors.TryGetValue("noInput", out var noInputError) ? noInputError : "")</span>
+
+    <hr class="my-3" />
+
+ <button @onclick="BackToMain">Return to main page</button>
+
+</div>

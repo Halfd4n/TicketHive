@@ -1,9 +1,8 @@
-﻿@page
+﻿    @page
 @using System.ComponentModel.DataAnnotations;
 @using System.Reflection;
 @using TicketHive.Server.Enums;
 @model TicketHive.Server.Areas.Identity.Pages.Account.RegisterModel
-
 
 <h1>Welcome to the register Page!!</h1>
 
@@ -23,9 +22,10 @@
 
     @if (!ModelState.IsValid)
     {
-        <span asp-validation-for="Username"></span>
-        <span asp-validation-for="Password"></span>
-        <span asp-validation-for="RepeatPassword"></span>
-        <span asp-validation-for="Country"></span>
+        <span class="text-danger" asp-validation-for="Username"></span>
+        <span class="text-danger" asp-validation-for="Password"></span>
+        <span class="text-danger" asp-validation-for="RepeatPassword"></span>
+        <span class="text-danger" asp-validation-for="Country"></span>
     }
+        <span class="text-danger">@Model.ErrorMessage</span>
 </div>

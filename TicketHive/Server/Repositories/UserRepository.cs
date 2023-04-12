@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using TicketHive.Server.Data;
 using TicketHive.Server.Enums;
 using TicketHive.Server.Models;
@@ -104,5 +105,17 @@ public class UserRepository : IUserRepository
 
 			await _signInManager.UserManager.DeleteAsync(applicationUser);
 		}
+	}
+
+	public async Task<bool> CheckUsernameAvailability(string username)
+	{
+		ApplicationUser? user = await _signInManager.UserManager.FindByNameAsync(username);
+
+		if(user == null)
+		{
+			return true;
+		}
+
+		return false;
 	}
 }

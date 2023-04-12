@@ -1,8 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using TicketHive.Client.Services;
 @inject NavigationManager Navigation
-@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject IUserService _service
 @attribute [Authorize(Roles = "Admin")]
 
 <div class="top-row ps-3 navbar navbar-dark">
@@ -43,12 +45,16 @@
                     
                 
         </AuthorizeView>
-        <AuthorizeView>
-             
+        <AuthorizeView>   
             <Authorized>
-                <div>
-                    <NavLink>
-                        <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
+                <div class="nav-item px-3">
+                    <NavLink title="My settings" class="nav-link">
+                        <button class="btn text-decoration-none text-white" @onclick="NavigateToSettings"><i class="fa-solid fa-gears me-3"></i>Settings</button>
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" title="Log out">
+                        <button class="btn text-decorationd-lg-none text-white" @onclick="BeginLogOut"><i class="fa-solid fa-right-from-bracket me-3"></i>Log out</button>
                     </NavLink>
                 </div>
             </Authorized>
@@ -59,7 +65,7 @@
 @code {
     private async Task<bool> IsUserInRole(string role)
     {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
         return user.IsInRole(role);

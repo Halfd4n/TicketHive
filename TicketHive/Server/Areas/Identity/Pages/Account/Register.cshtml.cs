@@ -32,6 +32,8 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 		[Required(ErrorMessage = "Please choose your country of origin")]
 		public Country Country { get; set; }
 
+		public string? ErrorMessage { get; set; }
+
 
 		public RegisterModel(IUserRepository userRepository, IEventRepository eventRepository)
 		{
@@ -45,26 +47,43 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 
 		public async Task<IActionResult> OnPost()
 		{
-			if (ModelState.IsValid)
+			if (ModelState.IsValid && Country.ToString() != "Countries" )
 			{
-				IdentityResult result = await _userRepository.RegisterUserAsync(Username!, Password!, Country);
+				bool isAvailableUsername = await _userRepository.CheckUsernameAvailability(Username!);
 
-				if (result.Succeeded)
+				if (isAvailableUsername)
 				{
-					SignInResult signInResult = await _userRepository.SignInUserAsync(Username!, Password!);
+					IdentityResult result = await _userRepository.RegisterUserAsync(Username!, Password!, Country);
 
-					ApplicationUser? signedInUser = await _userRepository.GetApplicationUserByName(Username!);
-
-					if (signedInUser != null)
+					if (result.Succeeded)
 					{
-						await _eventRepository.AddUserToEventDb(signedInUser);
-					}
+						SignInResult signInResult = await _userRepository.SignInUserAsync(Username!, Password!);
 
-					if (signInResult.Succeeded)
-					{
-						RedirectToPage("~/index");
+						ApplicationUser? signedInUser = await _userRepository.GetApplicationUserByName(Username!);
+
+						if (signedInUser != null)
+						{
+							await _eventRepository.AddUserToEventDb(signedInUser);
+						}
+
+						if (signInResult.Succeeded)
+						{
+							ErrorMessage = "";
+							ModelState.Clear();
+
+							RedirectToPage("~/");
+						}
 					}
 				}
+				else
+				{
+					ErrorMessage = "Username is not available, please choose another username";
+				}
+
+			}
+			else if (Country.ToString() == "Countries")
+			{
+				ErrorMessage = "Please choose your country of origin";
 			}
 
 			return Page();
