@@ -25,6 +25,13 @@
 
 @*Lite kod för att kontrollera att metoderna fungerar*@
 @*
+@if (responseMessage != null)
+{
+	<h1>@responseMessage.ReasonPhrase</h1>
+	<h1>@responseMessage.Content</h1>
+	<h1>@responseMessage.StatusCode</h1>
+}
+
 <p>Country was updated: @wasUpdated</p>
 <p>Event was added: @eventWasAdded</p>
 
@@ -70,34 +77,38 @@
 	private bool eventIsDeleted;
 	private bool wasUpdated;
 	private bool eventWasAdded; 
+	private HttpResponseMessage? responseMessage;
 
 	protected override async Task OnInitializedAsync()
 	{
 		// Get signed in users id 
 		var authenticationState = await authenticationStateProvider.GetAuthenticationStateAsync();
-		var userId = authenticationState.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+		var signedInUsersId = authenticationState.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
 
 		if (authenticationState.User.Identity.IsAuthenticated)
 		{
+			// Update signed in users password
+			responseMessage = await userService.UpdateUserPasswordAsync(signedInUsersId, "Password1234!", "kjUH765478!!!ty");
+
 			// Get signed in user by userId 
-			userModel = await userService.GetUserByIdAsync(userId);
+			userModel = await userService.GetUserByIdAsync(signedInUsersId);
 
 			// Get event by id
-			eventModel = await eventService.GetEventAsync(11);
+			eventModel = await eventService.GetEventAsync(19);
 
 			// Get all events
 			events = await eventService.GetEventsAsync();
 
 			// Delete event
-			eventIsDeleted = await eventService.DeleteEventAsync(9);
-
+			eventIsDeleted = await eventService.DeleteEventAsync(20);
+				
 			// Update signed in users Country
-			wasUpdated = await userService.UpdateUserCountryAsync(userId, Country.Finland);
+			wasUpdated = await userService.UpdateUserCountryAsync(signedInUsersId, Country.Finland);
 
 			// Add event
-var			newEvent = new EventModel
+			var			newEvent = new EventModel
 					{
-						Name = "New Event Name",
+						Name = "New Event Name3",
 						EventType = EventType.Concert,	
 						Description = "Test description",
 						Location = "Test location",
@@ -109,6 +120,14 @@ var			newEvent = new EventModel
 						ImageUrl = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
 					};
 			eventWasAdded = await eventService.AddEventAsync(newEvent);
+
+			string id = "c5a4dee3-d07e-425c-a2bc-4301e22ad17e";
+			if (id != signedInUsersId)
+			{
+				await userService.DeleteUserAsync(id);
+			}
 		}
 	}
-}*@
+}
+
+*@

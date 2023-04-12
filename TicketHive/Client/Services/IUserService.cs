@@ -7,6 +7,6 @@ public interface IUserService
 {
 	Task<UserModel?> GetUserByIdAsync(string userId);
 	Task<bool> UpdateUserCountryAsync(string userId, Country country);
-	Task<bool> UpdateUserPasswordAsync(string userId, string currentPassword, string newPassword);
-	Task<bool> DeleteUserAsync(string userId);
+	Task<HttpResponseMessage> UpdateUserPasswordAsync(string userId, string currentPassword, string newPassword);
+	Task DeleteUserAsync(string userId);
 }

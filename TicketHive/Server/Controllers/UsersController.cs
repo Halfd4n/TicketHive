@@ -32,36 +32,29 @@ namespace TicketHive.Server.Controllers
 			return await userRepository.GetMainUserByIdAsync(id);
 		}
 
-		// POST api/<UsersController>
-		[HttpPost]
-		public void PostAsync([FromBody] string value)
-		{
-		}
-
-		// Not done yet!
 		// Update user password
 		[HttpPut("{id}")]
-		public async Task<bool> UpdateUserPasswordAsync(string id, string passwordsAsJson)
+		public async Task UpdateUserPasswordAsync(string id, [FromBody] string[] passwordStrings)
 		{
-			string[]? passwordStrings = JsonConvert.DeserializeObject<string[]>(passwordsAsJson);
+			//string[]? passwordStrings = JsonConvert.DeserializeObject<string[]>(passwordsAsJson);
 
-			return await userRepository.ChangePasswordAsync(id, passwordStrings[1], passwordStrings[0]);
+			await userRepository.ChangePasswordAsync(id, passwordStrings[0], passwordStrings[1]);
 		}
 
 		// Update user Country
 		[HttpPut("{id}/{countryAsJson}")]
-		public async Task<bool> UpdateUserCountryAsync(string id, string countryAsJson)
+		public async Task UpdateUserCountryAsync(string id, string countryAsJson)
 		{
 			Country country = JsonConvert.DeserializeObject<Country>(countryAsJson);
 
-			return await userRepository.ChangeCountryAsync(id, country);
+			await userRepository.ChangeCountryAsync(id, country);
 		}
 
-		// Not done yet!
 		// DELETE api/<UsersController>/5
 		[HttpDelete("{id}")]
-		public void DeleteAsync(int id)
+		public async Task DeleteUserAsync(string id)
 		{
+			await userRepository.DeleteUserAsync(id);
 		}
 	}
 }

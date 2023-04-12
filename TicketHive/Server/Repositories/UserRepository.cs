@@ -19,24 +19,6 @@ public class UserRepository : IUserRepository
 		_mainDbcontext = mainDbcontext;
 	}
 
-	// Not functioning yet
-	public async Task<bool> ChangePasswordAsync(string id, string currentPassword, string newPassword)
-	{
-		ApplicationUser? user = await _signInManager.UserManager.FindByIdAsync(id);
-
-		if (user != null)
-		{
-			IdentityResult result = await _signInManager.UserManager.ChangePasswordAsync(user, currentPassword, newPassword);
-
-			if (result.Succeeded)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	public Task<List<UserModel>> GetAllUsers()
 	{
 		throw new NotImplementedException();
@@ -82,7 +64,7 @@ public class UserRepository : IUserRepository
 		throw new NotImplementedException();
 	}
 
-	public async Task<bool> ChangeCountryAsync(string userId, Country country)
+	public async Task ChangeCountryAsync(string userId, Country country)
 	{
 		ApplicationUser? applicationUser = await _signInManager.UserManager.FindByIdAsync(userId);
 		UserModel? mainUser = await _mainDbcontext.Users.Include(b => b.Bookings).FirstOrDefaultAsync(u => u.Id == userId);
@@ -95,10 +77,32 @@ public class UserRepository : IUserRepository
 
 			applicationUser.Country = country;
 			await _signInManager.UserManager.UpdateAsync(applicationUser);
-
-			return true;
 		}
+	}
 
-		return false;
+	// Not functioning yet
+	public async Task ChangePasswordAsync(string id, string currentPassword, string newPassword)
+	{
+		ApplicationUser? user = await _signInManager.UserManager.FindByIdAsync(id);
+
+		if (user != null)
+		{
+			await _signInManager.UserManager.ChangePasswordAsync(user, currentPassword, newPassword);
+			await _signInManager.UserManager.UpdateAsync(user);
+		}
+	}
+
+	public async Task DeleteUserAsync(string id)
+	{
+		ApplicationUser? applicationUser = await _signInManager.UserManager.FindByIdAsync(id);
+		UserModel? mainUser = await _mainDbcontext.Users.Include(b => b.Bookings).FirstOrDefaultAsync(u => u.Id == id);
+
+		if (mainUser != null && applicationUser != null)
+		{
+			_mainDbcontext.Remove(mainUser);
+			await _mainDbcontext.SaveChangesAsync();
+
+			await _signInManager.UserManager.DeleteAsync(applicationUser);
+		}
 	}
 }
