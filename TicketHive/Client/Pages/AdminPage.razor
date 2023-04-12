@@ -1,5 +1,7 @@
 ﻿@page "/OOF"
 @using Microsoft.AspNetCore.Authorization;
+@using TicketHive.Shared.Enums;
+@using TicketHive.Shared.Models;
 @attribute [Authorize(Roles = "Admin")]
 
 
@@ -7,3 +9,79 @@
 
 <h1>ADMIN PAGE</h1>
 <p> TODO: implement admin page</p>
+
+ <EditForm Model="@eventModel" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <InputText id="name" class="form-control" @bind-Value="eventModel.Name" />
+    </div>
+
+    <div class="form-group">
+        <label for="eventType">Event Type:</label>
+        <InputSelect id="eventType" class="form-control" @bind-Value="eventModel.EventType">
+            @foreach (var type in Enum.GetValues(typeof(EventType)))
+            {
+                <option value="@type">@type</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="form-group">
+        <label for="numberOfTickets">Number of Tickets:</label>
+        <InputNumber id="numberOfTickets" class="form-control" @bind-Value="eventModel.NumberOfTickets" />
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <InputTextArea id="description" class="form-control" @bind-Value="eventModel.Description" />
+    </div>
+
+    <div class="form-group">
+        <label for="price">Price:</label>
+        <InputNumber id="price" class="form-control" @bind-Value="eventModel.Price" />
+    </div>
+
+    <div class="form-group">
+        <label for="startTime">Start Time:</label>
+        <InputDate id="startTime" class="form-control" @bind-Value="eventModel.StartTime" />
+    </div>
+
+    <div class="form-group">
+        <label for="endTime">End Time:</label>
+        <InputDate id="endTime" class="form-control" @bind-Value="eventModel.EndTime" />
+    </div>
+
+    <div class="form-group">
+        <label for="location">Location:</label>
+        <InputText id="location" class="form-control" @bind-Value="eventModel.Location" />
+    </div>
+
+    <div class="form-group">
+        <label for="host">Host:</label>
+        <InputText id="host" class="form-control" @bind-Value="eventModel.Host" />
+    </div>
+
+    <div class="form-group">
+        <label for="imageUrl">Image URL:</label>
+        <InputText id="imageUrl" class="form-control" @bind-Value="eventModel.ImageUrl" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</EditForm>
+
+
+
+
+
+@code {
+
+    private EventModel eventModel { get; set; } = new();
+    private EventType eventType { get; set; } = new();
+    private void HandleValidSubmit()
+    {
+        // process form data and save changes
+    }
+}
