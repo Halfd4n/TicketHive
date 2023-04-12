@@ -25,7 +25,7 @@
 
 @*Lite kod för att kontrollera att metoderna fungerar*@
 
-@*<p>Country was updated: @wasUpdated</p>
+<p>Country was updated: @wasUpdated</p>
 <p>Event was added: @eventWasAdded</p>
 
 @if (userModel != null)
@@ -89,15 +89,15 @@
 			events = await eventService.GetEventsAsync();
 
 			// Delete event
-			eventIsDeleted = await eventService.DeleteEventAsync(9);
-
+			eventIsDeleted = await eventService.DeleteEventAsync(12);
+				
 			// Update signed in users Country
-			wasUpdated = await userService.UpdateUserCountryAsync(signedInUsersId, Country.Finland);
+			wasUpdated = await userService.UpdateUserCountryAsync(signedInUsersId, Country.Belgium);
 
 			// Add event
 			var			newEvent = new EventModel
 					{
-						Name = "New Event Name",
+						Name = "New Event Name2",
 						EventType = EventType.Concert,	
 						Description = "Test description",
 						Location = "Test location",
@@ -110,7 +110,7 @@
 					};
 			eventWasAdded = await eventService.AddEventAsync(newEvent);
 
-			string id = "0efdbc08-54bf-493b-ae1c-a77fb4970538"; 
+			string id = "1bb34c61-51bc-4e4e-aa9c-b042402a4141";
 			if (id != signedInUsersId)
 			{
 				await userService.DeleteUserAsync(id);
@@ -118,4 +118,3 @@
 		}
 	}
 }
-*@

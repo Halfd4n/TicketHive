@@ -82,7 +82,7 @@ public class UserRepository : IUserRepository
 		throw new NotImplementedException();
 	}
 
-	public async Task<bool> ChangeCountryAsync(string userId, Country country)
+	public async Task ChangeCountryAsync(string userId, Country country)
 	{
 		ApplicationUser? applicationUser = await _signInManager.UserManager.FindByIdAsync(userId);
 		UserModel? mainUser = await _mainDbcontext.Users.Include(b => b.Bookings).FirstOrDefaultAsync(u => u.Id == userId);
@@ -95,11 +95,7 @@ public class UserRepository : IUserRepository
 
 			applicationUser.Country = country;
 			await _signInManager.UserManager.UpdateAsync(applicationUser);
-
-			return true;
 		}
-
-		return false;
 	}
 
 	public async Task DeleteUserAsync(string id)
