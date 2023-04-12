@@ -32,14 +32,13 @@ namespace TicketHive.Server.Controllers
 			return await userRepository.GetMainUserByIdAsync(id);
 		}
 
-		// Not done yet!
 		// Update user password
 		[HttpPut("{id}")]
-		public async Task UpdateUserPasswordAsync(string id, string passwordsAsJson)
+		public async Task UpdateUserPasswordAsync(string id, [FromBody] string[] passwordStrings)
 		{
-			string[]? passwordStrings = JsonConvert.DeserializeObject<string[]>(passwordsAsJson);
+			//string[]? passwordStrings = JsonConvert.DeserializeObject<string[]>(passwordsAsJson);
 
-			await userRepository.ChangePasswordAsync(id, passwordStrings[1], passwordStrings[0]);
+			await userRepository.ChangePasswordAsync(id, passwordStrings[0], passwordStrings[1]);
 		}
 
 		// Update user Country

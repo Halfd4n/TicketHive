@@ -48,33 +48,15 @@ public class UserService : IUserService
 		return false;
 	}
 
-	// Not done yet!
-	public async Task<bool> UpdateUserPasswordAsync(string userId, string currentPassword, string newPassword)
+	public async Task<HttpResponseMessage> UpdateUserPasswordAsync(string userId, string currentPassword, string newPassword)
 	{
 		string[] passwordStrings = new string[2] { currentPassword, newPassword };
 
-		var passwordsAsJson = JsonConvert.SerializeObject(passwordStrings);
-
-		var response = await _client.PutAsJsonAsync($"api/users/{userId}", passwordsAsJson);
-
-		if (response.IsSuccessStatusCode)
-		{
-			return true;
-		}
-
-		return false;
+		return await _client.PutAsJsonAsync($"api/users/{userId}", passwordStrings);
 	}
 
-	// Not done yet!
-	public async Task<bool> DeleteUserAsync(string userId)
+	public async Task DeleteUserAsync(string userId)
 	{
 		var response = await _client.DeleteAsync($"api/users/{userId}");
-
-		if (response.IsSuccessStatusCode)
-		{
-			return true;
-		}
-
-		return false;
 	}
 }

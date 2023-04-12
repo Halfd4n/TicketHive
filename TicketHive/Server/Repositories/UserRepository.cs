@@ -19,24 +19,6 @@ public class UserRepository : IUserRepository
 		_mainDbcontext = mainDbcontext;
 	}
 
-	// Not functioning yet
-	public async Task<bool> ChangePasswordAsync(string id, string currentPassword, string newPassword)
-	{
-		ApplicationUser? user = await _signInManager.UserManager.FindByIdAsync(id);
-
-		if (user != null)
-		{
-			IdentityResult result = await _signInManager.UserManager.ChangePasswordAsync(user, currentPassword, newPassword);
-
-			if (result.Succeeded)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	public Task<List<UserModel>> GetAllUsers()
 	{
 		throw new NotImplementedException();
@@ -95,6 +77,18 @@ public class UserRepository : IUserRepository
 
 			applicationUser.Country = country;
 			await _signInManager.UserManager.UpdateAsync(applicationUser);
+		}
+	}
+
+	// Not functioning yet
+	public async Task ChangePasswordAsync(string id, string currentPassword, string newPassword)
+	{
+		ApplicationUser? user = await _signInManager.UserManager.FindByIdAsync(id);
+
+		if (user != null)
+		{
+			await _signInManager.UserManager.ChangePasswordAsync(user, currentPassword, newPassword);
+			await _signInManager.UserManager.UpdateAsync(user);
 		}
 	}
 
