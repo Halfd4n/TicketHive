@@ -1,5 +1,5 @@
 ﻿@using TicketHive.Shared.Models;
-
+@inject ILocalStorageService localStorage
 @page "/Cart"
 
 <div class="ContainerForCart">
@@ -53,29 +53,15 @@
 @code {
     public decimal TotalPrice { get; set; }
     private decimal ItemsInList { get; set; }
-    private List<EventModel> modelTest = new()
-    {
-        new EventModel()
-        {
-            Id=1,
-            Name="Star Wars",
-            Description="Big Event for Star Wars fan! meet up and show your wonderful cosplay to eachother",
-            ImageUrl = "https://wallpapercave.com/wp/wp6511672.jpg",
-            Price = 245,
-        },
-        new EventModel()
-        {
-            Id=2,
-            Name="Fantastic Rangers",
-            Description="Lorem nånting bla bla bla",
-            ImageUrl = "https://images.wallpaperscraft.com/image/single/concert_crowd_people_134866_3840x2160.jpg",
-            Price = 125,
-        }
-    };
+    private List<EventModel> modelTest = new();
 
 
-    protected override void OnInitialized()
+    protected override async void OnInitialized()
     {
+        
+        
+
+
         TotalPrice = modelTest.Sum(item => item.Price);
         ItemsInList = modelTest.Count();
 
