@@ -14,9 +14,7 @@ public interface IUserRepository
 	Task ChangePasswordAsync(string id, string currentPassword, string newPassword);
 	Task ChangeCountryAsync(string id, Country country);
 	Task<ApplicationUser> GetApplicationUserByName(string userName);
-<<<<<<< Updated upstream
 	Task DeleteUserAsync(string id);
-=======
 	Task<bool> CheckUsernameAvailability(string username);
->>>>>>> Stashed changes
+
 }

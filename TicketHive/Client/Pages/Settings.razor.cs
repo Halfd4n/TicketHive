@@ -18,6 +18,8 @@ public partial class Settings
 
 	public UserModel? SignedInUser { get; set; } = new();
 	public Dictionary<string, string> ValidationErrors { get; private set; } = new();
+	public Dictionary<string, string> SuccessMessage { get; private set; } = new();
+
     [Required]
 	public Country Country { get; set; }
 
@@ -31,9 +33,9 @@ public partial class Settings
 	protected async override Task OnInitializedAsync()
 	{
 		ValidationErrors.Clear();
+        SuccessMessage.Clear();
 
-		SignedInUser = await _service.GetUserByIdAsync(Id);
-
+        SignedInUser = await _service.GetUserByIdAsync(Id);
 
 		if(SignedInUser != null)
 		{
@@ -44,6 +46,7 @@ public partial class Settings
 	private async Task UpdateCountryOfOrigin()
 	{
 		ValidationErrors.Clear();
+        SuccessMessage.Clear();
 
         if (Country.Equals(Country.Countries))
 		{
@@ -56,6 +59,8 @@ public partial class Settings
 		else
 		{
             await _service.UpdateUserCountryAsync(SignedInUser.Id, Country);
+
+			SuccessMessage["changedCountry"] = $"Your country of origin was set to {Country.ToString()}";
         }
 	}
 	    
@@ -63,6 +68,8 @@ public partial class Settings
 	private async Task UpdatePassword()
 	{
 		ValidationErrors.Clear();
+		SuccessMessage.Clear();
+
 		if (string.IsNullOrWhiteSpace(CurrentPassword))
 		{
 			ValidationErrors["noInput"] = "Please input your password";
@@ -73,7 +80,9 @@ public partial class Settings
         }
 		else
 		{
-			Console.WriteLine("Click!!");
+			await _service.UpdateUserPasswordAsync(Id, CurrentPassword, NewPassword);
+
+			SuccessMessage["changedPassword"] = "You successfully updated your password";
 		}
 	}
 

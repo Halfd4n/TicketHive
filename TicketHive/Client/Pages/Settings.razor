@@ -7,7 +7,7 @@
 
 <div class="row">
 
-<h4>Settings:</h4>
+    <h4><i class="fa-solid fa-user-gear me-3"></i>Settings:</h4>
 
     <p>Update your country of origing or set a new passwor</p>
 
@@ -27,6 +27,7 @@
         </div>
         <span class="text-danger my-1">@(ValidationErrors.TryGetValue("sameSelection", out var sameSelectionError) ? sameSelectionError : "")</span>
         <span class="text-danger my-1">@(ValidationErrors.TryGetValue("noSelection", out var noSelectionError) ? noSelectionError : "")</span>
+        <span class="text-success my-1">@(ValidationErrors.TryGetValue("changedCountry", out var noSuccessError) ? noSuccessError : "")</span>
     </form>
 
     <hr class ="my-3" />
@@ -39,9 +40,9 @@
         <button type="submit">Update password</button>
     </form>
     <span class="text-danger">@(ValidationErrors.TryGetValue("noInput", out var noInputError) ? noInputError : "")</span>
+    <span class="text-success my-1">@(ValidationErrors.TryGetValue("changedPassword", out var noSuccess) ? noSuccess : "")</span>
 
     <hr class="my-3" />
 
- <button @onclick="BackToMain">Return to main page</button>
-
+ <button @onclick="BackToMain" style="width:12rem;">Return to main page</button>
 </div>
