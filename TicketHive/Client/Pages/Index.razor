@@ -22,29 +22,3 @@
 <button @onclick="Register">Register</button>
 
 </div>
-
-@if (user != null && theEvent != null)
-{
-	<h1>@user.Bookings.Count.ToString()</h1>
-	<h1>@theEvent.Bookings.Count.ToString()</h1>
-	<h1>@theEvent.Bookings[0].BookingDate</h1>
-	<h1>@theEvent.Bookings[0].EventId</h1>
-	<h1>@theEvent.Bookings[0].Quantity</h1>
-}
-
-@code {
-	private UserModel user;
-	private EventModel theEvent; 
-
-	protected override async Task OnInitializedAsync()
-	{
-		var authenticationState = await authenticationStateProvider.GetAuthenticationStateAsync();
-		var signedInUsersId = authenticationState.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
-
-
-		user = await userService.GetUserByIdAsync(signedInUsersId);
-			theEvent = await eventService.GetEventAsync(6);
-
-		await eventService.BookEventAsync(signedInUsersId, 6, 3);
-	}
-}

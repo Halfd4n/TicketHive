@@ -16,5 +16,4 @@ public interface IUserRepository
 	Task<ApplicationUser> GetApplicationUserByName(string userName);
 	Task DeleteUserAsync(string id);
 	Task<bool> CheckUsernameAvailability(string username);
-
 }

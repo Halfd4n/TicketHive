@@ -81,7 +81,7 @@ public class EventRepository : IEventRepository
 		EventModel? eventModel = await GetEventAsync(eventId);
 		UserModel? userModel = await _mainDbContext.Users.Include(u => u.Bookings).FirstOrDefaultAsync(u => u.Id == userId);
 
-		if (eventModel != null && userModel != null)
+		if (eventModel != null && userModel != null && eventModel.NumberOfTickets >= quantity)
 		{
 			eventModel.Bookings.Add(bookingModel);
 			eventModel.NumberOfTickets -= quantity;
