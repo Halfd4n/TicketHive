@@ -20,7 +20,7 @@
                 <div class="d-flex flex-column justify-content-center align-items-center mb-5">
                     <p>Search Event</p>
                     <p>Press Enter</p>
-                    <input type="search" @bind-value="@searchInput" />
+                    <input type="text" @bind-value="@searchInput" @oninput="FilterList" />
                 </div>
 
 
@@ -33,13 +33,6 @@
                         @foreach (String TypeOfEvent in Enum.GetNames(typeof(EventType)))
                         {
                             <option value="@TypeOfEvent">@TypeOfEvent</option>
-                        }
-                    </select>
-                    <select class="TestEnums " @bind="countries">
-                        <option value="">-- Select a Country type --</option>
-                        @foreach (Country theCountry in Enum.GetValues(typeof(Country)))
-                        {
-                            <option value="@theCountry">@theCountry</option>
                         }
                     </select>
                 </div>
@@ -129,22 +122,25 @@
 
 @code {
 
-    private async void NavigateToEvent(int eventId)
+    private async Task NavigateToEvent(int eventId)
     {
-        //string jsonCart = JsonConvert.SerializeObject(eventId);
-        //await localStorage.SetItemAsStringAsync("ShoppingCart", jsonCart);
+
         navigationManager.NavigateTo($"/AllEvents/{eventId}");
     }
 
     private EventType eventType { get; set; }
     private Country countries { get; set; }
-    private string searchInput;
+    private string? searchInput;
     private List<EventModel> filteredModel => TestEvents
     .Where(e => string.IsNullOrEmpty(searchInput) || e.Name.Contains(searchInput, StringComparison.OrdinalIgnoreCase))
     .Where(e => eventType == EventType.EventType || e.EventType == eventType)
     .ToList();
     List<EventModel> TestEvents = new();
 
+    private void FilterList()
+    {
+        StateHasChanged();
+    }
 
     protected override async Task OnInitializedAsync()
     {
