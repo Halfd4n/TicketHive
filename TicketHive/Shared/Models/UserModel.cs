@@ -7,6 +7,6 @@ public class UserModel
 	[Key]
 	public string Id { get; set; } = null!;
 	public string Username { get; set; } = null!;
-	public List<EventModel> Bookings { get; set; } = new();
-    public Country Country { get; set; }
+	public Country Country { get; set; }
+	public List<BookingModel> Bookings { get; set; } = new();
 }

@@ -42,7 +42,7 @@ public class EventRepository : IEventRepository
 
 	public async Task<EventModel?> GetEventAsync(int eventId)
 	{
-		EventModel? eventModel = await _mainDbContext.Events.Include(e => e.Visitors).FirstOrDefaultAsync(e => e.Id == eventId);
+		EventModel? eventModel = await _mainDbContext.Events.Include(e => e.Bookings).FirstOrDefaultAsync(e => e.Id == eventId);
 
 		if (eventModel != null)
 		{
@@ -52,12 +52,12 @@ public class EventRepository : IEventRepository
 		return null;
 	}
 
-	public  Task<List<EventModel>?> GetEventsAsync()
+	public Task<List<EventModel>?> GetEventsAsync()
 	{
-		return _mainDbContext.Events?.Include(e => e.Visitors).ToListAsync();
+		return _mainDbContext.Events?.Include(e => e.Bookings).ToListAsync();
 	}
 
-    public async Task AddEventAsync(EventModel eventModel)
+	public async Task AddEventAsync(EventModel eventModel)
 	{
 		var eventModelNameExists = await _mainDbContext.Events.AnyAsync(e => e.Name == eventModel.Name);
 
@@ -67,5 +67,15 @@ public class EventRepository : IEventRepository
 
 			await _mainDbContext.SaveChangesAsync();
 		}
+	}
+
+	public async Task BookEventAsync(string userId, int eventId, int quantity)
+	{
+		BookingModel bookingModel = new()
+		{
+			UserId = userId,
+			EventId = eventId,
+			Quantity = quantity
+		};
 	}
 }

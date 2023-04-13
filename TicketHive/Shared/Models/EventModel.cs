@@ -20,5 +20,5 @@ public class EventModel
 	public string Location { get; set; } = null!;
 	public string Host { get; set; } = null!;
 	public string ImageUrl { get; set; } = null!;
-	public List<UserModel> Visitors { get; set; } = new();
+	public List<BookingModel> Bookings { get; set; } = new();
 }

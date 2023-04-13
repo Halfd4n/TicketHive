@@ -35,7 +35,6 @@ namespace TicketHive.Server.Controllers
 			await eventRepository.AddEventAsync(eventModel);
 		}
 
-		// Not done yet!
 		// PUT api/<EventsController>/5
 		[HttpPut("{id}")]
 		public void Put(int id, [FromBody] string value)
@@ -47,6 +46,15 @@ namespace TicketHive.Server.Controllers
 		public async Task DeleteEventAsync(int id)
 		{
 			await eventRepository.DeleteEventAsync(id);
+		}
+
+		[HttpPost("userId")] // Will this work? ***********************************************************************
+		public async Task BookEventAsync(string userId, string[] parameters)
+		{
+			int eventId = int.Parse(parameters[0]);
+			int quantity = int.Parse(parameters[1]);
+
+			await eventRepository.BookEventAsync(userId, eventId, quantity);
 		}
 	}
 }
