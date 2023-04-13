@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using TicketHive.Server.Data;
 using TicketHive.Server.Enums;
 using TicketHive.Server.Models;
@@ -81,7 +80,6 @@ public class UserRepository : IUserRepository
 		}
 	}
 
-	// Not functioning yet
 	public async Task ChangePasswordAsync(string id, string currentPassword, string newPassword)
 	{
 		ApplicationUser? user = await _signInManager.UserManager.FindByIdAsync(id);
@@ -111,7 +109,7 @@ public class UserRepository : IUserRepository
 	{
 		ApplicationUser? user = await _signInManager.UserManager.FindByNameAsync(username);
 
-		if(user == null)
+		if (user == null)
 		{
 			return true;
 		}

@@ -49,22 +49,6 @@ public class EventService : IEventService
 		return null;
 	}
 
-	// Not done yet!
-	public async Task<bool> BookEventAsync(int eventId, UserModel user)
-	{
-		// --- Osäker på vilka datatyper och objekt samt hur dessa ska passas vidare till APIt. I detta fall skickas event
-		// id med genom URL'en och UserModel som genomför bokning skickas med genom body'n. Vet ej vad som är best practice. /Benjamin 
-
-		var response = await _client.PostAsJsonAsync($"api/Events/{eventId}", user);
-
-		if (response.IsSuccessStatusCode)
-		{
-			return true;
-		}
-
-		return false;
-	}
-
 	public async Task<bool> AddEventAsync(EventModel eventModel)
 	{
 		int numberOfEventsBefore = (await GetEventsAsync()).Count;
@@ -90,6 +74,26 @@ public class EventService : IEventService
 		int numberOfEventsAfter = (await GetEventsAsync()).Count;
 
 		if (numberOfEventsBefore > numberOfEventsAfter)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	public async Task<bool> BookEventAsync(string userId, int eventId, int quantity)
+	{
+		EventModel? eventBefore = await GetEventAsync(eventId);
+		int numberOfBookingsBefore = eventBefore!.Bookings.Count;
+
+		string[] parameters = new string[2] { eventId.ToString(), quantity.ToString() };
+
+		await _client.PostAsJsonAsync($"api/Events/{userId}/{parameters}", parameters);
+
+		EventModel? eventAfter = await GetEventAsync(eventId);
+		int numberOfBookingsAfter = eventAfter!.Bookings.Count;
+
+		if (numberOfBookingsAfter > numberOfBookingsBefore)
 		{
 			return true;
 		}
