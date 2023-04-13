@@ -18,7 +18,8 @@ public partial class Settings
 
 	public UserModel? SignedInUser { get; set; } = new();
 	public Dictionary<string, string> ValidationErrors { get; private set; } = new();
-	public Dictionary<string, string> SuccessMessage { get; private set; } = new();
+	public string? SuccessMessageCountry { get; set; }
+	public string? SuccessMessagePassword { get; set; }
 
     [Required]
 	public Country Country { get; set; }
@@ -33,7 +34,8 @@ public partial class Settings
 	protected async override Task OnInitializedAsync()
 	{
 		ValidationErrors.Clear();
-        SuccessMessage.Clear();
+        SuccessMessageCountry = "";
+        SuccessMessagePassword = "";
 
         SignedInUser = await _service.GetUserByIdAsync(Id);
 
@@ -46,7 +48,8 @@ public partial class Settings
 	private async Task UpdateCountryOfOrigin()
 	{
 		ValidationErrors.Clear();
-        SuccessMessage.Clear();
+        SuccessMessageCountry = "";
+        SuccessMessagePassword = "";
 
         if (Country.Equals(Country.Countries))
 		{
@@ -60,7 +63,9 @@ public partial class Settings
 		{
             await _service.UpdateUserCountryAsync(SignedInUser.Id, Country);
 
-			SuccessMessage["changedCountry"] = $"Your country of origin was set to {Country.ToString()}";
+			SuccessMessageCountry = $"Your country of origin was set to {Country.ToString()}";
+
+			StateHasChanged();
         }
 	}
 	    
@@ -68,7 +73,8 @@ public partial class Settings
 	private async Task UpdatePassword()
 	{
 		ValidationErrors.Clear();
-		SuccessMessage.Clear();
+		SuccessMessagePassword = "";
+		SuccessMessageCountry = "";
 
 		if (string.IsNullOrWhiteSpace(CurrentPassword))
 		{
@@ -82,9 +88,11 @@ public partial class Settings
 		{
 			await _service.UpdateUserPasswordAsync(Id, CurrentPassword, NewPassword);
 
-			SuccessMessage["changedPassword"] = "You successfully updated your password";
-		}
-	}
+			SuccessMessagePassword = "You successfully updated your password";
+
+            StateHasChanged();
+        }
+    }
 
 	private async Task BackToMain()
 	{

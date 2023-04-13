@@ -1,5 +1,6 @@
 ﻿@page "/AllEvents/{id:int}"
 
+@using Blazored.LocalStorage;
 @using Newtonsoft.Json;
 @using TicketHive.Client.Services;
 @using TicketHive.Shared.Models;
@@ -10,33 +11,32 @@
 
 
 
-<div class="headbanner d-flex rounded-2 flex-column justify-content-center align-items-center" style="background-image: url('https://localhost:7259/images/event%20images/@model.ImageUrl');">
-    <h1 class="model-title"> @model.Name</h1>
+<div class="headbanner d-flex rounded-2 flex-column justify-content-center align-items-center" style="background-image: url('https://localhost:7259/images/event%20images/@EventToDisplay.ImageUrl');">
+    <h1 class="model-title"> @EventToDisplay.Name</h1>
     <div class="overlay d-flex flex-column justify-content-center align-items-center">
-        <p>@model.Description</p>
-        <h3>@model.StartTime</h3>
-        <p>@model.Price kr</p>
+        <p>@EventToDisplay.Description</p>
+        <h3>@EventToDisplay.StartTime</h3>
+        <p>@EventToDisplay.Price (Insert currency)</p>
 
         @*Check if tickets are available else make button not function *@
-        @if (model.NumberOfTickets != 0)
+        @if (EventToDisplay.NumberOfTickets >= 1)
         {
             @*TODO: add current event to CartList with OnClick Method *@
             <label for="num_tickets">Select the number of tickets:</label>
-            <input type="number" id="num_tickets" name="num_tickets" @bind-value="ticket" min="1" max="6">
+            <input type="number" id="num_tickets" name="num_tickets" @bind-value="DesiredNoOfTickets" min="1" max="6">
 
-            @if (ticket <= 0 || ticket >= 6)
+            @if (DesiredNoOfTickets <= 0 || DesiredNoOfTickets >= 7 || DesiredNoOfTickets > EventToDisplay.NumberOfTickets)
             {
-                <button class="rounded-2 btn-danger disabled" onclick="AddToCart"> Add to Cart </button>
+                <button class="rounded-2 btn-danger disabled my-2" onclick="AddToCart"> Add to Cart </button>
 
             }else
             {
-                <button class="rounded-2 btn-success" @onclick="(() => AddToCart(model))"> Add to Cart </button>
-
+                <button class="rounded-2 btn-success my-2" @onclick="() => AddToCart(EventToDisplay)"> Add to Cart </button>
             }
         }
         else
         {
-            <button class="rounded-2 btn-danger disabled"> Closed </button>
+            <button class="rounded-2 btn-danger disabled"> Event sold out! </button>
 
         }
     </div>
@@ -54,24 +54,3 @@
 
 
 
-@code {
-    [Parameter]
-    public int? Id { get; set; }
-
-    private int ticket { get; set; } = new();
-    private EventModel? model = new();
-
-    protected override async Task OnInitializedAsync()
-    {
-        model = await eventService.GetEventAsync((int)Id);
-
-    }
-
-    public async void AddToCart(EventModel cookieModel)
-    {
-
-        string jsonCart = JsonConvert.SerializeObject(cookieModel);
-        await localStorage.SetItemAsStringAsync("ShoppingCart", jsonCart);
-        
-    }
-}

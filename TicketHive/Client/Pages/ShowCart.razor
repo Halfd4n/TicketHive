@@ -1,77 +1,46 @@
-﻿@using TicketHive.Shared.Models;
+﻿@using Blazored.LocalStorage;
+@using TicketHive.Client.Services;
+@using TicketHive.Shared.Models;
+@inject IEventService _service
 @inject ILocalStorageService localStorage
 @page "/Cart"
 
 <div class="ContainerForCart">
-
-
-    <div class="TitleCart d-flex justify-content-center align-items-center">
-        <h1>You have @ItemsInList items in your cart </h1>
-    </div>
-
-    <div class="EventCartHolder d-flex flex-column justify-content-center align-items-center">
-
-        @foreach (var E in modelTest)
-        {
-            <div class="TheEvent d-flex flex-column justify-content-center align-items-center">
-
-                <div class="d-flex flex-column mt-2">
-                    <p class="EventRead"> @E.Name @E.Location  </p>
-                </div>
-
-                <div class="d-flex flex-row">
-                    <p> @E.Price Kr</p>
-                    <button class="Btn-Delete" p @onclick="() => RemoveItem(E)">X</button>
-                </div>
-            </div>
-
-
-        }
-
-
-    </div>
-    <div class="Summarize d-flex flex-column justify-content-center align-items-center">
+    
+    @if(ShoppingCart.Count >= 1)
+    {
         
-        <h2>TotalPrice: @TotalPrice Kr </h2>
-        @if (modelTest != null && modelTest.Count > 0)
-        {
-            <button> Buy </button>
-            
-        }
-        else
-        {
-            <p>OPS! there is nothing in your cart</p>
-        }
-    </div>
+    <div class="row justify-content-center align-items-center">
+        <h4><i class="fa-solid fa-cart-shopping me-2"></i>Shopping cart:</h4>
+        <table class="table border border-2 border-dark">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Event</th>
+                    <th scope="col">Tickets</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Total cost</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach(var eventModel in ShoppingCart)
+            {
+                <tr>
+                    <th scope="row">@eventModel.Id</th>
+                    <td>@eventModel.Name</td>
+                    <td>@eventModel.NumberOfTickets</td>
+                    <td>@eventModel.Price</td>
+                    <td>@(eventModel.Price * eventModel.NumberOfTickets)</td>
+                    <td><button @onclick="() => RemoveEvent(eventModel)"><i class="fa-solid fa-trash text-danger"></i></button></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        </div>
+    }
+    else
+    {
+        <div><h5>Currently no events in the shopping cart <i class="fa-solid fa-face-frown"></i>...</h5></div>
+    }
 </div>
-
-
-
-
-
-
-@code {
-    public decimal TotalPrice { get; set; }
-    private decimal ItemsInList { get; set; }
-    private List<EventModel> modelTest = new();
-
-
-    protected override async void OnInitialized()
-    {
-        
-        
-
-
-        TotalPrice = modelTest.Sum(item => item.Price);
-        ItemsInList = modelTest.Count();
-
-    }
-
-    private void RemoveItem(EventModel item)
-    {
-        modelTest.Remove(item);
-        ItemsInList = modelTest.Count();
-        TotalPrice = modelTest.Sum(item => item.Price);
-        StateHasChanged();
-    }
-}

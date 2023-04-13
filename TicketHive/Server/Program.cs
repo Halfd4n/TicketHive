@@ -40,10 +40,12 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+//builder.Services.AddBlazoredLocalStorage();	
+
 builder.Services.AddSession(options =>
 {
 	options.Cookie.Name = "ShoppingCart";
-	options.IdleTimeout = TimeSpan.FromDays(31);
+	options.Cookie.MaxAge = TimeSpan.FromDays(31);
 });
 
 builder.Services.Configure<RouteOptions>(options =>

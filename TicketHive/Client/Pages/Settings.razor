@@ -27,7 +27,7 @@
         </div>
         <span class="text-danger my-1">@(ValidationErrors.TryGetValue("sameSelection", out var sameSelectionError) ? sameSelectionError : "")</span>
         <span class="text-danger my-1">@(ValidationErrors.TryGetValue("noSelection", out var noSelectionError) ? noSelectionError : "")</span>
-        <span class="text-success my-1">@(ValidationErrors.TryGetValue("changedCountry", out var noSuccessError) ? noSuccessError : "")</span>
+        <span class="text-success my-1">@SuccessMessageCountry</span>
     </form>
 
     <hr class ="my-3" />
@@ -40,7 +40,7 @@
         <button type="submit">Update password</button>
     </form>
     <span class="text-danger">@(ValidationErrors.TryGetValue("noInput", out var noInputError) ? noInputError : "")</span>
-    <span class="text-success my-1">@(ValidationErrors.TryGetValue("changedPassword", out var noSuccess) ? noSuccess : "")</span>
+    <span class="text-success my-1">@SuccessMessagePassword</span>
 
     <hr class="my-3" />
 

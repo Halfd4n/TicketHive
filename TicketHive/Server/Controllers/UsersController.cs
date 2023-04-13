@@ -17,13 +17,6 @@ namespace TicketHive.Server.Controllers
 			this.userRepository = userRepository;
 		}
 
-		// Not done yet!
-		// GET: api/<UsersController>
-		[HttpGet]
-		public IEnumerable<string> GetAsync()
-		{
-			return new string[] { "value1", "value2" };
-		}
 
 		// GET api/<UsersController>/5
 		[HttpGet("{id}")]
