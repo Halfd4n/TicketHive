@@ -16,6 +16,7 @@ using TicketHive.Client;
 using TicketHive.Client.Shared;
 using TicketHive.Shared.Models;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace TicketHive.Client.Pages
 {
@@ -23,14 +24,11 @@ namespace TicketHive.Client.Pages
     {
         public decimal TotalPrice { get; set; }
         public List<EventModel>? ShoppingCart { get; set; } = new();
-
         public List<EventModel>? AllEvents { get; set; } = new();
 
-       
         protected async override Task OnInitializedAsync()
         {
             AllEvents = await _service.GetEventsAsync();
-
 
             if(AllEvents != null)
             {
@@ -52,6 +50,52 @@ namespace TicketHive.Client.Pages
 
                     ShoppingCart.Add(eventFromLocal);
                 }
+            }
+        }
+
+        private bool AreThereAvailableTickets(EventModel eventModel)
+        {
+            EventModel? eventToCheck = AllEvents.Find(e => e.Id.Equals(eventModel.Id));
+
+            if ((eventToCheck.NumberOfTickets - eventModel.NumberOfTickets) == 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
+        private async void IncrementTickets(EventModel eventModel)
+        {
+            eventModel.NumberOfTickets++;
+
+            string jsonEvent = JsonConvert.SerializeObject(eventModel);
+
+            await localStorage.SetItemAsStringAsync(eventModel.Id.ToString(), jsonEvent);
+
+            await CheckShoppingCartContent();
+
+            StateHasChanged();
+        }
+
+        private async Task DecrementTickets(EventModel eventModel)
+        {
+            eventModel.NumberOfTickets--;
+
+            if(eventModel.NumberOfTickets >= 1)
+            {
+                string jsonEvent = JsonConvert.SerializeObject(eventModel);
+
+                await localStorage.SetItemAsStringAsync(eventModel.Id.ToString(), jsonEvent);
+
+                await CheckShoppingCartContent();
+
+                StateHasChanged();
+            }
+            else
+            {
+                RemoveEvent(eventModel);
             }
         }
 

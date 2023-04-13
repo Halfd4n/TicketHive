@@ -3,7 +3,7 @@
 @using TicketHive.Shared.Models;
 @inject IEventService _service
 @inject ILocalStorageService localStorage
-@page "/Cart"
+@page "/cart"
 
 <div class="ContainerForCart">
     
@@ -11,15 +11,16 @@
     {
         
     <div class="row justify-content-center align-items-center">
-        <h4><i class="fa-solid fa-cart-shopping me-2"></i>Shopping cart:</h4>
+            <h4><i class="fa-solid fa-cart-shopping me-2" style="color: #fbe89c"></i>Shopping cart:</h4>
         <table class="table border border-2 border-dark">
             <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Event</th>
-                    <th scope="col">Tickets</th>
+                    <th scope="col">Ticket(s)</th>
                     <th scope="col">Price</th>
                     <th scope="col">Total cost</th>
+                    <th scope="col"></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -32,15 +33,21 @@
                     <td>@eventModel.NumberOfTickets</td>
                     <td>@eventModel.Price</td>
                     <td>@(eventModel.Price * eventModel.NumberOfTickets)</td>
-                    <td><button @onclick="() => RemoveEvent(eventModel)"><i class="fa-solid fa-trash text-danger"></i></button></td>
+                    <td>
+                        <button title="Add one ticket" disabled="@AreThereAvailableTickets(eventModel)" @onclick="() => IncrementTickets(eventModel)"><i class="fa-solid fa-plus text-success"></i></button>
+                        <button title="Remove one ticket" @onclick="() => DecrementTickets(eventModel)"><i class="fa-solid fa-minus text-warning"></i></button>
+                    </td>
+                    <td><button title="Remove all tickets" @onclick="() => RemoveEvent(eventModel)"><i class="fa-solid fa-trash text-danger"></i></button></td>
                 </tr>
             }
             </tbody>
         </table>
+
+
         </div>
     }
     else
     {
-        <div><h5>Currently no events in the shopping cart <i class="fa-solid fa-face-frown"></i>...</h5></div>
+        <div><h5>Currently no events in the shopping cart <i class="fa-solid fa-face-frown" style="color: #fbe89c"></i>...</h5></div>
     }
 </div>

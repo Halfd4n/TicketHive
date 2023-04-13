@@ -30,4 +30,18 @@ public partial class NavMenu
         }
 
     }
+
+    private void NavigateToHome()
+    {
+        Navigation.NavigateTo("");
+    }
+    private void NavigateToAllEvents()
+    {
+        Navigation.NavigateTo("/allevents");
+    }
+
+    private void NavigateToShoppingCart()
+    {
+        Navigation.NavigateTo("/cart");
+    }
 }

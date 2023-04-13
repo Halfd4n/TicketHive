@@ -19,46 +19,44 @@
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+            <NavLink class="nav-link" Match="NavLinkMatch.All">
+                <button class="btn text-decoration-none text-white" @onclick="NavigateToHome"><i class="fa-solid fa-house-chimney me-2" style="color: #fbe89c"></i>Home</button>
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="AllEvents">
-                <span class="oi oi-plus" aria-hidden="true"></span> Events
+            <NavLink class="nav-link">
+                <button class="btn text-decoration-none text-white" @onclick="NavigateToAllEvents"><i class="fa-solid fa-ticket me-2" style="color: #fbe89c"></i>Events</button>
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="Cart">
-                <span class="oi oi-home" aria-hidden="true"></span> Cart
+            <NavLink class="nav-link">
+                <button class="btn text-decoration-none text-white" @onclick="NavigateToShoppingCart"><i class="fa-solid fa-cart-shopping me-2" style="color: #fbe89c"></i>Shopping cart</button>
             </NavLink>
         </div>
-        <AuthorizeView Roles="Admin">
-             <Authorized>
-
-                    <div class="nav-item px-3">
-                        <NavLink class="nav-link" href="OOF">
-                            <span class="oi oi-cog" aria-hidden="true"></span> Admin
-                        </NavLink>
-                    </div>
-             </Authorized>
-                    
-                
-        </AuthorizeView>
         <AuthorizeView>   
             <Authorized>
                 <div class="nav-item px-3">
                     <NavLink title="My settings" class="nav-link">
-                        <button class="btn text-decoration-none text-white" @onclick="NavigateToSettings"><i class="fa-solid fa-gears me-3"></i>Settings</button>
+                        <button class="btn text-decoration-none text-white" @onclick="NavigateToSettings"><i class="fa-solid fa-gears me-3" style="color: #fbe89c"></i>Settings</button>
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" title="Log out">
-                        <button class="btn text-decorationd-lg-none text-white" @onclick="BeginLogOut"><i class="fa-solid fa-right-from-bracket me-3"></i>Log out</button>
+                        <button class="btn text-decorationd-lg-none text-white" @onclick="BeginLogOut"><i class="fa-solid fa-right-from-bracket me-3" style="color: #fbe89c"></i>Log out</button>
                     </NavLink>
                 </div>
             </Authorized>
          </AuthorizeView>
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="OOF">
+                        <span class="oi oi-cog" aria-hidden="true"></span> Admin
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
     </nav>
 </div>
 

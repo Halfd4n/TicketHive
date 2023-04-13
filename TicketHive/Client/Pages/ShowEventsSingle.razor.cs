@@ -35,13 +35,17 @@ namespace TicketHive.Client.Pages
             EventToDisplay = await eventService.GetEventAsync(Id);
         }
 
-        public async void AddToCart(EventModel eventModel)
+        public async void AddToCart()
         {
-            if(eventModel != null)
-            {
-                string jsonEvent = JsonConvert.SerializeObject(eventModel);
 
-                await localStorage.SetItemAsStringAsync(eventModel.Id.ToString(), jsonEvent);
+
+            if(EventToDisplay != null)
+            {
+                EventToDisplay.NumberOfTickets = DesiredNoOfTickets;
+
+                string jsonEvent = JsonConvert.SerializeObject(EventToDisplay);
+
+                await localStorage.SetItemAsStringAsync(EventToDisplay.Id.ToString(), jsonEvent);
             }
         }
     }
