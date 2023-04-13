@@ -69,7 +69,7 @@ public class EventService : IEventService
 	{
 		int numberOfEventsBefore = (await GetEventsAsync()).Count;
 
-		var response = await _client.PostAsJsonAsync("api/Events", eventModel);
+		await _client.PostAsJsonAsync("api/Events", eventModel);
 
 		int numberOfEventsAfter = (await GetEventsAsync()).Count;
 

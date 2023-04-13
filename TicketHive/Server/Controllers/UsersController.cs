@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using TicketHive.Server.Enums;
 using TicketHive.Server.Repository;
 using TicketHive.Shared.Models;
@@ -34,19 +33,15 @@ namespace TicketHive.Server.Controllers
 
 		// Update user password
 		[HttpPut("{id}")]
-		public async Task UpdateUserPasswordAsync(string id, [FromBody] string[] passwordStrings)
+		public async Task UpdateUserPasswordAsync(string id, string[] passwordStrings)
 		{
-			//string[]? passwordStrings = JsonConvert.DeserializeObject<string[]>(passwordsAsJson);
-
 			await userRepository.ChangePasswordAsync(id, passwordStrings[0], passwordStrings[1]);
 		}
 
 		// Update user Country
-		[HttpPut("{id}/{countryAsJson}")]
-		public async Task UpdateUserCountryAsync(string id, string countryAsJson)
+		[HttpPut("{id}/{country}")]
+		public async Task UpdateUserCountryAsync(string id, Country country)
 		{
-			Country country = JsonConvert.DeserializeObject<Country>(countryAsJson);
-
 			await userRepository.ChangeCountryAsync(id, country);
 		}
 
