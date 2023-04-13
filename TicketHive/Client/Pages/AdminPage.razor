@@ -1,16 +1,17 @@
 ﻿@page "/OOF"
 @using Microsoft.AspNetCore.Authorization;
+@using TicketHive.Client.Services
 @using TicketHive.Shared.Enums;
 @using TicketHive.Shared.Models;
 @attribute [Authorize(Roles = "Admin")]
-
+@inject IEventService service
 
 
 
 <h1>ADMIN PAGE</h1>
 <p> TODO: implement admin page</p>
 
- <EditForm Model="@eventModel" OnValidSubmit="@HandleValidSubmit">
+ <EditForm Model="@eventModel" OnValidSubmit="@AddEvent">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -69,7 +70,10 @@
         <InputText id="imageUrl" class="form-control" @bind-Value="eventModel.ImageUrl" />
     </div>
 
-    <button type="submit" class="btn btn-primary">Save Changes</button>
+    @*<button type="submit" class="btn btn-primary">Save Changes</button>*@
+    <button type="button" class="btn btn-danger" @onclick="() => DeleteEvent(event.Id)">Delete event</button>
+    <button type="submit" class="btn btn-primary" @onclick="AddEvent">Save Changes</button>
+
 </EditForm>
 
 
@@ -77,9 +81,22 @@
 
 
 @code {
-
+    private List<EventModel>? allEventModels = new();
     private EventModel eventModel { get; set; } = new();
     private EventType eventType { get; set; } = new();
+    public object Id { get; set; }
+
+
+    //private EventModel eventModel = new EventModel();
+    
+    private async Task AddEvent(EventModel model)
+    {
+        dbContext.Events.Add(model);
+        await dbContext.SaveChangesAsync();
+    }
+
+
+
     //    protected override async Task OnInitializedAsync()
     //    {
     //        allEvents = await EventService.GetEventsAsync();
@@ -88,23 +105,22 @@
 
 
 
-    //private async Task AddEvent()
-    //    {
-    //        // Add a random picture to the event
-    //        eventModel.ImageUrl = $"image-{new Random().Next(1, 27)}";
+    private async Task AddEvent()
+        {
+            // Add a random picture to the event
+            eventModel.ImageUrl = $"image-{new Random().Next(1, 27)}";
 
-    //        var isEventAddedSuccessFully = await EventService.AddEventAsync(eventModel);
+            var isEventAddedSuccessFully = await EventService.AddEventAsync(eventModel);
 
-    //        if (isEventAddedSuccessFully){
-    //            eventModel.Ad
-    //        }
+            if (isEventAddedSuccessFully){
+                eventModel.Ad
+            }
 
 
 
-    //    }
-    private void AddEvent(){
+}
+
+    private Task DeleteEvent(object o){
         throw new NotImplementedException();
     }
 
-    //}
-}
