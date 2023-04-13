@@ -77,5 +77,20 @@ public class EventRepository : IEventRepository
 			EventId = eventId,
 			Quantity = quantity
 		};
+
+		EventModel? eventModel = await GetEventAsync(eventId);
+		UserModel? userModel = await _mainDbContext.Users.Include(u => u.Bookings).FirstOrDefaultAsync(u => u.Id == userId);
+
+		if (eventModel != null && userModel != null)
+		{
+			eventModel.Bookings.Add(bookingModel);
+			eventModel.NumberOfTickets -= quantity;
+			_mainDbContext.Events.Update(eventModel);
+
+			userModel.Bookings.Add(bookingModel);
+			_mainDbContext.Users.Update(userModel);
+
+			await _mainDbContext.SaveChangesAsync();
+		}
 	}
 }

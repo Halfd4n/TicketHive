@@ -48,7 +48,7 @@ namespace TicketHive.Server.Controllers
 			await eventRepository.DeleteEventAsync(id);
 		}
 
-		[HttpPost("userId")] // Will this work? ***********************************************************************
+		[HttpPost("{userId}/{parameters}")]
 		public async Task BookEventAsync(string userId, string[] parameters)
 		{
 			int eventId = int.Parse(parameters[0]);

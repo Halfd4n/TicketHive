@@ -88,7 +88,7 @@ public class EventService : IEventService
 
 		string[] parameters = new string[2] { eventId.ToString(), quantity.ToString() };
 
-		await _client.PostAsJsonAsync($"api/Events/{userId}", parameters);
+		await _client.PostAsJsonAsync($"api/Events/{userId}/{parameters}", parameters);
 
 		EventModel? eventAfter = await GetEventAsync(eventId);
 		int numberOfBookingsAfter = eventAfter!.Bookings.Count;
