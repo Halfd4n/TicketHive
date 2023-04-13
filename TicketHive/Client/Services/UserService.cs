@@ -31,14 +31,12 @@ public class UserService : IUserService
 	public async Task<bool> UpdateUserCountryAsync(string userId, Country country)
 	{
 		var signedInUserBefore = await GetUserByIdAsync(userId);
-		Country countryBefore = signedInUserBefore.Country;
+		Country countryBefore = signedInUserBefore!.Country;
 
-		var countryAsJson = JsonConvert.SerializeObject(country);
-
-		var response = await _client.PutAsJsonAsync($"api/users/{userId}/{countryAsJson}", countryAsJson);
+		await _client.PutAsJsonAsync($"api/users/{userId}/{country}", country);
 
 		var signedInUserAfter = await GetUserByIdAsync(userId);
-		Country countryAfter = signedInUserAfter.Country;
+		Country countryAfter = signedInUserAfter!.Country;
 
 		if (countryBefore != countryAfter)
 		{
