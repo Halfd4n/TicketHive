@@ -139,7 +139,10 @@
     private EventType eventType { get; set; }
     private Country countries { get; set; }
     private string searchInput;
-    private List<EventModel> filteredModel => TestEvents.Where(e => e.Name.Contains(searchInput, StringComparison.OrdinalIgnoreCase)).ToList();
+    private List<EventModel> filteredModel => TestEvents
+    .Where(e => string.IsNullOrEmpty(searchInput) || e.Name.Contains(searchInput, StringComparison.OrdinalIgnoreCase))
+    .Where(e => eventType == EventType.EventType || e.EventType == eventType)
+    .ToList();
     List<EventModel> TestEvents = new();
 
 

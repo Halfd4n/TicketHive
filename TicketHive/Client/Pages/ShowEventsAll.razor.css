@@ -2,7 +2,7 @@
 
 /*div with the button that will show up when hovered*/
 .EventCard {
-    /*position: absolute;*/
+    position: relative;
     bottom: 0;
     left: 0;
     right: 0;
@@ -22,7 +22,7 @@
 /* The Div settings for all cards*/
 .test {
     height: 300px;
-    width: 300px auto;
+    width: 200px;
     text-align: center;
     word-wrap: break-word;
    
@@ -48,9 +48,9 @@
 }
 
 .AllCards {
-   /* width: 100%;
-    position: relative;*/
-    max-width: 1920px;
+   /* width: 100%;*/
+    position: relative;
+    
     max-height:630px;
     overflow-x: scroll;
     white-space: nowrap;
