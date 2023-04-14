@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using TicketHive.Client.Managers;
 using TicketHive.Server.Repository;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
@@ -38,6 +39,8 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 				if (signInResult.Succeeded)
 				{
 					InvalidCredentials = null;
+
+					await CurrencyManager.CurrencyApiCall();
 
 					RedirectToPage("~/index");
 				}

@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using TicketHive.Client.Services;
 using TicketHive.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
+using TicketHive.Client.Managers;
 
 namespace TicketHive.Client.Pages
 {
@@ -29,10 +30,29 @@ namespace TicketHive.Client.Pages
         public int Id { get; set; }
         public int DesiredNoOfTickets { get; set; }
         public EventModel? EventToDisplay { get; set; } = new();
+        public string PriceAndCurrency { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             EventToDisplay = await eventService.GetEventAsync(Id);
+
+            UserModel? user = await GetSignedInUser();
+
+            if(user != null)
+            {
+                PriceAndCurrency = CurrencyManager.GetTicketPriceAndCustomerCurrency(user.Country, EventToDisplay.Price);
+            }
+
+
+        }
+
+        private async Task<UserModel?> GetSignedInUser()
+        {
+            var authenticationState = await authentication.GetAuthenticationStateAsync();
+
+            var userId = authenticationState.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+
+            return await userService.GetUserByIdAsync(userId);
         }
 
         public async void AddToCart()

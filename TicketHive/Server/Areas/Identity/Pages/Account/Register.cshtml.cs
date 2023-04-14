@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using TicketHive.Client.Managers;
 using TicketHive.Server.Enums;
 using TicketHive.Server.Models;
 using TicketHive.Server.Repositories;
@@ -64,14 +65,16 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 						if (signedInUser != null)
 						{
 							await _eventRepository.AddUserToEventDb(signedInUser);
-						}
+                        }
 
 						if (signInResult.Succeeded)
 						{
 							ErrorMessage = "";
 							ModelState.Clear();
 
-							RedirectToPage("~/");
+                            await CurrencyManager.CurrencyApiCall();
+
+                            RedirectToPage("~/");
 						}
 					}
 				}

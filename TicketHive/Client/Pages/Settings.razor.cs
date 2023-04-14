@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using TicketHive.Client.Managers;
 using TicketHive.Server.Enums;
 using TicketHive.Shared.Models;
 
@@ -64,6 +65,8 @@ public partial class Settings
             await _service.UpdateUserCountryAsync(SignedInUser.Id, Country);
 
 			SuccessMessageCountry = $"Your country of origin was set to {Country.ToString()}";
+
+			await CurrencyManager.CurrencyApiCall();
 
 			StateHasChanged();
         }
