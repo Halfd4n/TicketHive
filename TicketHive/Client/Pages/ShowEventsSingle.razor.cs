@@ -35,7 +35,7 @@ namespace TicketHive.Client.Pages
             EventToDisplay = await eventService.GetEventAsync(Id);
         }
 
-        public async void AddToCart()
+        public async Task AddToCart()
         {
 
 
@@ -47,6 +47,11 @@ namespace TicketHive.Client.Pages
 
                 await localStorage.SetItemAsStringAsync(EventToDisplay.Id.ToString(), jsonEvent);
             }
+        }
+
+        public async Task DeleteEvent()
+        {
+
         }
     }
 }

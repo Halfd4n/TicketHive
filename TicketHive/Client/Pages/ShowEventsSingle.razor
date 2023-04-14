@@ -1,21 +1,21 @@
 ﻿@page "/allEvents/{id:int}"
 
 @using Blazored.LocalStorage;
+@using Microsoft.AspNetCore.Authorization;
 @using Newtonsoft.Json;
 @using TicketHive.Client.Services;
 @using TicketHive.Shared.Models;
 @inject IEventService eventService;
 @inject ILocalStorageService localStorage;
 @inject NavigationManager navigationManager;
-
-
+@attribute [Authorize]
 
 
 <div class="headbanner d-flex rounded-2 flex-column justify-content-center align-items-center" style="background-image: url('https://localhost:7259/images/event%20images/@EventToDisplay.ImageUrl');">
     <h1 class="model-title"> @EventToDisplay.Name</h1>
     <div class="overlay d-flex flex-column justify-content-center align-items-center">
         <p>@EventToDisplay.Description</p>
-        <h3>@EventToDisplay.StartTime</h3>
+        <h3>@EventToDisplay.StartTime --- @EventToDisplay.EndTime</h3>
         <p>@EventToDisplay.Price (Insert currency)</p>
 
         @*Check if tickets are available else make button not function *@
@@ -32,6 +32,7 @@
             }else
             {
                 <button class="rounded-2 btn-success my-2" @onclick="AddToCart"> Add to Cart </button>
+
             }
         }
         else
@@ -39,11 +40,14 @@
             <button class="rounded-2 btn-danger disabled"> Event sold out! </button>
 
         }
+                <AuthorizeView Roles="Admin">
+                    <Authorized>
+                        <button class="rounded-2 btn-outline-danger my-2" @onclick="DeleteEvent"> Delete </button>
+
+                    </Authorized>
+                </AuthorizeView>
     </div>
 </div>
-
-
-
 
 
 

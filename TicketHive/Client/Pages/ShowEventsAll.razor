@@ -20,7 +20,7 @@
                 <div class="d-flex flex-column justify-content-center align-items-center mb-5">
                     <p>Search Event</p>
                     <p>Press Enter</p>
-                    <input type="text" @bind-value="@searchInput" @oninput="FilterList" />
+                    <input type="text" @bind="searchInput" @oninput="FilterList" />
                 </div>
 
 
@@ -48,7 +48,7 @@
 
             <div class="AllCards d-flex flex-wrap row-cols-5 overflow-scroll justify-content-center scrollable-div" style="height: 600px; overflow: scroll; scroll-behavior: smooth;">
 
-                @if (searchInput == null)
+                @if (searchInput == null || searchInput == "" )
                 {
                     @foreach (var card in TestEvents)
                     {
@@ -69,7 +69,7 @@
                 }
                 else
                 {
-                    @foreach (var card in filteredModel.Where(e => e.Name.Contains(searchInput, StringComparison.OrdinalIgnoreCase)))
+                    @foreach (var card in TestEvents)
                     {
 
                         <div class="test d-flex flex-column flex-wrap  mx-5 mb-5 justify-content-center align-items-center rounded-2" style="background-image: url('https://localhost:7259/images/event%20images/@card.ImageUrl');">
@@ -130,24 +130,25 @@
 
     private EventType eventType { get; set; }
     private Country countries { get; set; }
-    private string? searchInput;
-    private List<EventModel> filteredModel => TestEvents
-    .Where(e => string.IsNullOrEmpty(searchInput) || e.Name.Contains(searchInput, StringComparison.OrdinalIgnoreCase))
-    .Where(e => eventType == EventType.EventType || e.EventType == eventType)
-    .ToList();
-    List<EventModel> TestEvents = new();
+    private string? searchInput = "";
+    private List<EventModel> TestEvents = new();
+    private List<EventModel> filteredModel = new();
+
+
 
     private void FilterList()
     {
+        filteredModel.Where(p => p.Name.ToLower().Contains(searchInput?.ToLower())).ToList();
+        TestEvents = filteredModel;
         StateHasChanged();
     }
 
     protected override async Task OnInitializedAsync()
     {
-        
-           TestEvents = await eventService.GetEventsAsync();
-        
-        
+
+        TestEvents = await eventService.GetEventsAsync();
+        filteredModel = TestEvents;
+
     }
 
 }
