@@ -30,7 +30,7 @@ namespace TicketHive.Client.Pages
         public int Id { get; set; }
         public int DesiredNoOfTickets { get; set; }
         public EventModel? EventToDisplay { get; set; } = new();
-        public string PriceAndCurrency { get; set; }
+        public string? PriceAndCurrency { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -42,8 +42,6 @@ namespace TicketHive.Client.Pages
             {
                 PriceAndCurrency = CurrencyManager.GetTicketPriceAndCustomerCurrency(user.Country, EventToDisplay.Price);
             }
-
-
         }
 
         private async Task<UserModel?> GetSignedInUser()
@@ -52,7 +50,12 @@ namespace TicketHive.Client.Pages
 
             var userId = authenticationState.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
 
-            return await userService.GetUserByIdAsync(userId);
+            if(userId != null)
+            {
+                return await userService.GetUserByIdAsync(userId!);
+            }
+
+            return null;
         }
 
         public async Task AddToCart()
