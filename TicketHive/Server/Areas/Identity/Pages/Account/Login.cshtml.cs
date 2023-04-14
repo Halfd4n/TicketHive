@@ -42,7 +42,7 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 
 					await CurrencyManager.CurrencyApiCall();
 
-					RedirectToPage("~/index");
+					return Redirect("~/");
 				}
 				else
 				{

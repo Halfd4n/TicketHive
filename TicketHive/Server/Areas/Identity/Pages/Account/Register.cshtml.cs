@@ -48,7 +48,7 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 
 		public async Task<IActionResult> OnPost()
 		{
-			if (ModelState.IsValid && Country.ToString() != "Countries" )
+			if (ModelState.IsValid && Country.ToString() != "Countries")
 			{
 				bool isAvailableUsername = await _userRepository.CheckUsernameAvailability(Username!);
 
@@ -65,16 +65,16 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 						if (signedInUser != null)
 						{
 							await _eventRepository.AddUserToEventDb(signedInUser);
-                        }
+						}
 
 						if (signInResult.Succeeded)
 						{
 							ErrorMessage = "";
 							ModelState.Clear();
 
-                            await CurrencyManager.CurrencyApiCall();
+							await CurrencyManager.CurrencyApiCall();
 
-                            RedirectToPage("~/");
+							return Redirect("~/");
 						}
 					}
 				}
