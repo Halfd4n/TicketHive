@@ -55,7 +55,7 @@ namespace TicketHive.Client.Pages
             return await userService.GetUserByIdAsync(userId);
         }
 
-        public async void AddToCart()
+        public async Task AddToCart()
         {
 
 
@@ -66,7 +66,16 @@ namespace TicketHive.Client.Pages
                 string jsonEvent = JsonConvert.SerializeObject(EventToDisplay);
 
                 await localStorage.SetItemAsStringAsync(EventToDisplay.Id.ToString(), jsonEvent);
+
+                
             }
+            //string script = "$(function() { $('#myModal').modal('show'); });";
+            //Sh.ClientScript.RegisterStartupScript(this.GetType(), "ShowModalScript", script, true);
+        }
+
+        public async Task DeleteEvent()
+        {
+
         }
     }
 }

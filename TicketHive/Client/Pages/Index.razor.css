@@ -3,3 +3,8 @@
 .credentials-page {
     width: 100%;
 }
+
+.theImage {
+    width: 520px !important;
+    height: 420px !important;
+}

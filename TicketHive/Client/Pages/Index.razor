@@ -6,19 +6,61 @@
 @inject NavigationManager navigationManager
 @inject IUserService userService
 @inject IEventService eventService
-@inject AuthenticationStateProvider authenticationStateProvider
+
 
 
 <PageTitle>Index</PageTitle>
 
-<div class="credentials-page d-flex flex-column justify-items-center align-items-center">
-<h1>Welcome to Fantastic Rangers!</h1>
-<h2> Find Your Events Here!</h2>
 
-<h3 class="mt-5">Already a member..?</h3>
-<button @onclick="Login">Login</button>
+@if (userName == null)
+{
+    <div class="credentials-page d-flex flex-column justify-items-center align-items-center" style="padding-bottom:30px;">
+        <img class="theImage" src="images/logos/black.png" alt="Image-error">
+        <h1>Welcome to Fantastic Rangers!</h1>
+        <h2> Find Your Events Here!</h2>
 
-<h3>Else, please register here:</h3>
-<button @onclick="Register">Register</button>
+        <h3 class="mt-5">Already a member..?</h3>
+        <button @onclick="Login">Login</button>
 
-</div>
+        <h3>Else, please register here:</h3>
+        <button @onclick="Register">Register</button>
+
+    </div>
+}
+else
+{
+    <div class="credentials-page d-flex flex-column justify-items-center align-items-center">
+
+        <h1>Welcome!</h1>
+        <h2> @userName </h2>
+    </div>
+}
+
+
+
+
+@code {
+    [Inject]
+    private AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
+    
+    private string? userName { get; set; }
+    
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        var user = authenticationState.User;
+
+        userName = user.Identity.Name;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            
+            userName = user.Identity.Name;
+        }
+    }
+
+}
