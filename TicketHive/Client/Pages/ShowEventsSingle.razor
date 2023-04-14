@@ -1,21 +1,39 @@
 ﻿@page "/allEvents/{id:int}"
 
 @using Blazored.LocalStorage;
+@using Microsoft.AspNetCore.Authorization;
 @using Newtonsoft.Json;
 @using TicketHive.Client.Services;
 @using TicketHive.Shared.Models;
 @inject IEventService eventService;
 @inject ILocalStorageService localStorage;
 @inject NavigationManager navigationManager;
+@attribute [Authorize]
 
-
-
-
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="headbanner d-flex rounded-2 flex-column justify-content-center align-items-center" style="background-image: url('https://localhost:7259/images/event%20images/@EventToDisplay.ImageUrl');">
     <h1 class="model-title"> @EventToDisplay.Name</h1>
     <div class="overlay d-flex flex-column justify-content-center align-items-center">
         <p>@EventToDisplay.Description</p>
-        <h3>@EventToDisplay.StartTime</h3>
+        <h3>@EventToDisplay.StartTime --- @EventToDisplay.EndTime</h3>
         <p>@EventToDisplay.Price (Insert currency)</p>
 
         @*Check if tickets are available else make button not function *@
@@ -31,7 +49,31 @@
 
             }else
             {
-                <button class="rounded-2 btn-success my-2" @onclick="AddToCart"> Add to Cart </button>
+                @*Modal*@
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Your item has been added to the cart!
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                <button class=" rounded-2 btn-success my-2" data-toggle="modal" data-target="#myModal" @onclick="AddToCart"> Add to Cart </button>
+
+                       
+
             }
         }
         else
@@ -39,11 +81,14 @@
             <button class="rounded-2 btn-danger disabled"> Event sold out! </button>
 
         }
+                <AuthorizeView Roles="Admin">
+                    <Authorized>
+                        <button class="rounded-2 btn-outline-danger my-2" @onclick="DeleteEvent"> Delete </button>
+
+                    </Authorized>
+                </AuthorizeView>
     </div>
 </div>
-
-
-
 
 
 

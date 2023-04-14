@@ -1,5 +1,6 @@
 ﻿@page "/allevents"
 @using Newtonsoft.Json;
+@using System.Diagnostics;
 @using TicketHive.Client.Services;
 @using TicketHive.Server.Enums;
 @using TicketHive.Shared.Enums;
@@ -20,12 +21,8 @@
                 <div class="d-flex flex-column justify-content-center align-items-center mb-5">
                     <p>Search Event</p>
                     <p>Press Enter</p>
-                    <input type="text" @bind-value="@searchInput" @oninput="FilterList" />
+                    <input type="text" @oninput="@((ChangeEventArgs e) => FilterList(e.Value.ToString()))" />
                 </div>
-
-
-
-
 
                 <div class="d-flex flex-row ">
                     <select class="TestEnums " @bind="eventType">
@@ -36,8 +33,6 @@
                         }
                     </select>
                 </div>
-
-
             </div>
            
 
@@ -48,11 +43,37 @@
 
             <div class="AllCards d-flex flex-wrap row-cols-5 overflow-scroll justify-content-center scrollable-div" style="height: 600px; overflow: scroll; scroll-behavior: smooth;">
 
-                @if (searchInput == null)
+
+                @if(filteredEvents != null && filteredEvents.Any())
                 {
-                    @foreach (var card in TestEvents)
+                    @foreach(var card in filteredEvents)
                     {
                         <div class="test d-flex flex-column flex-wrap  mx-5 mb-5 justify-content-center align-items-center rounded-2" style="background-image: url('https://localhost:7259/images/event%20images/@card.ImageUrl');">
+                            <div class="d-flex flex-wrap align-items-center justify-content-center">
+                                <h1 class="CardTitle-name text-wrap">@card.Name</h1>
+
+
+                            </div>
+                            <div class="EventCard d-flex flex-column border-2 justify-content-center align-content-end">
+                                <button class="TheButton rounded-1" @onclick="(() => NavigateToEvent(card.Id))">More info</button>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <h1>No events found...</h1>
+                }
+
+@*                @if (searchInput == null || searchInput == "" )
+                {
+                    @foreach (var card in filteredEvents)
+                    {
+
+
+                    }
+
+                }                        <div class="test d-flex flex-column flex-wrap  mx-5 mb-5 justify-content-center align-items-center rounded-2" style="background-image: url('https://localhost:7259/images/event%20images/@card.ImageUrl');">
                             <div class="d-flex flex-wrap align-items-center justify-content-center">
                                 <h1 class="CardTitle-name text-wrap">@card.Name</h1>
                                 
@@ -63,13 +84,9 @@
                             </div>
 
                         </div>
-
-                    }
-
-                }
                 else
                 {
-                    @foreach (var card in filteredModel.Where(e => e.Name.Contains(searchInput, StringComparison.OrdinalIgnoreCase)))
+                    @foreach (var card in filteredEvents)
                     {
 
                         <div class="test d-flex flex-column flex-wrap  mx-5 mb-5 justify-content-center align-items-center rounded-2" style="background-image: url('https://localhost:7259/images/event%20images/@card.ImageUrl');">
@@ -83,7 +100,7 @@
 
                         </div>
                     }
-                }
+                }*@
 
 
             </div>
@@ -121,7 +138,6 @@
 
 
 @code {
-
     private async Task NavigateToEvent(int eventId)
     {
 
@@ -130,24 +146,22 @@
 
     private EventType eventType { get; set; }
     private Country countries { get; set; }
-    private string? searchInput;
-    private List<EventModel> filteredModel => TestEvents
-    .Where(e => string.IsNullOrEmpty(searchInput) || e.Name.Contains(searchInput, StringComparison.OrdinalIgnoreCase))
-    .Where(e => eventType == EventType.EventType || e.EventType == eventType)
-    .ToList();
-    List<EventModel> TestEvents = new();
+    private string? searchInput = "";
+    private List<EventModel> allEvents = new();
+    private List<EventModel> filteredEvents = new();
 
-    private void FilterList()
+    private void FilterList(string searchTerm)
     {
-        StateHasChanged();
+        Console.WriteLine(searchTerm);
+
+        filteredEvents = allEvents.Where(e => e.Name.ToLower().Contains(searchTerm.ToLower())).ToList();
+        //StateHasChanged();
     }
 
     protected override async Task OnInitializedAsync()
     {
-        
-           TestEvents = await eventService.GetEventsAsync();
-        
-        
+        allEvents = await eventService.GetEventsAsync();
+        filteredEvents = allEvents;
     }
 
 }
