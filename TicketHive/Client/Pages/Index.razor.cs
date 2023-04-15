@@ -9,6 +9,8 @@ public partial class Index
     public string? SignedInUsersId { get; set; }
     public List<BookingModel>? SignedInUsersBookings { get; set; } = new();
     public List<EventModel>? AllEventsInDb { get; set; } = new();
+    public List<EventModel> AllEventsButBooked { get; set; } = new();
+    public List<int> uniqueNumbers { get; set; } = new();
     public List<EventModel> RandomEvents { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
@@ -31,12 +33,30 @@ public partial class Index
 
                 AllEventsInDb = await eventService.GetEventsAsync();
 
+                foreach (EventModel eventModel in AllEventsInDb)
+                {
+                    if (!SignedInUsersBookings.Any(b => b.EventId == eventModel.Id))
+                    {
+                        AllEventsButBooked.Add(eventModel);
+                    }
+                }
+
                 Random random = new Random();
 
-                for (int i = 0; i < 5; i++)
+                while (uniqueNumbers.Count < 5)
                 {
-                    int randomIndex = random.Next(AllEventsInDb.Count);
-                    EventModel randomEvent = AllEventsInDb[randomIndex];
+                    int randomIndex = random.Next(AllEventsButBooked.Count);
+
+                    if (!uniqueNumbers.Contains(randomIndex))
+                    {
+                        uniqueNumbers.Add(randomIndex);
+                    }
+                }
+
+                foreach (int number in uniqueNumbers)
+                {
+                    EventModel randomEvent = AllEventsButBooked[number];
+
                     RandomEvents.Add(randomEvent);
                 }
             }
