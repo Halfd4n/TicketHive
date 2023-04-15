@@ -96,5 +96,11 @@ namespace TicketHive.Client.Pages
 
             navigationManager.NavigateTo("/allevents");
         }
+
+        public void NavigateToAllEvents()
+        {
+            IsShowingModal = false;
+            navigationManager.NavigateTo("/allevents");
+        }
     }
 }

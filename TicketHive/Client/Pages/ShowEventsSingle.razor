@@ -59,13 +59,14 @@
         }
         else
         {
-            <button class="rounded-2 btn-danger disabled">Event sold out!</button>
+            <button class="rounded-2">Event sold out!</button>
         }
         <AuthorizeView Roles="Admin">
             <Authorized>
                 <button title="Delete event" class="rounded-2 btn-outline-danger my-2" @onclick="ShowModal"> Delete </button>
             </Authorized>
         </AuthorizeView>
+        <button class="rounded-2" style="background-color:#fbe89c" @onclick="(() => NavigateToAllEvents())">Go back</button>
     </div>
 </div>
 
