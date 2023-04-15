@@ -22,10 +22,10 @@
                     <button class="rounded-2" style="background-color:#fbe89c" @onclick="FilterOrderByPrice">OrderBy price </button>
                     <button class="rounded-2" style="background-color:#fbe89c" @onclick="FilterOrderByDate">OrderBy Date </button>
 
-                </div>
+             </div>
 
                 @*this filter Whether ur search on name,location and event*@
-                <div class="d-flex flex-column justify-content-center align-items-center mb-5">
+            <div class="d-flex flex-column justify-content-center align-items-center mb-5">
                     <p>Search Event</p>
                     <p>Press Enter</p>
                     <input class="yellow-border yellow-hover p-2" placeholder="Search event" type="text" @oninput="@((ChangeEventArgs e) => FilterList(e.Value.ToString()))" />
@@ -58,7 +58,7 @@
 
 
             </div>
-
+            </div>
 
         </div>
     </Authorized>
