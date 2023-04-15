@@ -26,17 +26,17 @@
             <tbody>
             @foreach(var eventModel in MyTickets)
             {
-               <tr>
-                   <th scope="row">@eventModel.Id</th>
-                   <td>@eventModel.Name</td>
-                   <td>@eventModel.NumberOfTickets</td>
-                   <td>@(eventModel.Price * eventModel.NumberOfTickets)</td>
-               </tr>
+                <tr>
+                    <th scope="row">@eventModel.Id</th>
+                    <td>@eventModel.Name</td>
+                    <td>@eventModel.NumberOfTickets</td>
+                    <td>@GetTotalCost(GetTicketCost(eventModel), eventModel.NumberOfTickets) @GetCurrencyLabel()</td>
+                </tr>
             }
                <tr>
                    <th scope="row">Total cost:</th>
                    <td colspan="2"></td>
-                   <td>@TotalCost</td>
+                   <td>@FinalCost @GetCurrencyLabel()</td>
                </tr>
             </tbody>
         </table>

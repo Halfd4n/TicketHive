@@ -1,5 +1,6 @@
 using TicketHive.Shared.Models;
 using Newtonsoft.Json;
+using TicketHive.Client.Managers;
 
 namespace TicketHive.Client.Pages;
 
@@ -9,7 +10,9 @@ public partial class CheckoutPage
     public List<EventModel>? AllEvents { get; set; } = new();
     public decimal TotalCost { get; set; }
     public UserModel? SignedInUser { get; set; } = new();
-    
+    public decimal PricePerTicket { get; set; }
+    public decimal FinalCost { get; set; }
+
     protected async override Task OnInitializedAsync()
     {
         AllEvents = await _eventService.GetEventsAsync();
@@ -19,13 +22,13 @@ public partial class CheckoutPage
             await CheckShoppingCartContent();
         }
 
-        CalculateTotalCost();
-
         var authenticationState = await _authentication.GetAuthenticationStateAsync();
 
         var userId = authenticationState.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
 
         SignedInUser = await _userService.GetUserByIdAsync(userId);
+
+        GetFinalCost();
 
     }
 
@@ -44,6 +47,21 @@ public partial class CheckoutPage
         }
     }
 
+    private decimal GetTicketCost(EventModel eventModel)
+    {
+        return PricePerTicket = CurrencyManager.GetConvertedTicketPrice(SignedInUser!.Country, eventModel.Price);
+    }
+
+    private string GetCurrencyLabel()
+    {
+        return CurrencyManager.GetCurrencyAbbreviation(SignedInUser!.Country);
+    }
+
+    private decimal GetTotalCost(decimal price, int numberOfTickets)
+    {
+        return (decimal)(price * numberOfTickets);
+    }
+
     private async Task ConfirmPurchase()
     {
         foreach(EventModel eventModel in MyTickets)
@@ -56,11 +74,11 @@ public partial class CheckoutPage
         _navigation.NavigateTo("/confirmed");
     }
 
-    private void CalculateTotalCost()
+    private void GetFinalCost()
     {
         foreach(EventModel eventModel in MyTickets)
         {
-            TotalCost += (eventModel.Price * eventModel.NumberOfTickets);
+            FinalCost += (GetTicketCost(eventModel) * eventModel.NumberOfTickets);
         }
     }
 

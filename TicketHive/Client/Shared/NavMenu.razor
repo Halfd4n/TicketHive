@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using TicketHive.Client.Services;
-@inject NavigationManager Navigation
+@inject NavigationManager _navigation
 @inject AuthenticationStateProvider authenticationStateProvider
 @inject IUserService _service
 @attribute [Authorize(Roles = "Admin")]
@@ -49,10 +49,9 @@
          </AuthorizeView>
         <AuthorizeView Roles="Admin">
             <Authorized>
-
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="OOF">
-                        <span class="oi oi-cog" aria-hidden="true"></span> Admin
+                    <NavLink class="nav-link" title="Admin page">
+                        <button class="btn text-decorationd-lg-none text-white" @onclick="NavigateToAdmin"><i class="fa-solid fa-right-from-bracket me-3" style="color: #fbe89c"></i>Admin</button>
                     </NavLink>
                 </div>
             </Authorized>
@@ -61,20 +60,5 @@
 </div>
 
 @code {
-    private async Task<bool> IsUserInRole(string role)
-    {
-        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        return user.IsInRole(role);
-    }
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
 
 }
