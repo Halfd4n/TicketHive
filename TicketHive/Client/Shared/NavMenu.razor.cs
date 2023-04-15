@@ -8,7 +8,7 @@ public partial class NavMenu
 
     private void BeginLogOut()
     {
-        Navigation.NavigateToLogout("authentication/logout");
+        Navigation.NavigateToLogout("authentication/logout", "");
     }
 
     private async Task NavigateToSettings()
@@ -18,7 +18,7 @@ public partial class NavMenu
         var userId = authenticationState.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
 
         UserModel? user = await _service.GetUserByIdAsync(userId);
-        
+
 
         if (user != null)
         {
