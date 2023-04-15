@@ -8,10 +8,7 @@
 @inject IUserService userService
 @inject IEventService eventService
 
-
-
 <PageTitle>Home</PageTitle>
-
 
 @if (UserName == null)
 {
@@ -25,7 +22,6 @@
 
         <h3>Else, please register here:</h3>
         <button @onclick="Register">Register</button>
-
     </div>
 }
 else
@@ -34,8 +30,32 @@ else
         <img class="theImage" src="images/logos/black.png" alt="Image-error">
         <h1>Welcome!</h1>
         <h2> @UserName </h2>
-
-        <p class="text-danger">Show my booked events...</p>
     </div>
+
+    @if (SignedInUsersBookedEvents.Count > 0)
+    {
+        <span>
+            <div>
+                <h1 class="text-decoration-underline">Your events</h1>
+            </div>
+            @foreach (EventModel eventModel in SignedInUsersBookedEvents)
+            {
+                <div class="m-5">
+                    <div>
+                        <h3>@eventModel.Name</h3>
+                    </div>
+                    <div>
+                        <button class="TheButton rounded-1" @onclick="(() => NavigateToEvent(eventModel.Id))">More info</button>
+                    </div>
+                </div>
+            }
+        </span>
+    }
 }
 
+@code{
+    private async Task NavigateToEvent(int eventId)
+	{
+		navigationManager.NavigateTo($"/allEvents/{eventId}");
+	}
+}
