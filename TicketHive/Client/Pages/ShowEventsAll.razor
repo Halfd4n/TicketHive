@@ -18,21 +18,19 @@
             <div class="d-flex flex-row justify-content-center align-items-center">
 
 
+                <div class="d-flex flex-row justify-content-end p-3 mt-5">
+                    <button class="" @onclick="FilterOrderByPrice">OrderBy price </button>
+                    <button class="" @onclick="FilterOrderByDate">OrderBy Date </button>
+
+                </div>
+
+                @*this filter Whether ur search on name,location and event*@
                 <div class="d-flex flex-column justify-content-center align-items-center mb-5">
                     <p>Search Event</p>
                     <p>Press Enter</p>
                     <input type="text" @oninput="@((ChangeEventArgs e) => FilterList(e.Value.ToString()))" />
                 </div>
 
-                <div class="d-flex flex-row ">
-                    <select class="TestEnums " @bind="eventType">
-                        <option value="">-- Select an event type --</option>
-                        @foreach (String TypeOfEvent in Enum.GetNames(typeof(EventType)))
-                        {
-                            <option value="@TypeOfEvent">@TypeOfEvent</option>
-                        }
-                    </select>
-                </div>
             </div>
            
 
@@ -63,44 +61,7 @@
                 else
                 {
                     <h1>No events found...</h1>
-                }
-
-@*                @if (searchInput == null || searchInput == "" )
-                {
-                    @foreach (var card in filteredEvents)
-                    {
-
-
-                    }
-
-                }                        <div class="test d-flex flex-column flex-wrap  mx-5 mb-5 justify-content-center align-items-center rounded-2" style="background-image: url('https://localhost:7259/images/event%20images/@card.ImageUrl');">
-                            <div class="d-flex flex-wrap align-items-center justify-content-center">
-                                <h1 class="CardTitle-name text-wrap">@card.Name</h1>
-                                
-
-                            </div>
-                            <div class="EventCard d-flex flex-column border-2 justify-content-center align-content-end">
-                                <button class="TheButton rounded-1" @onclick="(() => NavigateToEvent(card.Id))">More info</button>
-                            </div>
-
-                        </div>
-                else
-                {
-                    @foreach (var card in filteredEvents)
-                    {
-
-                        <div class="test d-flex flex-column flex-wrap  mx-5 mb-5 justify-content-center align-items-center rounded-2" style="background-image: url('https://localhost:7259/images/event%20images/@card.ImageUrl');">
-                            <div class="d-flex flex-wrap align-items-center justify-content-center">
-                                <h1 class="CardTitle-name text-wrap">@card.Name</h1>
-
-                            </div>
-                            <div class="EventCard d-flex flex-column border-2 justify-content-center align-content-end">
-                                <button class="TheButton rounded-1" @onclick="(() => NavigateToEvent(card.Id))">More info</button>
-                            </div>
-
-                        </div>
-                    }
-                }*@
+                }               
 
 
             </div>
@@ -144,24 +105,45 @@
         navigationManager.NavigateTo($"/allEvents/{eventId}");
     }
 
-    private EventType eventType { get; set; }
+    private EventType eventType = EventType.EventType;
     private Country countries { get; set; }
-    private string? searchInput = "";
     private List<EventModel> allEvents = new();
     private List<EventModel> filteredEvents = new();
 
     private void FilterList(string searchTerm)
     {
-        Console.WriteLine(searchTerm);
 
-        filteredEvents = allEvents.Where(e => e.Name.ToLower().Contains(searchTerm.ToLower())).ToList();
-        //StateHasChanged();
+        if (string.IsNullOrEmpty(searchTerm))
+        {
+            filteredEvents = allEvents;
+        }
+        else
+        {
+            filteredEvents = allEvents.Where(e => e.Name.ToLower().Contains(searchTerm.ToLower())
+                        || e.EventType.ToString().ToLower().Contains(searchTerm.ToLower())
+                        || e.Location.ToLower().Contains(searchTerm.ToLower())).ToList();
+        }
+
+
     }
+
+    private void FilterOrderByPrice()
+    {
+        filteredEvents = allEvents.
+        OrderByDescending(e => e.Price).ToList();
+    }
+    private void FilterOrderByDate()
+    {
+        filteredEvents = allEvents.
+        OrderByDescending(e => e.StartTime).ToList();
+    }
+
 
     protected override async Task OnInitializedAsync()
     {
         allEvents = await eventService.GetEventsAsync();
         filteredEvents = allEvents;
+        
     }
 
 }
