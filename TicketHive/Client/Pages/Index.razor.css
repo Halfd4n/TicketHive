@@ -8,3 +8,36 @@
     width: 520px !important;
     height: 420px !important;
 }
+
+.MainCard {
+    width: 20rem;
+    border: solid;
+    border-color: black;
+    background-image: linear-gradient(245deg, rgb( 251, 232, 156) 20%, rgb(48, 80, 118) 60%);
+}
+
+.yellow-border {
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb( 251, 232, 156);
+}
+
+.blue-border {
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb(48, 80, 118);
+}
+
+.blue-hover:hover {
+    box-shadow: 0 0 5px rgb(48, 80, 118), 0 0 10px rgb(48, 80, 118), 0 0 15px rgb(48, 80, 118), 0 0 20px rgb(48, 80, 118);
+    transform: translate(-1);
+    background: rgb(48, 80, 118);
+    font-weight: bold;
+}
+
+.yellow-hover:hover {
+    box-shadow: 0 0 5px rgb( 251, 232, 156), 0 0 10px rgb( 251, 232, 156), 0 0 15px rgb( 251, 232, 156), 0 0 20px rgb( 251, 232, 156);
+    transform: translate(-1px);
+    background: rgb( 251, 232, 156);
+    font-weight: bold;
+}
