@@ -28,7 +28,7 @@
                 <div class="d-flex flex-column justify-content-center align-items-center mb-5">
                     <p>Search Event</p>
                     <p>Press Enter</p>
-                    <input type="text" @oninput="@((ChangeEventArgs e) => FilterList(e.Value.ToString()))" />
+                    <input class="yellow-border yellow-hover p-2" placeholder="Search event" type="text" @oninput="@((ChangeEventArgs e) => FilterList(e.Value.ToString()))" />
                 </div>
 
             </div>
