@@ -42,11 +42,31 @@ else
         <h2> @UserName </h2>
     </div>
 
+    <div>
+        <div>
+            <h1 class="text-center text-decoration-underline">Explore!</h1>
+        </div>
+        @foreach (EventModel eventModel in RandomEvents)
+        {
+            <div class="m-3 text-center">
+                <div>
+                    <h3>@eventModel.Name</h3>
+                </div>
+
+                <div>
+                    <button class="TheButton rounded-1" @onclick="(() => NavigateToEvent(eventModel.Id))">More info</button>
+                    <p class="text-center">__________</p>
+                </div>
+
+            </div>
+        }
+    </div>
+
     @if (SignedInUsersBookings.Count > 0)
     {
-        <span>
+        <div>
             <div>
-                <h1 class="text-center text-decoration-underline">Your events</h1>
+                <h1 class="text-center text-decoration-underline">Your events!</h1>
             </div>
             @foreach (BookingModel booking in SignedInUsersBookings)
             {
@@ -70,7 +90,7 @@ else
                     }
                 </div>
             }
-        </span>
+        </div>
     }
 }
 
