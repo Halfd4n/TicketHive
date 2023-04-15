@@ -12,7 +12,7 @@
 <h1>ADMIN PAGE</h1>
 <p> TODO: implement admin page</p>
 
- <EditForm Model="@newEvent" OnValidSubmit="@AddEvent">
+<EditForm Model="@newEvent" OnValidSubmit="@AddEvent">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -76,6 +76,16 @@
 
 </EditForm>
 
+<select @bind="selectedId">
+    @if (allEvents != null){
+        foreach (var item in allEvents){
+            <option value="@item.Id">@item.Name</option>
+        }
+    }
+</select>
+
+<button @onclick="() => DeleteEvent(selectedId)">Delete event</button>
+
 
 
 
@@ -86,6 +96,7 @@
     private EventType eventType { get; set; } = new();
     private bool showAlert = false;
     private string alertMessage;
+    private int selectedId;
     private string alertType;
 
 
@@ -93,17 +104,6 @@
 
         allEvents = await eventService.GetEventsAsync();
     }
-
-
-
-
-    //    protected override async Task OnInitializedAsync()
-    //    {
-    //        allEvents = await EventService.GetEventsAsync();
-    //    }
-
-
-
 
     private async Task AddEvent(){
 
@@ -128,8 +128,12 @@
 
     }
 
-    private Task DeleteEvent(object o){
-        throw new NotImplementedException();
+    private async Task DeleteEvent(int id){
+        showAlert = true;
+        alertMessage = "The event has been deleted!";
+        alertType = "Warning";
+        await eventService.DeleteEventAsync(id);
+        allEvents.RemoveAll(item => item.Id == id);
     }
 
 }
