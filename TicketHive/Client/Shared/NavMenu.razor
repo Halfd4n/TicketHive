@@ -9,7 +9,7 @@
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">TicketHive</a>
+        <a class="navbar-brand TicketHiveYellow" href=""><img class="theImage mx-3" src="images/logos/yellow only logo.png" alt="Image-error"> TicketHive</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -20,29 +20,29 @@
     <nav class="flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" Match="NavLinkMatch.All">
-                <button class="btn text-decoration-none text-white" @onclick="NavigateToHome"><i class="fa-solid fa-house-chimney me-2" style="color: #fbe89c"></i>Home</button>
+                <button class="btn text-decoration-none TicketHiveYellow" @onclick="NavigateToHome"><i class="fa-solid fa-house-chimney me-2"</i>Home</button>
             </NavLink>
         </div>
         <AuthorizeView>
             <Authorized>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link">
-                        <button class="btn text-decoration-none text-white" @onclick="NavigateToAllEvents"><i class="fa-solid fa-ticket me-2" style="color: #fbe89c"></i>Events</button>
+                        <button class="btn text-decoration-none TicketHiveYellow" @onclick="NavigateToAllEvents"><i class="fa-solid fa-ticket me-2"></i>Events</button>
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link">
-                        <button class="btn text-decoration-none text-white" @onclick="NavigateToShoppingCart"><i class="fa-solid fa-cart-shopping me-2" style="color: #fbe89c"></i>Shopping cart</button>
+                        <button class="btn text-decoration-none TicketHiveYellow" @onclick="NavigateToShoppingCart"><i class="fa-solid fa-cart-shopping me-2"></i>Shopping cart</button>
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
                     <NavLink title="My settings" class="nav-link">
-                        <button class="btn text-decoration-none text-white" @onclick="NavigateToSettings"><i class="fa-solid fa-gears me-3" style="color: #fbe89c"></i>Settings</button>
+                        <button class="btn text-decoration-none TicketHiveYellow" @onclick="NavigateToSettings"><i class="fa-solid fa-gears me-3"></i>Settings</button>
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" title="Log out">
-                        <button class="btn text-decorationd-lg-none text-white" @onclick="BeginLogOut"><i class="fa-solid fa-right-from-bracket me-3" style="color: #fbe89c"></i>Log out</button>
+                        <button class="btn text-decorationd-lg-none TicketHiveYellow" @onclick="BeginLogOut"><i class="fa-solid fa-right-from-bracket me-3"></i>Log out</button>
                     </NavLink>
                 </div>
             </Authorized>
@@ -51,14 +51,10 @@
             <Authorized>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" title="Admin page">
-                        <button class="btn text-decorationd-lg-none text-white" @onclick="NavigateToAdmin"><i class="fa-solid fa-right-from-bracket me-3" style="color: #fbe89c"></i>Admin</button>
+                        <button class="btn text-decorationd-lg-none TicketHiveYellow" @onclick="NavigateToAdmin"><i class="fa-solid fa-right-from-bracket me-3"></i>Admin</button>
                     </NavLink>
                 </div>
             </Authorized>
         </AuthorizeView>
     </nav>
 </div>
-
-@code {
-
-}
