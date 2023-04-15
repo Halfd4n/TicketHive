@@ -6,9 +6,10 @@ public partial class Index
 {
 
     public string? UserName { get; set; }
-    public string SignedInUsersId { get; set; }
-    public List<BookingModel> SignedInUsersBookings { get; set; } = new();
-    public List<EventModel> AllEventsInDb { get; set; } = new();
+    public string? SignedInUsersId { get; set; }
+    public List<BookingModel>? SignedInUsersBookings { get; set; } = new();
+    public List<EventModel>? AllEventsInDb { get; set; } = new();
+    public List<EventModel> RandomEvents { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -29,6 +30,15 @@ public partial class Index
                 SignedInUsersBookings = userModel.Bookings;
 
                 AllEventsInDb = await eventService.GetEventsAsync();
+
+                Random random = new Random();
+
+                for (int i = 0; i < 5; i++)
+                {
+                    int randomIndex = random.Next(AllEventsInDb.Count);
+                    EventModel randomEvent = AllEventsInDb[randomIndex];
+                    RandomEvents.Add(randomEvent);
+                }
             }
         }
 
@@ -43,5 +53,10 @@ public partial class Index
     private void Register()
     {
         navigationManager.NavigateTo("authentication/register");
+    }
+
+    private void NavigateToEvent(int eventId)
+    {
+        navigationManager.NavigateTo($"/allEvents/{eventId}");
     }
 }
