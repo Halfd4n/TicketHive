@@ -44,4 +44,9 @@ public partial class Index
     {
         navigationManager.NavigateTo("authentication/register");
     }
+
+    private void NavigateToEvent(int eventId)
+    {
+        navigationManager.NavigateTo($"/allEvents/{eventId}");
+    }
 }
