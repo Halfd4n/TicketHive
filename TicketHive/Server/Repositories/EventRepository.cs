@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using TicketHive.Server.Data;
 using TicketHive.Server.Models;
 using TicketHive.Shared.Models;
@@ -28,7 +29,7 @@ public class EventRepository : IEventRepository
 		_mainDbContext.SaveChanges();
 	}
 
-	public async Task DeleteEventAsync(int eventId)
+	public async Task<bool> DeleteEventAsync(int eventId)
 	{
 		var eventToDelete = await GetEventAsync(eventId);
 
@@ -37,7 +38,11 @@ public class EventRepository : IEventRepository
 			_mainDbContext.Events.Remove(eventToDelete);
 
 			await _mainDbContext.SaveChangesAsync();
+
+			return true;
 		}
+
+		return false;
 	}
 
 	public async Task<EventModel?> GetEventAsync(int eventId)
@@ -66,7 +71,9 @@ public class EventRepository : IEventRepository
 			_mainDbContext.Add(eventModel);
 
 			await _mainDbContext.SaveChangesAsync();
+
 		}
+
 	}
 
 	public async Task BookEventAsync(string userId, int eventId, int quantity)

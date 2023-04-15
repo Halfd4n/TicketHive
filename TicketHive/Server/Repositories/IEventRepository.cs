@@ -7,7 +7,7 @@ public interface IEventRepository
 {
 	Task<EventModel?> GetEventAsync(int eventId);
 	Task<List<EventModel>?> GetEventsAsync();
-	Task DeleteEventAsync(int eventId);
+	Task<bool> DeleteEventAsync(int eventId);
 	Task AddUserToEventDb(ApplicationUser user);
 	Task AddEventAsync(EventModel eventModel);
 	Task BookEventAsync(string userId, int eventId, int quantity);

@@ -41,11 +41,18 @@ namespace TicketHive.Server.Controllers
 		{
 		}
 
-		// DELETE api/<EventsController>/5
 		[HttpDelete("{id}")]
-		public async Task DeleteEventAsync(int id)
+		public async Task<ActionResult<string>> DeleteEventAsync(int id)
 		{
-			await eventRepository.DeleteEventAsync(id);
+			bool isSuccessfulDelete = await eventRepository.DeleteEventAsync(id);
+
+			if (isSuccessfulDelete)
+			{
+				string successMessage = "Event was successfully removed from the database";
+				return Ok(successMessage);
+			}
+
+			return BadRequest();
 		}
 
 		[HttpPost("{userId}/{parameters}")]

@@ -12,6 +12,27 @@
 @inject NavigationManager navigationManager;
 @attribute [Authorize]
 
+<div class="ModalContainer justify-content-center">
+    @if (IsShowingModal)
+    {
+        <div class="modal fade show d-block border border-3 border-dark" id="delete-modal" tabindex="-1" role="dialog" aria-modal="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content TicketHiveTheme">
+                    <div class="modal-header">
+                        <h5 class="mt-2 text-black"><i class="fa-solid fa-trash me-3"></i>Delete event:</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-black p-2">Are you sure you want to delete "@EventToDisplay.Name"? This action can't be reversed.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button title="Delete event" class="btn btn-outline-danger me-1 my-1" @onclick="() => DeleteEvent(EventToDisplay)">Delete</button>
+                        <button title="Abort deleting event and close this window" class="btn btn-outline-info" @onclick="CloseModal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
 
 <div class="headbanner d-flex rounded-2 flex-column justify-content-center align-items-center" style="background-image: url('https://localhost:7259/images/event%20images/@EventToDisplay.ImageUrl');">
     <h1 class="model-title"> @EventToDisplay.Name</h1>
@@ -40,19 +61,13 @@
         {
             <button class="rounded-2 btn-danger disabled">Event sold out!</button>
         }
-                <AuthorizeView Roles="Admin">
-                    <Authorized>
-                        <button class="rounded-2 btn-outline-danger my-2" @onclick="DeleteEvent"> Delete </button>
-
-                    </Authorized>
-                </AuthorizeView>
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+                <button title="Delete event" class="rounded-2 btn-outline-danger my-2" @onclick="ShowModal"> Delete </button>
+            </Authorized>
+        </AuthorizeView>
     </div>
 </div>
-
-
-
-
-
 
 
 

@@ -42,7 +42,7 @@ public partial class Index
             }
         }
 
-        CurrencyManager.CurrencyApiCall();
+        //CurrencyManager.CurrencyApiCall();
     }
 
     private void Login()

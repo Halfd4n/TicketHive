@@ -28,10 +28,13 @@ namespace TicketHive.Client.Pages
     {
         [Parameter]
         public int Id { get; set; }
-        public int DesiredNoOfTickets { get; set; }
-        public EventModel? EventToDisplay { get; set; } = new();
-        public decimal Price { get; set; }
-        public string? CurrencyCode { get; set; }
+        private int DesiredNoOfTickets { get; set; }
+        private EventModel? EventToDisplay { get; set; } = new();
+        private decimal Price { get; set; }
+        private string? CurrencyCode { get; set; }
+
+        private bool IsShowingModal { get; set; }
+        private bool SuccessfullDelete { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -70,13 +73,28 @@ namespace TicketHive.Client.Pages
 
                 await localStorage.SetItemAsStringAsync(EventToDisplay.Id.ToString(), jsonEvent);                
             }
-            //string script = "$(function() { $('#myModal').modal('show'); });";
-            //Sh.ClientScript.RegisterStartupScript(this.GetType(), "ShowModalScript", script, true);
         }
 
-        public async Task DeleteEvent()
+        public void ShowModal()
         {
 
+            IsShowingModal = true;
+            StateHasChanged();
+        }
+
+        public void CloseModal()
+        {
+            IsShowingModal = false;
+            StateHasChanged();
+        }
+
+        public async Task DeleteEvent(EventModel eventModel)
+        {
+            SuccessfullDelete = await eventService.DeleteEventAsync(eventModel.Id);
+
+            IsShowingModal = false;
+
+            navigationManager.NavigateTo("/allevents");
         }
     }
 }

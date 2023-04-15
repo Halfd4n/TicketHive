@@ -1,4 +1,8 @@
 ﻿
+MainContainer {
+    width: 95% !important;
+    height: 90% !important;
+}
 
 /*div with the button that will show up when hovered*/
 .EventCard {
