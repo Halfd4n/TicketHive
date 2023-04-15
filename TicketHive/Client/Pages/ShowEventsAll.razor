@@ -10,7 +10,6 @@
 @inject NavigationManager navigationManager;
 @inject ILocalStorageService localStorage;
 
-
 <AuthorizeView>
     <Authorized>
         <div class="TheBigContainer d-flex flex-column justify-content-center align-items-center">
@@ -23,12 +22,6 @@
                 </div>
             </div>
            
-
-
-
-
-
-
             <div class="AllCards d-flex flex-wrap row-cols-5 overflow-scroll justify-content-center scrollable-div" style="height: 600px; overflow: scroll; scroll-behavior: smooth;">
 
 
@@ -68,73 +61,3 @@
         </div>
     </NotAuthorized>
 </AuthorizeView>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@code {
-    private async Task NavigateToEvent(int eventId)
-    {
-
-        navigationManager.NavigateTo($"/allEvents/{eventId}");
-    }
-
-    private EventType eventType = EventType.EventType;
-    private Country countries { get; set; }
-    private List<EventModel> allEvents = new();
-    private List<EventModel> filteredEvents = new();
-
-    private void FilterList(string searchTerm)
-    {
-
-        if (string.IsNullOrEmpty(searchTerm))
-        {
-            filteredEvents = allEvents;
-        }
-        else
-        {
-            filteredEvents = allEvents.Where(e => e.Name.ToLower().Contains(searchTerm.ToLower())
-                        || e.EventType.ToString().ToLower().Contains(searchTerm.ToLower())
-                        || e.Location.ToLower().Contains(searchTerm.ToLower())
-                        || e.Price.ToString().Contains(searchTerm.ToLower())).ToList();
-        }
-
-
-    }
-
-    private void FilterOrderByPrice()
-    {
-        filteredEvents = allEvents.
-        OrderByDescending(e => e.Price).ToList();
-    }
-    private void FilterOrderByDate()
-    {
-        filteredEvents = allEvents.
-        OrderByDescending(e => e.StartTime).ToList();
-    }
-
-
-    protected override async Task OnInitializedAsync()
-    {
-        allEvents = await eventService.GetEventsAsync();
-        filteredEvents = allEvents;
-        
-    }
-
-}
