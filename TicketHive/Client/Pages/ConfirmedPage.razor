@@ -1,5 +1,7 @@
 ﻿@page "/confirmed"
+@using Microsoft.AspNetCore.Authorization;
 @inject NavigationManager _navigation
+@attribute [Authorize]
 
 <div class="MainContainer">
     <div class="row text-center justify-content-center align-self-center mt-2">

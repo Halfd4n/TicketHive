@@ -1,9 +1,11 @@
 ﻿@page "/settings/{id}"
+@using Microsoft.AspNetCore.Authorization;
 @using TicketHive.Client.Services
 @using System.ComponentModel.DataAnnotations;
 @using TicketHive.Server.Enums;
 @inject IUserService _service
 @inject NavigationManager _navigation
+@attribute [Authorize]
 
 <div class="row">
 

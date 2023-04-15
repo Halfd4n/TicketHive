@@ -1,6 +1,7 @@
 ﻿@page "/cart"
 
 @using Blazored.LocalStorage;
+@using Microsoft.AspNetCore.Authorization;
 @using TicketHive.Client.Services;
 @using TicketHive.Shared.Models;
 @inject NavigationManager _navigation
@@ -8,6 +9,7 @@
 @inject AuthenticationStateProvider _authentication
 @inject IEventService _eventService
 @inject IUserService _userService
+@attribute [Authorize]
 
 
 <div class="ContainerForCart">
