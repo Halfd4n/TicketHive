@@ -10,8 +10,8 @@ public partial class Index
 
     public string? UserName { get; set; }
     public string SignedInUsersId { get; set; }
-    public List<BookingModel> SignedInUsersBookings { get; set; }
-    public List<EventModel> SignedInUsersBookedEvents { get; set; }
+    public List<BookingModel> SignedInUsersBookings { get; set; } = new();
+    public List<EventModel> SignedInUsersBookedEvents { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -33,7 +33,9 @@ public partial class Index
 
                 foreach (BookingModel booking in SignedInUsersBookings)
                 {
-                    EventModel eventModel = await eventService.GetEventAsync(booking.EventId);
+                    EventModel eventModel = new(); // !!!*******************************************************************
+
+                    eventModel = await eventService.GetEventAsync(booking.EventId);
 
                     SignedInUsersBookedEvents.Add(eventModel);
                 }
