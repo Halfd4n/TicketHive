@@ -40,8 +40,6 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 				{
 					InvalidCredentials = null;
 
-					await CurrencyManager.CurrencyApiCall();
-
 					return Redirect("~/");
 				}
 				else

@@ -72,8 +72,6 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 							ErrorMessage = "";
 							ModelState.Clear();
 
-							await CurrencyManager.CurrencyApiCall();
-
 							return Redirect("~/");
 						}
 					}

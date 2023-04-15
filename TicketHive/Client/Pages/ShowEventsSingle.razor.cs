@@ -30,7 +30,8 @@ namespace TicketHive.Client.Pages
         public int Id { get; set; }
         public int DesiredNoOfTickets { get; set; }
         public EventModel? EventToDisplay { get; set; } = new();
-        public string? PriceAndCurrency { get; set; }
+        public decimal Price { get; set; }
+        public string? CurrencyCode { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -40,7 +41,8 @@ namespace TicketHive.Client.Pages
 
             if(user != null)
             {
-                PriceAndCurrency = CurrencyManager.GetTicketPriceAndCustomerCurrency(user.Country, EventToDisplay.Price);
+                Price = CurrencyManager.GetConvertedTicketPrice(user.Country, EventToDisplay.Price);
+                CurrencyCode = CurrencyManager.GetCurrencyAbbreviation(user.Country);
             }
         }
 
@@ -60,17 +62,13 @@ namespace TicketHive.Client.Pages
 
         public async Task AddToCart()
         {
-
-
             if(EventToDisplay != null)
             {
                 EventToDisplay.NumberOfTickets = DesiredNoOfTickets;
 
                 string jsonEvent = JsonConvert.SerializeObject(EventToDisplay);
 
-                await localStorage.SetItemAsStringAsync(EventToDisplay.Id.ToString(), jsonEvent);
-
-                
+                await localStorage.SetItemAsStringAsync(EventToDisplay.Id.ToString(), jsonEvent);                
             }
             //string script = "$(function() { $('#myModal').modal('show'); });";
             //Sh.ClientScript.RegisterStartupScript(this.GetType(), "ShowModalScript", script, true);

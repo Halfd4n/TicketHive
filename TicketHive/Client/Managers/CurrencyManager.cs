@@ -9,7 +9,6 @@ public static class CurrencyManager
     public static decimal RateGBP { get; set; }
     public static decimal RateEUR { get; set; }
     public static HttpClient HttpClient { get; set; } = new();
-    public static string PriceAndCurrency { get; set; }
 
     public static async Task CurrencyApiCall()
     {
@@ -31,7 +30,7 @@ public static class CurrencyManager
 
             Root? result = JsonConvert.DeserializeObject<Root>(jsonResponse);
 
-            if(result != null)
+            if (result != null)
             {
                 RateEUR = result.Rates.EUR;
                 RateGBP = result.Rates.GBP;
@@ -43,19 +42,36 @@ public static class CurrencyManager
         }
     }
 
-    public static string GetTicketPriceAndCustomerCurrency(Country customerCountry, decimal ticketPrice)
+    public static decimal GetConvertedTicketPrice(Country customerCountry, decimal ticketPrice)
     {
         if (customerCountry.Equals(Country.Sweden))
         {
-            return PriceAndCurrency = $"{ticketPrice} SEK";
+            return ticketPrice;
         }
         else if (customerCountry.Equals(Country.United_Kingdom))
         {
-            return PriceAndCurrency = $"{Math.Round(ticketPrice * RateGBP), 2} £";
+            return Math.Round(ticketPrice * RateGBP, 2);
         }
         else
         {
-            return PriceAndCurrency = $"{Math.Round(ticketPrice * RateEUR),2} €";
+            return Math.Round(ticketPrice * RateEUR, 2);
         }
     }
+
+    public static string GetCurrencyAbbreviation(Country customerCountry)
+    {
+        if (customerCountry.Equals(Country.Sweden))
+        {
+            return "SEK";
+        }
+        else if (customerCountry.Equals(Country.United_Kingdom))
+        {
+            return "£";
+        }
+        else
+        {
+            return "€";
+        }
+    }
+
 }

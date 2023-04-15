@@ -3,16 +3,17 @@
 @using TicketHive.Server.Enums;
 @using TicketHive.Shared.Enums;
 @using TicketHive.Shared.Models;
+@inject AuthenticationStateProvider authentication
 @inject NavigationManager navigationManager
 @inject IUserService userService
 @inject IEventService eventService
 
 
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Home</PageTitle>
 
 
-@if (userName == null)
+@if (UserName == null)
 {
     <div class="credentials-page d-flex flex-column justify-items-center align-items-center" style="padding-bottom:30px;">
         <img class="theImage" src="images/logos/black.png" alt="Image-error">
@@ -32,35 +33,7 @@ else
     <div class="credentials-page d-flex flex-column justify-items-center align-items-center">
 
         <h1>Welcome!</h1>
-        <h2> @userName </h2>
+        <h2> @UserName </h2>
     </div>
 }
 
-
-
-
-@code {
-    [Inject]
-    private AuthenticationStateProvider AuthenticationStateProvider { get; set; }
-
-    
-    private string? userName { get; set; }
-    
-    
-
-    protected override async Task OnInitializedAsync()
-    {
-        var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-
-        var user = authenticationState.User;
-
-        userName = user.Identity.Name;
-
-        if (user.Identity.IsAuthenticated)
-        {
-            
-            userName = user.Identity.Name;
-        }
-    }
-
-}

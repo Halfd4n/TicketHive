@@ -1,5 +1,7 @@
 using TicketHive.Shared.Models;
 using Newtonsoft.Json;
+using TicketHive.Client.Managers;
+using TicketHive.Client.Services;
 
 namespace TicketHive.Client.Pages
 {
@@ -8,15 +10,19 @@ namespace TicketHive.Client.Pages
         public decimal TotalPrice { get; set; }
         public List<EventModel>? ShoppingCart { get; set; } = new();
         public List<EventModel>? AllEvents { get; set; } = new();
+        public UserModel? SignedInUser { get; set; } = new();
+        public decimal PricePerTicket { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
-            AllEvents = await _service.GetEventsAsync();
+            AllEvents = await _eventService.GetEventsAsync();
 
             if(AllEvents != null)
             {
                 await CheckShoppingCartContent();
             }
+
+            SignedInUser = await GetSignedInUser();
         }
 
         private async Task CheckShoppingCartContent()
@@ -25,16 +31,46 @@ namespace TicketHive.Client.Pages
 
             foreach (EventModel eventModel in AllEvents)
             {
-                string jsonCart = await localStorage.GetItemAsStringAsync(eventModel.Id.ToString());
+                string jsonCart = await _localStorage.GetItemAsStringAsync(eventModel.Id.ToString());
 
                 if (!String.IsNullOrWhiteSpace(jsonCart))
                 {
-                    EventModel eventFromLocal = JsonConvert.DeserializeObject<EventModel>(jsonCart);
+                    EventModel eventFromShoppingCart = JsonConvert.DeserializeObject<EventModel>(jsonCart);
 
-                    ShoppingCart.Add(eventFromLocal);
+                    ShoppingCart.Add(eventFromShoppingCart);
                 }
             }
         }
+
+        private async Task<UserModel?> GetSignedInUser()
+        {
+            var authenticationState = await _authentication.GetAuthenticationStateAsync();
+
+            var userId = authenticationState.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+
+            if (userId != null)
+            {
+                return await _userService.GetUserByIdAsync(userId!);
+            }
+
+            return null;
+        }
+
+        private decimal GetTicketCost(EventModel eventModel)
+        {
+            return PricePerTicket = CurrencyManager.GetConvertedTicketPrice(SignedInUser!.Country, eventModel.Price);
+        }
+
+        private string GetCurrencyLabel()
+        {
+            return CurrencyManager.GetCurrencyAbbreviation(SignedInUser!.Country);
+        }
+
+        private decimal GetTotalCost(decimal price, int numberOfTickets)
+        {
+            return (decimal)(price * numberOfTickets);
+        }
+
 
         private bool AreThereAvailableTickets(EventModel eventModel)
         {
@@ -55,7 +91,7 @@ namespace TicketHive.Client.Pages
 
             string jsonEvent = JsonConvert.SerializeObject(eventModel);
 
-            await localStorage.SetItemAsStringAsync(eventModel.Id.ToString(), jsonEvent);
+            await _localStorage.SetItemAsStringAsync(eventModel.Id.ToString(), jsonEvent);
 
             await CheckShoppingCartContent();
 
@@ -70,7 +106,7 @@ namespace TicketHive.Client.Pages
             {
                 string jsonEvent = JsonConvert.SerializeObject(eventModel);
 
-                await localStorage.SetItemAsStringAsync(eventModel.Id.ToString(), jsonEvent);
+                await _localStorage.SetItemAsStringAsync(eventModel.Id.ToString(), jsonEvent);
 
                 await CheckShoppingCartContent();
 
@@ -86,7 +122,7 @@ namespace TicketHive.Client.Pages
         {
             if(eventToRemove != null)
             {
-                await localStorage.RemoveItemAsync(eventToRemove.Id.ToString());
+                await _localStorage.RemoveItemAsync(eventToRemove.Id.ToString());
             }
 
             await CheckShoppingCartContent();

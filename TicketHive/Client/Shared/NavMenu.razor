@@ -23,18 +23,18 @@
                 <button class="btn text-decoration-none text-white" @onclick="NavigateToHome"><i class="fa-solid fa-house-chimney me-2" style="color: #fbe89c"></i>Home</button>
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link">
-                <button class="btn text-decoration-none text-white" @onclick="NavigateToAllEvents"><i class="fa-solid fa-ticket me-2" style="color: #fbe89c"></i>Events</button>
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link">
-                <button class="btn text-decoration-none text-white" @onclick="NavigateToShoppingCart"><i class="fa-solid fa-cart-shopping me-2" style="color: #fbe89c"></i>Shopping cart</button>
-            </NavLink>
-        </div>
-        <AuthorizeView>   
+        <AuthorizeView>
             <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link">
+                        <button class="btn text-decoration-none text-white" @onclick="NavigateToAllEvents"><i class="fa-solid fa-ticket me-2" style="color: #fbe89c"></i>Events</button>
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link">
+                        <button class="btn text-decoration-none text-white" @onclick="NavigateToShoppingCart"><i class="fa-solid fa-cart-shopping me-2" style="color: #fbe89c"></i>Shopping cart</button>
+                    </NavLink>
+                </div>
                 <div class="nav-item px-3">
                     <NavLink title="My settings" class="nav-link">
                         <button class="btn text-decoration-none text-white" @onclick="NavigateToSettings"><i class="fa-solid fa-gears me-3" style="color: #fbe89c"></i>Settings</button>

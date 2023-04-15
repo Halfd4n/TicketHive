@@ -36,7 +36,7 @@
     <div class="overlay d-flex flex-column justify-content-center align-items-center">
         <p>@EventToDisplay.Description</p>
         <h3>@EventToDisplay.StartTime</h3>
-        <p>@PriceAndCurrency</p>
+        <p>@Price @CurrencyCode</p>
 
         @*Check if tickets are available else make button not function *@
         @if (EventToDisplay.NumberOfTickets >= 1)
