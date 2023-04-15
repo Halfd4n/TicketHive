@@ -42,21 +42,32 @@ else
         <h2> @UserName </h2>
     </div>
 
-    @if (SignedInUsersBookedEvents.Count > 0)
+    @if (SignedInUsersBookings.Count > 0)
     {
         <span>
             <div>
-                <h1 class="text-decoration-underline">Your events</h1>
+                <h1 class="text-center text-decoration-underline">Your events</h1>
             </div>
-            @foreach (EventModel eventModel in SignedInUsersBookedEvents)
+            @foreach (BookingModel booking in SignedInUsersBookings)
             {
-                <div class="m-5">
+                <div class="m-3 text-center">
                     <div>
-                        <h3>@eventModel.Name</h3>
+                        <h3>@booking.EventName</h3>
                     </div>
+                    @if (AllEventsInDb.Any(e => e.Id == booking.EventId))
+                    {
+                        <div>
+                            <button class="TheButton rounded-1" @onclick="(() => NavigateToEvent(booking.EventId))">More info</button>
+                            <p class="text-center">__________</p>
+                        </div>
+                    }
+                    else
+                    {
                     <div>
-                        <button class="TheButton rounded-1" @onclick="(() => NavigateToEvent(eventModel.Id))">More info</button>
+                        <p>More info no longer available</p>
+                        <p class="text-center">__________</p>
                     </div>
+                    }
                 </div>
             }
         </span>
