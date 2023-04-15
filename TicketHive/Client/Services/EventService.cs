@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Net.Http.Json;
 using TicketHive.Shared.Models;
 
@@ -52,11 +53,8 @@ public class EventService : IEventService
 	// Not done yet!
 	public async Task<bool> BookEventAsync(int eventId, UserModel user)
 	{
-		// --- Osäker på vilka datatyper och objekt samt hur dessa ska passas vidare till APIt. I detta fall skickas event
-		// id med genom URL'en och UserModel som genomför bokning skickas med genom body'n. Vet ej vad som är best practice. /Benjamin 
-
 		var response = await _client.PostAsJsonAsync($"api/Events/{eventId}", user);
-
+		
 		if (response.IsSuccessStatusCode)
 		{
 			return true;
@@ -67,18 +65,28 @@ public class EventService : IEventService
 
 	public async Task<bool> AddEventAsync(EventModel eventModel)
 	{
-		int numberOfEventsBefore = (await GetEventsAsync()).Count;
+		//int numberOfEventsBefore = (await GetEventsAsync()).Count;
 
 		var response = await _client.PostAsJsonAsync("api/Events", eventModel);
 
-		int numberOfEventsAfter = (await GetEventsAsync()).Count;
-
-		if (numberOfEventsBefore < numberOfEventsAfter)
+		if (response.IsSuccessStatusCode)
 		{
-			return true;
+			return true ;
+		}
+		else
+		{
+			Console.WriteLine(response.Content);
+			return false;
 		}
 
-		return false;
+		//int numberOfEventsAfter = (await GetEventsAsync()).Count;
+
+		//if (numberOfEventsBefore < numberOfEventsAfter)
+		//{
+			
+		//}
+
+		//return false;
 	}
 
 	public async Task<bool> DeleteEventAsync(int eventId)

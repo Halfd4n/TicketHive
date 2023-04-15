@@ -33,7 +33,7 @@
 
     <div class="form-group">
         <label for="numberOfTickets">Number of Tickets:</label>
-        <InputNumber id="numberOfTickets" class="form-control form-control-lg" @bind-Value="newEvent.NumberOfTickets" />
+        <InputNumber id="numberOfTickets" class="form-control form-control-lg" min="1" @bind-Value="newEvent.NumberOfTickets" />
     </div>
 
     <div class="form-group">
@@ -73,91 +73,3 @@
 
     <button type="submit" class="btn btn-primary btn-lg btn-block">Save Changes</button>
 </EditForm>
-
-
-
-
-
-
-@code {
-    private List<EventModel> allEvents;
-    private EventModel newEvent = new();
-    //private EventType eventType { get; set; } = new();
-    private bool showAlert = false;
-    private string alertMessage;
-    //private int selectedId;
-    private string alertType;
-
-
-    //protected override async Task OnInitializedAsync(){
-
-    //    allEvents = await eventService.GetEventsAsync();
-    //}
-
-
-    private async Task AddEvent()
-    {
-        try
-        {
-            showAlert = true;
-    // Add a random picture to the event
-            newEvent.ImageUrl = $"image-{new Random().Next(1, 27)}";
-
-            bool isEventAddedSuccessFully = await eventService.AddEventAsync(newEvent);
-
-            if (isEventAddedSuccessFully)
-            {
-                alertMessage = newEvent.Name + "The event has been added!";
-                alertType = "Success!";
-
-                allEvents.Add(newEvent);
-            }
-            else
-            {
-                alertMessage = "Something went wrong, try again!";
-                alertType = "Warning";
-            }
-        }
-        catch (Exception ex)
-        {
-    // handle the exception and print out an error message
-            alertMessage = "An error occurred while adding the event: " + ex.Message;
-            alertType = "Error";
-        }
-    }
-
-
-
-
-    //private async Task AddEvent(){
-
-    //    showAlert = true;
-    //// Add a random picture to the event
-    //    newEvent.ImageUrl = $"image-{new Random().Next(1, 27)}";
-
-    //    bool isEventAddedSuccessFully = await eventService.AddEventAsync(newEvent);
-
-    //    if (isEventAddedSuccessFully){
-    //        alertMessage = newEvent.Name + "The event has been added!";
-    //        alertType = "Success!";
-
-    //        allEvents.Add(newEvent);
-    //    }
-    //    else{
-    //        alertMessage = "Something went wrong, try again!";
-    //        alertType = "Warning";
-    //    }
-
-
-
-    //}
-
-    //private async Task DeleteEvent(int id){
-    //    showAlert = true;
-    //    alertMessage = "The event has been deleted!";
-    //    alertType = "Warning";
-    //    await eventService.DeleteEventAsync(id);
-    //    allEvents.RemoveAll(item => item.Id == id);
-    //}
-
-}
