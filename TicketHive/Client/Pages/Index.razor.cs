@@ -8,6 +8,7 @@ public partial class Index
 {
 
     public string? UserName { get; set; }
+    public string SignedInUsersId { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -17,6 +18,8 @@ public partial class Index
 
         if (user.Identity.IsAuthenticated)
         {
+            SignedInUsersId = authenticationState.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+
             UserName = user.Identity.Name;
         }
 
