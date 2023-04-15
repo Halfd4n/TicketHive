@@ -18,7 +18,7 @@
             <div class="d-flex flex-row justify-content-center align-items-center">
 
 
-                <div class="d-flex flex-row justify-content-end p-3 mt-5">
+                <div class="d-flex flex-row justify-content-end p-3 mt-4">
                     <button class="" @onclick="FilterOrderByPrice">OrderBy price </button>
                     <button class="" @onclick="FilterOrderByDate">OrderBy Date </button>
 
@@ -121,7 +121,8 @@
         {
             filteredEvents = allEvents.Where(e => e.Name.ToLower().Contains(searchTerm.ToLower())
                         || e.EventType.ToString().ToLower().Contains(searchTerm.ToLower())
-                        || e.Location.ToLower().Contains(searchTerm.ToLower())).ToList();
+                        || e.Location.ToLower().Contains(searchTerm.ToLower())
+                        || e.Price.ToString().Contains(searchTerm.ToLower())).ToList();
         }
 
 
