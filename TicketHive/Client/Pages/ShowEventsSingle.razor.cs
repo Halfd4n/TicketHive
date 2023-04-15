@@ -34,6 +34,7 @@ namespace TicketHive.Client.Pages
         private string? CurrencyCode { get; set; }
 
         private bool IsShowingModal { get; set; }
+        private bool IsShowingModalAddToCart { get; set; }
         private bool SuccessfullDelete { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -71,7 +72,9 @@ namespace TicketHive.Client.Pages
 
                 string jsonEvent = JsonConvert.SerializeObject(EventToDisplay);
 
-                await localStorage.SetItemAsStringAsync(EventToDisplay.Id.ToString(), jsonEvent);                
+                await localStorage.SetItemAsStringAsync(EventToDisplay.Id.ToString(), jsonEvent);
+                
+                IsShowingModalAddToCart= true;
             }
         }
 
@@ -85,6 +88,7 @@ namespace TicketHive.Client.Pages
         public void CloseModal()
         {
             IsShowingModal = false;
+            IsShowingModalAddToCart = false;
             StateHasChanged();
         }
 
@@ -95,6 +99,18 @@ namespace TicketHive.Client.Pages
             IsShowingModal = false;
 
             navigationManager.NavigateTo("/allevents");
+        }
+
+        private void NavigateToAllEvents()
+        {
+            IsShowingModal = false;
+            navigationManager.NavigateTo("/allevents");
+        }
+
+        private void NavigateToCart()
+        {
+            
+            navigationManager.NavigateTo("/Cart");
         }
     }
 }

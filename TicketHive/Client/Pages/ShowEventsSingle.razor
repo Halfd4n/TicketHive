@@ -32,9 +32,31 @@
             </div>
         </div>
     }
+   
 </div>
 
 <div class="headbanner d-flex rounded-2 flex-column justify-content-center align-items-center" style="background-image: url('https://localhost:7259/images/event%20images/@EventToDisplay.ImageUrl');">
+    @if (IsShowingModalAddToCart)
+    {
+        <div class="modal fade show d-block border border-3 border-dark" id="AddToCart-modal" tabindex="-1" role="dialog" aria-modal="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content TicketHiveTheme">
+                    <div class="modal-header">
+                        <h5 class="mt-2 text-black"><i class="fa-solid fa-shopping-cart me-3"></i>Your Cart:</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-black p-2"> The "@EventToDisplay.Name" event has been add to your cart with @DesiredNoOfTickets tickets</p>
+                        <p>Info:If you want to add more tickets you can do so in your cart or just add more with on the current page with the amount you added</p>
+                    </div>
+                    <div class="modal-footer d-flex flex-row justify-content-between align-items-center">
+                        <button title="Go to AllEvents" class="btn btn-outline-info me-1 my-1" style="color:black" @onclick="(() => NavigateToAllEvents())">All Events</button>
+                        <button title="Go to Cart" class="btn btn-outline-info me-1 my-1" style="color:black" @onclick="() => NavigateToCart()">Go to Cart</button>
+                        <button title="Close" class="btn btn-outline-info" style="color:black" @onclick="CloseModal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
     <h1 class="model-title"> @EventToDisplay.Name</h1>
     <div class="overlay d-flex flex-column justify-content-center align-items-center">
         <p>@EventToDisplay.Description</p>
@@ -59,13 +81,14 @@
         }
         else
         {
-            <button class="rounded-2 btn-danger disabled">Event sold out!</button>
+            <button class="rounded-2">Event sold out!</button>
         }
         <AuthorizeView Roles="Admin">
             <Authorized>
                 <button title="Delete event" class="rounded-2 btn-outline-danger my-2" @onclick="ShowModal"> Delete </button>
             </Authorized>
         </AuthorizeView>
+        <button class="rounded-2" style="background-color:#fbe89c" @onclick="(() => NavigateToAllEvents())">Go back</button>
     </div>
 </div>
 
