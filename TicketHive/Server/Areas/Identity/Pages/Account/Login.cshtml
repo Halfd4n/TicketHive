@@ -3,21 +3,29 @@
 @{
 }
 
-<h1>Welcome to sign in</h1>
 
-<form method="post">
-    <input type="text" asp-for="Username" placeholder="Username"/>
-    <input type="password" asp-for="Password" placeholder="Password"/>
-    <input type="submit" value="Login"/>
-</form>
+<div class="card TicketHiveTheme">
+    <div class="card-header">
+        Login:
+    </div>
+    <div class="card-body justify-conten    t-center">
+        <form method="post">
+            <input type="text" asp-for="Username" placeholder="Username" />
+            <hr />
+            <input type="password" asp-for="Password" placeholder="Password" />
+            <hr />
+            <input type="submit" value="Login" />
+        </form>
 
-@if(!ModelState.IsValid)
-{
-    <span asp-validation-for="Username"></span>
-    <br />
-    <span asp-validation-for="Password"></span>
-}
-else
-{
-    <span>@Model.InvalidCredentials</span>
-}
+        @if (!ModelState.IsValid)
+        {
+            <span asp-validation-for="Username"></span>
+            <br />
+            <span asp-validation-for="Password"></span>
+        }
+        else
+        {
+            <span>@Model.InvalidCredentials</span>
+        }
+    </div>
+</div>
