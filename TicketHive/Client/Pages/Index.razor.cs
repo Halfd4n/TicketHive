@@ -1,7 +1,4 @@
-﻿
-
-using TicketHive.Client.Managers;
-using TicketHive.Shared.Models;
+﻿using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Pages;
 
@@ -33,7 +30,7 @@ public partial class Index
 
                 foreach (BookingModel booking in SignedInUsersBookings)
                 {
-                    EventModel eventModel = new(); // !!!*******************************************************************
+                    EventModel eventModel = new();
 
                     eventModel = await eventService.GetEventAsync(booking.EventId);
 
