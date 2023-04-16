@@ -26,7 +26,7 @@
         </div>
         <span class="text-danger my-1">@(ValidationErrors.TryGetValue("sameSelection", out var sameSelectionError) ? sameSelectionError : "")</span>
         <span class="text-danger my-1">@(ValidationErrors.TryGetValue("noSelection", out var noSelectionError) ? noSelectionError : "")</span>
-        <span class="text-success my-1">@SuccessMessageCountry</span>
+        <span class="text-success my-1">@StringHelper.ReplaceUnderScoreWithSpace(SuccessMessageCountry!)</span>
     </form>
 
     <hr class ="my-3" />
