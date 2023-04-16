@@ -18,7 +18,7 @@ public static class CurrencyManager
 
         Console.WriteLine(requestMessage);
 
-        requestMessage.Headers.Add("apikey", "RMdH2KUaeQ3CUlV6WNCTZRnLavgtsjC9");
+        requestMessage.Headers.Add("apikey", "SlU3Hqjihduz3zPkEUmc7HHHOq6GijSY");
 
         HttpResponseMessage responseMessage = await HttpClient.SendAsync(requestMessage);
 
