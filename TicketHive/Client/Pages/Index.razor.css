@@ -1,7 +1,6 @@
 ﻿.container {
     box-sizing: border-box;
-    background-color: rgb(48, 80, 118 );
-    min-height:95vh;
+    background-color: rgb(48, 80, 118 );    
 }
 
 .credentials-page {

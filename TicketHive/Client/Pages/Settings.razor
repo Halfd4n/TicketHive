@@ -25,7 +25,7 @@
                 }
             </select>
 
-            <button type="submit">Update country of origin</button>
+            <button class="ms-2 btn btn-outline-success" type="submit">Update country of origin</button>
         </div>
         <span class="text-danger my-1">@(ValidationErrors.TryGetValue("sameSelection", out var sameSelectionError) ? sameSelectionError : "")</span>
         <span class="text-danger my-1">@(ValidationErrors.TryGetValue("noSelection", out var noSelectionError) ? noSelectionError : "")</span>
@@ -39,12 +39,12 @@
 
         <input type="password" placeholder="Current password" @bind="CurrentPassword" />
         <input type="password" placeholder="New password" @bind="NewPassword" />
-        <button type="submit">Update password</button>
+        <button class="ms-2 btn btn-outline-success" type="submit">Update password</button>
     </form>
     <span class="text-danger">@(ValidationErrors.TryGetValue("noInput", out var noInputError) ? noInputError : "")</span>
     <span class="text-success my-1">@SuccessMessagePassword</span>
 
     <hr class="my-3" />
 
- <button @onclick="BackToMain" style="width:12rem;">Return to main page</button>
+    <button class="btn btn-outline-warning" @onclick="BackToMain" style="width:12rem;"><i class="fa-solid fa-house-chimney me-2"</i></button>
 </div>
