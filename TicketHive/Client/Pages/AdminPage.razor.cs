@@ -19,7 +19,6 @@ using Microsoft.AspNetCore.Authorization;
 using TicketHive.Client.Services;
 using TicketHive.Shared.Enums;
 using TicketHive.Shared.Models;
-using System.ComponentModel.DataAnnotations;
 
 namespace TicketHive.Client.Pages{
     public partial class AdminPage{
@@ -34,6 +33,9 @@ namespace TicketHive.Client.Pages{
             StartTime = DateTime.Now,
             EndTime = DateTime.Now.AddDays(1)
         };
+
+        public DateTime StartHoursAndMinutes { get; set; } = new();
+        public DateTime EndHoursAndMinutes { get; set; } = new();
 
         //private EventType eventType { get; set; } = new();
         private bool showAlert = false;
@@ -55,18 +57,23 @@ namespace TicketHive.Client.Pages{
                 newEvent.ImageUrl = $"image {new Random().Next(1, 27)}.png";
 
                 newEvent.StartTime = new DateTime(newEvent.StartTime.Year,
-                                                  newEvent.StartTime.Month,
-                                                  newEvent.StartTime.Day,
-                                                  newEvent.StartTime.Hour,
-                                                  newEvent.StartTime.Minute,
-                                                  newEvent.StartTime.Second);
+                                    newEvent.StartTime.Month,
+                                    newEvent.StartTime.Day,
+                                    StartHoursAndMinutes.Hour,
+                                    StartHoursAndMinutes.Minute,
+                                    newEvent.StartTime.Second);
 
                 newEvent.EndTime = new DateTime(newEvent.EndTime.Year,
                                   newEvent.EndTime.Month,
                                   newEvent.EndTime.Day,
-                                  newEvent.EndTime.Hour,
-                                  newEvent.EndTime.Minute,
+                                  EndHoursAndMinutes.Hour,
+                                  EndHoursAndMinutes.Minute,
                                   newEvent.EndTime.Second);
+
+
+
+                bool isEventAddedSuccessFully = await eventService.AddEventAsync(newEvent);
+
                 isEventAddedSuccessFully = await eventService.AddEventAsync(newEvent);
                 if (isEventAddedSuccessFully){
                     alertMessage = newEvent.Name + "The event has been added!";
