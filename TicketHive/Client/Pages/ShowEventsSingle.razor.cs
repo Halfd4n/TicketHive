@@ -117,7 +117,7 @@ namespace TicketHive.Client.Pages
         private void NavigateToCart()
         {
             
-            navigationManager.NavigateTo("/Cart");
+            navigationManager.NavigateTo("/cart");
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using TicketHive.Shared.Models;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using System.Runtime.CompilerServices;
+using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Pages;
 
@@ -12,7 +15,8 @@ public partial class Index
     public List<EventModel> AllEventsButBooked { get; set; } = new();
     public List<int> uniqueNumbers { get; set; } = new();
     public List<EventModel> RandomEvents { get; set; } = new();
-
+    private int ActiveIndex { get; set; }
+    public int ActiveEventId { get; set; }
     /// <summary>
     /// Checks if user is authenticated and if so, gets the user.
     /// Then populates a list of all events in the database, a list of 
@@ -91,5 +95,24 @@ public partial class Index
     private void NavigateToEvent(int eventId)
     {
         navigationManager.NavigateTo($"/allEvents/{eventId}");
+    }
+
+    private void NavigateCarousel(int direction)
+    {
+        ActiveIndex += direction;
+        if (ActiveIndex < 0)
+        {
+            ActiveIndex = RandomEvents.Count - 1;
+        }
+        else if (ActiveIndex >= RandomEvents.Count)
+        {
+            ActiveIndex = 0;
+        }
+        ActiveEventId = RandomEvents[ActiveIndex].Id;
+    }
+
+    private void ShowId(int eventID)
+    {
+        Console.WriteLine(eventID);
     }
 }
