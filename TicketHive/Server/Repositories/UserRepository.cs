@@ -10,110 +10,144 @@ namespace TicketHive.Server.Repositories;
 
 public class UserRepository : IUserRepository
 {
-	private readonly SignInManager<ApplicationUser> _signInManager;
-	private readonly MainDbContext _mainDbcontext;
+    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly MainDbContext _mainDbcontext;
 
-	public UserRepository(SignInManager<ApplicationUser> signInManager, MainDbContext mainDbcontext)
-	{
-		_signInManager = signInManager;
-		_mainDbcontext = mainDbcontext;
-	}
+    public UserRepository(SignInManager<ApplicationUser> signInManager, MainDbContext mainDbcontext)
+    {
+        _signInManager = signInManager;
+        _mainDbcontext = mainDbcontext;
+    }
 
-	public Task<List<UserModel>> GetAllUsers()
-	{
-		throw new NotImplementedException();
-	}
+    /// <summary>
+    /// Gets user with the given user Id
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns>User with the given user Id, or null if it doesn't exist</returns>
+    public async Task<UserModel?> GetMainUserByIdAsync(string userId)
+    {
+        ApplicationUser? applicationUser = await _signInManager.UserManager.FindByIdAsync(userId);
 
-	public async Task<UserModel?> GetMainUserByIdAsync(string userId)
-	{
-		ApplicationUser? applicationUser = await _signInManager.UserManager.FindByIdAsync(userId);
+        if (applicationUser != null)
+        {
+            UserModel? mainUser = await _mainDbcontext.Users.Include(b => b.Bookings).FirstOrDefaultAsync(u => u.Id == applicationUser.Id);
 
-		if (applicationUser != null)
-		{
-			UserModel? mainUser = await _mainDbcontext.Users.Include(b => b.Bookings).FirstOrDefaultAsync(u => u.Id == applicationUser.Id);
+            return mainUser;
+        }
 
-			return mainUser;
-		}
+        return null;
+    }
 
-		return null;
-	}
+    /// <summary>
+    /// Registers user with the given username, password, and country.
+    /// </summary>
+    /// <param name="username"></param>
+    /// <param name="password"></param>
+    /// <param name="country"></param>
+    /// <returns>Returns a Task containing the IdentityResult</returns>
+    public async Task<IdentityResult> RegisterUserAsync(string username, string password, Country country)
+    {
+        ApplicationUser newUser = new()
+        {
+            UserName = username,
+            Country = country
+        };
 
-	public async Task<IdentityResult> RegisterUserAsync(string username, string password, Country country)
-	{
-		ApplicationUser newUser = new()
-		{
-			UserName = username,
-			Country = country
-		};
+        return await _signInManager.UserManager.CreateAsync(newUser, password!);
+    }
 
-		return await _signInManager.UserManager.CreateAsync(newUser, password!);
-	}
+    /// <summary>
+    /// Signs in a user with the given username and password 
+    /// </summary>
+    /// <param name="username"></param>
+    /// <param name="password"></param>
+    /// <returns>Returns a Task containing the SignInResult</returns>
+    public async Task<SignInResult> SignInUserAsync(string username, string password)
+    {
+        return await _signInManager.PasswordSignInAsync(username, password, false, false);
+    }
 
-	public async Task<SignInResult> SignInUserAsync(string username, string password)
-	{
-		return await _signInManager.PasswordSignInAsync(username, password, false, false);
-	}
+    /// <summary>
+    /// Gets user with the given username from IdentityDb 
+    /// </summary>
+    /// <param name="userName"></param>
+    /// <returns>The user with the given username, or null if not found</returns>
+    public async Task<ApplicationUser?> GetApplicationUserByName(string userName)
+    {
+        return await _signInManager.UserManager.FindByNameAsync(userName);
+    }
 
-	public async Task<ApplicationUser?> GetApplicationUserByName(string userName)
-	{
-		return await _signInManager.UserManager.FindByNameAsync(userName);
-	}
+    /// <summary>
+    /// Changes the country of the user with the given user Id
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="country"></param>
+    public async Task ChangeCountryAsync(string userId, Country country)
+    {
+        ApplicationUser? applicationUser = await _signInManager.UserManager.FindByIdAsync(userId);
+        UserModel? mainUser = await _mainDbcontext.Users.Include(b => b.Bookings).FirstOrDefaultAsync(u => u.Id == userId);
 
-	public Task<List<UserModel>> GetUsersAsync()
-	{
-		throw new NotImplementedException();
-	}
+        if (mainUser != null && applicationUser != null)
+        {
+            mainUser.Country = country;
+            _mainDbcontext.Update(mainUser);
+            await _mainDbcontext.SaveChangesAsync();
 
-	public async Task ChangeCountryAsync(string userId, Country country)
-	{
-		ApplicationUser? applicationUser = await _signInManager.UserManager.FindByIdAsync(userId);
-		UserModel? mainUser = await _mainDbcontext.Users.Include(b => b.Bookings).FirstOrDefaultAsync(u => u.Id == userId);
+            applicationUser.Country = country;
+            await _signInManager.UserManager.UpdateAsync(applicationUser);
+        }
+    }
 
-		if (mainUser != null && applicationUser != null)
-		{
-			mainUser.Country = country;
-			_mainDbcontext.Update(mainUser);
-			await _mainDbcontext.SaveChangesAsync();
+    /// <summary>
+    /// Changes the password of the user with the given Id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="currentPassword"></param>
+    /// <param name="newPassword"></param>
+    public async Task ChangePasswordAsync(string id, string currentPassword, string newPassword)
+    {
+        ApplicationUser? user = await _signInManager.UserManager.FindByIdAsync(id);
 
-			applicationUser.Country = country;
-			await _signInManager.UserManager.UpdateAsync(applicationUser);
-		}
-	}
+        if (user != null)
+        {
+            await _signInManager.UserManager.ChangePasswordAsync(user, currentPassword, newPassword);
+            await _signInManager.UserManager.UpdateAsync(user);
+        }
+    }
 
-	public async Task ChangePasswordAsync(string id, string currentPassword, string newPassword)
-	{
-		ApplicationUser? user = await _signInManager.UserManager.FindByIdAsync(id);
+    /// <summary>
+    /// Deletes a user from MainDb and IdentityDb
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>Task that represents the deletion of the user</returns>
+    public async Task DeleteUserAsync(string id)
+    {
+        ApplicationUser? applicationUser = await _signInManager.UserManager.FindByIdAsync(id);
+        UserModel? mainUser = await _mainDbcontext.Users.Include(b => b.Bookings).FirstOrDefaultAsync(u => u.Id == id);
 
-		if (user != null)
-		{
-			await _signInManager.UserManager.ChangePasswordAsync(user, currentPassword, newPassword);
-			await _signInManager.UserManager.UpdateAsync(user);
-		}
-	}
+        if (mainUser != null && applicationUser != null)
+        {
+            _mainDbcontext.Remove(mainUser);
+            await _mainDbcontext.SaveChangesAsync();
 
-	public async Task DeleteUserAsync(string id)
-	{
-		ApplicationUser? applicationUser = await _signInManager.UserManager.FindByIdAsync(id);
-		UserModel? mainUser = await _mainDbcontext.Users.Include(b => b.Bookings).FirstOrDefaultAsync(u => u.Id == id);
+            await _signInManager.UserManager.DeleteAsync(applicationUser);
+        }
+    }
 
-		if (mainUser != null && applicationUser != null)
-		{
-			_mainDbcontext.Remove(mainUser);
-			await _mainDbcontext.SaveChangesAsync();
+    /// <summary>
+    /// Checks if username is available 
+    /// </summary>
+    /// <param name="username"></param>
+    /// <returns>A task that contains a bool that is true if the username is available, otherwise false.</returns>
+    public async Task<bool> CheckUsernameAvailability(string username)
+    {
+        ApplicationUser? user = await _signInManager.UserManager.FindByNameAsync(username);
 
-			await _signInManager.UserManager.DeleteAsync(applicationUser);
-		}
-	}
+        if (user == null)
+        {
+            return true;
+        }
 
-	public async Task<bool> CheckUsernameAvailability(string username)
-	{
-		ApplicationUser? user = await _signInManager.UserManager.FindByNameAsync(username);
-
-		if (user == null)
-		{
-			return true;
-		}
-
-		return false;
-	}
+        return false;
+    }
 }
