@@ -59,6 +59,7 @@ public class EventService : IEventService
             return true;
         }
 
+        Console.WriteLine(response.Content);
         return false;
     }
 

@@ -32,21 +32,20 @@ namespace TicketHive.Client.Pages
         private EventModel? EventToDisplay { get; set; } = new();
         private decimal Price { get; set; }
         private string? CurrencyCode { get; set; }
-
         private bool IsShowingModal { get; set; }
         private bool IsShowingModalAddToCart { get; set; }
-        private bool SuccessfullDelete { get; set; }
+        private UserModel? SignedInUser { get; set; } = new();
 
         protected override async Task OnInitializedAsync()
         {
-            EventToDisplay = await eventService.GetEventAsync(Id);
+            EventToDisplay = await GetEventToDisplay();
 
-            UserModel? user = await GetSignedInUser();
+            SignedInUser = await GetSignedInUser();
 
-            if(user != null)
+            if(SignedInUser != null)
             {
-                Price = CurrencyManager.GetConvertedTicketPrice(user.Country, EventToDisplay.Price);
-                CurrencyCode = CurrencyManager.GetCurrencyAbbreviation(user.Country);
+                Price = CurrencyManager.GetConvertedTicketPrice(SignedInUser.Country, EventToDisplay.Price);
+                CurrencyCode = CurrencyManager.GetCurrencyAbbreviation(SignedInUser.Country);
             }
         }
 
@@ -64,6 +63,11 @@ namespace TicketHive.Client.Pages
             return null;
         }
 
+        private async Task<EventModel> GetEventToDisplay()
+        {
+            return await eventService.GetEventAsync(Id);
+        }
+            
         public async Task AddToCart()
         {
             if(EventToDisplay != null)
@@ -80,13 +84,16 @@ namespace TicketHive.Client.Pages
 
         public void ShowModal()
         {
-
             IsShowingModal = true;
             StateHasChanged();
         }
 
-        public void CloseModal()
+        public async Task CloseModal()
         {
+            EventToDisplay = await GetEventToDisplay();
+
+            SignedInUser = await GetSignedInUser();
+
             IsShowingModal = false;
             IsShowingModalAddToCart = false;
             StateHasChanged();
@@ -94,7 +101,7 @@ namespace TicketHive.Client.Pages
 
         public async Task DeleteEvent(EventModel eventModel)
         {
-            SuccessfullDelete = await eventService.DeleteEventAsync(eventModel.Id);
+            await eventService.DeleteEventAsync(eventModel.Id);
 
             IsShowingModal = false;
 
