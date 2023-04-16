@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Net.Http.Json;
 using TicketHive.Server.Enums;
 using TicketHive.Shared.Models;
@@ -8,88 +7,101 @@ namespace TicketHive.Client.Services;
 
 public class EventService : IEventService
 {
-	private readonly HttpClient _client;
+    private readonly HttpClient _client;
 
-	public EventService(HttpClient client)
-	{
-		_client = client;
-	}
+    public EventService(HttpClient client)
+    {
+        _client = client;
+    }
 
-	public async Task<EventModel?> GetEventAsync(int eventId)
-	{
-		var response = await _client.GetAsync($"api/Events/{eventId}");
+    public async Task<EventModel?> GetEventAsync(int eventId)
+    {
+        var response = await _client.GetAsync($"api/Events/{eventId}");
 
-		if (response.IsSuccessStatusCode)
-		{
-			var json = await response.Content.ReadAsStringAsync();
+        if (response.IsSuccessStatusCode)
+        {
+            var json = await response.Content.ReadAsStringAsync();
 
-			return JsonConvert.DeserializeObject<EventModel>(json);
-		}
-		else
-		{
-			Console.WriteLine(response.Content);
-		}
+            return JsonConvert.DeserializeObject<EventModel>(json);
+        }
+        else
+        {
+            Console.WriteLine(response.Content);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public async Task<List<EventModel>?> GetEventsAsync()
-	{
-		var response = await _client.GetAsync("api/Events");
+    public async Task<List<EventModel>?> GetEventsAsync()
+    {
+        var response = await _client.GetAsync("api/Events");
 
-		if (response.IsSuccessStatusCode)
-		{
-			var json = await response.Content.ReadAsStringAsync();
+        if (response.IsSuccessStatusCode)
+        {
+            var json = await response.Content.ReadAsStringAsync();
 
-			return JsonConvert.DeserializeObject<List<EventModel>>(json);
-		}
-		else
-		{
-			Console.WriteLine(response.Content);
-		}
+            return JsonConvert.DeserializeObject<List<EventModel>>(json);
+        }
+        else
+        {
+            Console.WriteLine(response.Content);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public async Task<bool> AddEventAsync(EventModel eventModel)
-	{
-		var response = await _client.PostAsJsonAsync($"api/Events/{eventId}", user);
-		
-		if (response.IsSuccessStatusCode)
-		{
-			return true;
-		}
+    public async Task<bool> AddEventAsync(EventModel eventModel)
+    {
+        int numberOfEventsBefore = (await GetEventsAsync()).Count;
 
-		return false;
-	}
+        await _client.PostAsJsonAsync("api/Events", eventModel);
 
-	public async Task<bool> DeleteEventAsync(int eventId)
-	{
-		var response = await _client.PostAsJsonAsync("api/Events", eventModel);
+        int numberOfEventsAfter = (await GetEventsAsync()).Count;
 
-		if (response.IsSuccessStatusCode)
-		{
-			return true ;
-		}
-		else
-		{
-			return false;
-		}
-	}
+        if (numberOfEventsBefore < numberOfEventsAfter)
+        {
+            return true;
+        }
 
-	public async Task<bool> BookEventAsync(string userId, int eventId, int quantity)
-	{
-		await _client.DeleteAsync($"api/Events/{eventId}");
+        return false;
+    }
 
-		EventModel? eventAfter = await GetEventAsync(eventId);
-		int numberOfBookingsAfter = eventAfter!.Bookings.Count;
+    public async Task<bool> DeleteEventAsync(int eventId)
+    {
+        var response = await _client.DeleteAsync($"api/Events/{eventId}");
 
-		if (numberOfBookingsAfter > numberOfBookingsBefore)
-		{
-			return true;
-		}
+        if (response.IsSuccessStatusCode)
+        {
+            return true;
+        }
+        else
+        {
+            Console.WriteLine(response.Content);
+            return false;
+        }
 
-		return false;
-	}
+
+    }
+
+    public async Task<bool> BookEventAsync(string userId, int eventId, int quantity)
+    {
+        EventModel? eventBefore = await GetEventAsync(eventId);
+        int numberOfBookingsBefore = eventBefore!.Bookings.Count;
+
+        string[] parameters = new string[2] { eventId.ToString(), quantity.ToString() };
+
+        await _client.PostAsJsonAsync($"api/Events/{userId}/{parameters}", parameters);
+
+        EventModel? eventAfter = await GetEventAsync(eventId);
+        int numberOfBookingsAfter = eventAfter!.Bookings.Count;
+
+        if (numberOfBookingsAfter > numberOfBookingsBefore)
+        {
+            return true;
+        }
+
+        return false;
+    }
 
 }
+
