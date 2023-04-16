@@ -42,6 +42,9 @@ else
         <h2> @UserName </h2>
     </div>
 
+    /// <summary>
+    /// Displays 5 random events from the database 
+    /// </summary>
     <div>
         <div>
             <h1 class="text-center text-decoration-underline">Explore!</h1>
@@ -62,6 +65,9 @@ else
         }
     </div>
 
+    /// <summary>
+    /// Displays all events that the signed in user has booked 
+    /// </summary>
     @if (SignedInUsersBookings.Count > 0)
     {
         <div>

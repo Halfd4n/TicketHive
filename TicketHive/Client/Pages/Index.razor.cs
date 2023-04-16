@@ -13,12 +13,20 @@ public partial class Index
     public List<int> uniqueNumbers { get; set; } = new();
     public List<EventModel> RandomEvents { get; set; } = new();
 
+    /// <summary>
+    /// Checks if user is authenticated and if so, gets the user.
+    /// Then populates a list of all events in the database, a list of 
+    /// all available events the user has not booked, and a list 
+    /// of 5 random events from the available events.
+    /// Finally makes a call to the Currency API.
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
         var authenticationState = await authentication.GetAuthenticationStateAsync();
 
         var user = authenticationState.User;
 
+        // Check if user is authenticated and if so, get the user
         if (user.Identity.IsAuthenticated)
         {
             UserName = user.Identity.Name;
@@ -27,6 +35,8 @@ public partial class Index
 
             UserModel? userModel = await userService.GetUserByIdAsync(SignedInUsersId);
 
+            // If user is authenticated, get the user's bookings and populates a list of all events in the database, 
+            // and a list of all available events the user has not booked
             if (userModel != null)
             {
                 SignedInUsersBookings = userModel.Bookings;
@@ -41,6 +51,8 @@ public partial class Index
                     }
                 }
 
+
+                // Populates a list of 5 unique random numbers from the total number of available events
                 Random random = new Random();
 
                 while (uniqueNumbers.Count < 5)
@@ -53,6 +65,7 @@ public partial class Index
                     }
                 }
 
+                // Populates a list of 5 random events from the available events based on the unique random numbers
                 foreach (int number in uniqueNumbers)
                 {
                     EventModel randomEvent = AllEventsButBooked[number];
