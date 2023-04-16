@@ -1,5 +1,6 @@
 ﻿@page "/settings/{id}"
 @using Microsoft.AspNetCore.Authorization;
+@using TicketHive.Client.Managers;
 @using TicketHive.Client.Services
 @using System.ComponentModel.DataAnnotations;
 @using TicketHive.Server.Enums;
@@ -21,7 +22,7 @@
             <select id="country" @bind="Country">
                 @foreach (var country in Enum.GetNames(typeof(Country)))
                 {
-                    <option value="@country">@country</option>
+                    <option value="@country">@StringHelper.ReplaceUnderScoreWithSpace(country)</option>
                 }
             </select>
 
