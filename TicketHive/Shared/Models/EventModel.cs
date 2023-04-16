@@ -6,19 +6,29 @@ public class EventModel
 {
 	[Key]
 	public int Id { get; set; }
+	[Required(ErrorMessage = "Please type name")]
 	public string Name { get; set; } = null!;
-	public EventType EventType { get; set; }
-	public int NumberOfTickets { get; set; }
-	public string Description { get; set; } = null!;
-	public decimal Price { get; set; }
+    [Required(ErrorMessage = "Please choose Eventype")]
+    public EventType EventType { get; set; }
+    [Required(ErrorMessage = "Please enter number of tickets")]
+    public int NumberOfTickets { get; set; }
+    [Required(ErrorMessage = "Please type Description")]
+    public string Description { get; set; } = null!;
+    [Required(ErrorMessage = "Please enter price")]
+    public decimal Price { get; set; }
+    
 
-	[DataType(DataType.DateTime)]
+    [DataType(DataType.DateTime)]
 	public DateTime StartTime { get; set; }
 
 	[DataType(DataType.DateTime)]
 	public DateTime EndTime { get; set; }
-	public string Location { get; set; } = null!;
-	public string Host { get; set; } = null!;
-	public string ImageUrl { get; set; } = null!;
-	public List<BookingModel> Bookings { get; set; } = new();
+    [Required(ErrorMessage = "Please enter a location")]
+    public string Location { get; set; } = null!;
+    [Required(ErrorMessage = "Please type in a host")]
+    public string Host { get; set; } = null!;
+    
+    public string ImageUrl { get; set; } = null!;
+    
+    public List<BookingModel> Bookings { get; set; } = new();
 }

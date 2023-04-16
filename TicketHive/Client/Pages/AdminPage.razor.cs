@@ -19,12 +19,17 @@ using Microsoft.AspNetCore.Authorization;
 using TicketHive.Client.Services;
 using TicketHive.Shared.Enums;
 using TicketHive.Shared.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace TicketHive.Client.Pages{
     public partial class AdminPage{
         private List<EventModel> allEvents;
 
+
+
+        private bool isEventAddedSuccessFully { get; set; }
         private EventModel newEvent = new(){
+            
             NumberOfTickets = 1,
             StartTime = DateTime.Now,
             EndTime = DateTime.Now.AddDays(1)
@@ -44,20 +49,35 @@ namespace TicketHive.Client.Pages{
 
         private async Task AddEvent(){
             try{
+                    StateHasChanged();
                 showAlert = true;
                 // Add a random picture to the event
                 newEvent.ImageUrl = $"image {new Random().Next(1, 27)}.png";
 
-                bool isEventAddedSuccessFully = await eventService.AddEventAsync(newEvent);
+                newEvent.StartTime = new DateTime(newEvent.StartTime.Year,
+                                                  newEvent.StartTime.Month,
+                                                  newEvent.StartTime.Day,
+                                                  newEvent.StartTime.Hour,
+                                                  newEvent.StartTime.Minute,
+                                                  newEvent.StartTime.Second);
 
+                newEvent.EndTime = new DateTime(newEvent.EndTime.Year,
+                                  newEvent.EndTime.Month,
+                                  newEvent.EndTime.Day,
+                                  newEvent.EndTime.Hour,
+                                  newEvent.EndTime.Minute,
+                                  newEvent.EndTime.Second);
+                isEventAddedSuccessFully = await eventService.AddEventAsync(newEvent);
                 if (isEventAddedSuccessFully){
                     alertMessage = newEvent.Name + "The event has been added!";
                     alertType = "Success!";
                     allEvents.Add(newEvent);
+                    StateHasChanged();
                 }
                 else{
                     alertMessage = "Something went wrong, try again!";
                     alertType = "Warning";
+                    
                 }
             }
             catch (Exception ex){
