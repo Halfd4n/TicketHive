@@ -26,6 +26,7 @@ namespace TicketHive.Client.Pages
     [BindProperties]
     public partial class ShowEventsSingle
     {
+        // Parameter makes the Id property is to be attached to a variable in the URL of the page
         [Parameter]
         public int Id { get; set; }
         private int DesiredNoOfTickets { get; set; }
