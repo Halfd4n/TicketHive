@@ -6,8 +6,11 @@ namespace TicketHive.Client.Pages
 {
     public partial class ShowEventsAll
     {
-        //navigate to a site with current event id
-        // see line 36 on frontend, where list > foreach > and then we send current Id to method
+        /// <summary>
+        /// navigate to a site with current event id see line 36 on frontend, where list > foreach > and then we send current Id to method
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
         private async Task NavigateToEvent(int eventId)
         {
             navigationManager.NavigateTo($"/allEvents/{eventId}");

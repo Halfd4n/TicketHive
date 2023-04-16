@@ -31,8 +31,7 @@
                 </div>
             </div>
         </div>
-    }
-   
+    } 
 </div>
 
 <div class="headbanner d-flex rounded-2 flex-column justify-content-center align-items-center" style="background-image: url('https://localhost:7259/images/event%20images/@EventToDisplay.ImageUrl');">
@@ -63,7 +62,6 @@
         <h3>@EventToDisplay.StartTime --- @EventToDisplay.EndTime</h3>
         <p>@Price @CurrencyCode</p>
 
-        @*Check if tickets are available else make button not function *@
         @if (EventToDisplay.NumberOfTickets >= 1)
         {
            
