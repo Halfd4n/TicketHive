@@ -23,9 +23,9 @@ using TicketHive.Shared.Models;
 namespace TicketHive.Client.Pages{
     public partial class AdminPage{
 
-        private List<EventModel> allEvents;
-        private string alertType;
         private bool isEventAddedSuccessFully { get; set; }
+
+        private string? ResponseMessage { get; set; }
         private EventModel newEvent = new(){
             
             NumberOfTickets = 1,
@@ -61,18 +61,18 @@ namespace TicketHive.Client.Pages{
 
                 if (isEventAddedSuccessFully)
                 {
-                    alertType = "Success!";
-                    allEvents.Add(newEvent);
+                    ResponseMessage = "Event was successfully added to the application!";
                     StateHasChanged();
+
                 }
                 else
                 {
-                    alertType = "Warning"; 
+                    ResponseMessage = "Something went wrong, please try again";
                 }
             }
             catch (Exception ex)
-            { 
-                alertType = "Error";
+            {
+                Console.WriteLine(ex.Message);
             }
         }
     }

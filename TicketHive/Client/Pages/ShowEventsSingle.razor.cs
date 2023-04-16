@@ -91,7 +91,6 @@ namespace TicketHive.Client.Pages
         public async Task CloseModal()
         {
             EventToDisplay = await GetEventToDisplay();
-
             SignedInUser = await GetSignedInUser();
 
             IsShowingModal = false;

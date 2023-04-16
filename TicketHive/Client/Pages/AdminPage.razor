@@ -79,20 +79,9 @@
                     <InputText id="host" class="form-control form-control-lg" @bind-Value="newEvent.Host" />
                 </div>
 
-                <div class="mt-2 form-group">
-                    <label for="imageUrl">Image URL:</label>
-                    <InputText id="imageUrl" class="form-control form-control-lg" @bind-Value="newEvent.ImageUrl" />
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-lg btn-block mt-4">Save Changes</button>
-                @if(isEventAddedSuccessFully)
-                {
-                    <p>Event has been created</p>
-                }
-                else
-                {
-                    <p>Failed to create event</p>
-                }
+                <button type="submit" class="btn btn-primary btn-lg btn-block mt-4">Add event</button>
+                
+                <h4>@ResponseMessage</h4>
             </EditForm>
         </div>
     </div>

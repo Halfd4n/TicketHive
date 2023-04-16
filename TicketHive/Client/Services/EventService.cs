@@ -75,6 +75,7 @@ public class EventService : IEventService
 
         if (response.IsSuccessStatusCode)
         {
+            Console.WriteLine(response.Content);
             return true;
         }
 
