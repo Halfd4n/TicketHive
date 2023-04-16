@@ -20,14 +20,11 @@ using TicketHive.Client.Services;
 using TicketHive.Shared.Enums;
 using TicketHive.Shared.Models;
 
-namespace TicketHive.Client.Pages
-{
-    public partial class AdminPage
-    {
+namespace TicketHive.Client.Pages{
+    public partial class AdminPage{
         private List<EventModel> allEvents;
 
-        private EventModel newEvent = new()
-        {
+        private EventModel newEvent = new(){
             NumberOfTickets = 1,
             StartTime = DateTime.Now,
             EndTime = DateTime.Now.AddDays(1)
@@ -35,7 +32,9 @@ namespace TicketHive.Client.Pages
 
         //private EventType eventType { get; set; } = new();
         private bool showAlert = false;
+
         private string alertMessage;
+
         //private int selectedId;
         private string alertType;
         //protected override async Task OnInitializedAsync(){
@@ -43,31 +42,25 @@ namespace TicketHive.Client.Pages
         //}
 
 
-
-        private async Task AddEvent()
-        {
-            try
-            {
+        private async Task AddEvent(){
+            try{
                 showAlert = true;
                 // Add a random picture to the event
-                newEvent.ImageUrl = $"image-{new Random().Next(1, 27)}";
+                newEvent.ImageUrl = $"image {new Random().Next(1, 27)}.png";
 
                 bool isEventAddedSuccessFully = await eventService.AddEventAsync(newEvent);
-                
-                if (isEventAddedSuccessFully)
-                {
+
+                if (isEventAddedSuccessFully){
                     alertMessage = newEvent.Name + "The event has been added!";
                     alertType = "Success!";
                     allEvents.Add(newEvent);
                 }
-                else
-                {
+                else{
                     alertMessage = "Something went wrong, try again!";
                     alertType = "Warning";
                 }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex){
                 // handle the exception and print out an error message
                 alertMessage = "An error occurred while adding the event: " + ex.Message;
                 alertType = "Error";
