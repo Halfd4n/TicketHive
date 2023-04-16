@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Net.Http.Json;
 using TicketHive.Server.Enums;
 using TicketHive.Shared.Models;
@@ -52,13 +53,9 @@ public class EventService : IEventService
 
 	public async Task<bool> AddEventAsync(EventModel eventModel)
 	{
-		int numberOfEventsBefore = (await GetEventsAsync()).Count;
-
-		await _client.PostAsJsonAsync("api/Events", eventModel);
-
-		int numberOfEventsAfter = (await GetEventsAsync()).Count;
-
-		if (numberOfEventsBefore < numberOfEventsAfter)
+		var response = await _client.PostAsJsonAsync($"api/Events/{eventId}", user);
+		
+		if (response.IsSuccessStatusCode)
 		{
 			return true;
 		}
@@ -68,29 +65,21 @@ public class EventService : IEventService
 
 	public async Task<bool> DeleteEventAsync(int eventId)
 	{
-		var response = await _client.DeleteAsync($"api/Events/{eventId}");
+		var response = await _client.PostAsJsonAsync("api/Events", eventModel);
 
 		if (response.IsSuccessStatusCode)
 		{
-			return true;
+			return true ;
 		}
 		else
 		{
-			Console.WriteLine(response.Content);
 			return false;
 		}
-
-
 	}
 
 	public async Task<bool> BookEventAsync(string userId, int eventId, int quantity)
 	{
-		EventModel? eventBefore = await GetEventAsync(eventId);
-		int numberOfBookingsBefore = eventBefore!.Bookings.Count;
-
-		string[] parameters = new string[2] { eventId.ToString(), quantity.ToString() };
-
-		await _client.PostAsJsonAsync($"api/Events/{userId}/{parameters}", parameters);
+		await _client.DeleteAsync($"api/Events/{eventId}");
 
 		EventModel? eventAfter = await GetEventAsync(eventId);
 		int numberOfBookingsAfter = eventAfter!.Bookings.Count;

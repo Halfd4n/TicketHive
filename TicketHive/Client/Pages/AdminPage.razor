@@ -1,8 +1,10 @@
 ﻿@page "/admin"
 @using Microsoft.AspNetCore.Authorization;
+@using TicketHive.Client.Services
 @using TicketHive.Shared.Enums;
 @using TicketHive.Shared.Models;
 @attribute [Authorize(Roles = "Admin")]
+@inject IEventService eventService
 
 
 
@@ -10,18 +12,18 @@
 <h1>ADMIN PAGE</h1>
 <p> TODO: implement admin page</p>
 
- <EditForm Model="@eventModel" OnValidSubmit="@HandleValidSubmit">
+<EditForm Model="@newEvent" OnValidSubmit="@AddEvent">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div class="form-group">
         <label for="name">Name:</label>
-        <InputText id="name" class="form-control" @bind-Value="eventModel.Name" />
+        <InputText id="name" class="form-control form-control-lg" @bind-Value="newEvent.Name" />
     </div>
 
     <div class="form-group">
         <label for="eventType">Event Type:</label>
-        <InputSelect id="eventType" class="form-control" @bind-Value="eventModel.EventType">
+        <InputSelect id="eventType" class="form-control form-control-lg" @bind-Value="newEvent.EventType">
             @foreach (var type in Enum.GetValues(typeof(EventType)))
             {
                 <option value="@type">@type</option>
@@ -31,57 +33,43 @@
 
     <div class="form-group">
         <label for="numberOfTickets">Number of Tickets:</label>
-        <InputNumber id="numberOfTickets" class="form-control" @bind-Value="eventModel.NumberOfTickets" />
+        <InputNumber id="numberOfTickets" class="form-control form-control-lg" min="1" @bind-Value="newEvent.NumberOfTickets" />
     </div>
 
     <div class="form-group">
         <label for="description">Description:</label>
-        <InputTextArea id="description" class="form-control" @bind-Value="eventModel.Description" />
+        <InputTextArea id="description" class="form-control form-control-lg" @bind-Value="newEvent.Description" />
     </div>
 
     <div class="form-group">
         <label for="price">Price:</label>
-        <InputNumber id="price" class="form-control" @bind-Value="eventModel.Price" />
+        <InputNumber id="price" class="form-control form-control-lg" @bind-Value="newEvent.Price" />
     </div>
 
     <div class="form-group">
         <label for="startTime">Start Time:</label>
-        <InputDate id="startTime" class="form-control" @bind-Value="eventModel.StartTime" />
+        <InputDate id="startTime" class="form-control form-control-lg" @bind-Value="newEvent.StartTime" />
     </div>
 
     <div class="form-group">
         <label for="endTime">End Time:</label>
-        <InputDate id="endTime" class="form-control" @bind-Value="eventModel.EndTime" />
+        <InputDate id="endTime" class="form-control form-control-lg" @bind-Value="newEvent.EndTime" />
     </div>
 
     <div class="form-group">
         <label for="location">Location:</label>
-        <InputText id="location" class="form-control" @bind-Value="eventModel.Location" />
+        <InputText id="location" class="form-control form-control-lg" @bind-Value="newEvent.Location" />
     </div>
 
     <div class="form-group">
         <label for="host">Host:</label>
-        <InputText id="host" class="form-control" @bind-Value="eventModel.Host" />
+        <InputText id="host" class="form-control form-control-lg" @bind-Value="newEvent.Host" />
     </div>
 
     <div class="form-group">
         <label for="imageUrl">Image URL:</label>
-        <InputText id="imageUrl" class="form-control" @bind-Value="eventModel.ImageUrl" />
+        <InputText id="imageUrl" class="form-control form-control-lg" @bind-Value="newEvent.ImageUrl" />
     </div>
 
-    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <button type="submit" class="btn btn-primary btn-lg btn-block">Save Changes</button>
 </EditForm>
-
-
-
-
-
-@code {
-
-    private EventModel eventModel { get; set; } = new();
-    private EventType eventType { get; set; } = new();
-    private void HandleValidSubmit()
-    {
-        // process form data and save changes
-    }
-}
