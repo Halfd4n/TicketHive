@@ -82,6 +82,14 @@
                     <div class="card g-1 m-1 p-2 TicketHiveTheme yellow-hover-card border border-2 border-black">
                         <div class="card-header">
                             <h4>@booking.EventName</h4>
+                            @if (booking.Quantity > 1)
+                            {
+                                <p>@booking.Quantity tickets</p>
+                            }
+                            else
+							{
+								<p>1 ticket</p>
+							}
                         </div>
                         <div class="card-body">
                             @if (AllEventsInDb.Any(e => e.Id == booking.EventId))
