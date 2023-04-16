@@ -14,6 +14,10 @@ public class EventRepository : IEventRepository
         _mainDbContext = mainDbContext;
     }
 
+    /// <summary>
+    /// Adds a user to database 
+    /// </summary>
+    /// <param name="user"></param>
     public async Task AddUserToEventDb(ApplicationUser user)
     {
         UserModel userModel = new()
@@ -28,6 +32,11 @@ public class EventRepository : IEventRepository
         _mainDbContext.SaveChanges();
     }
 
+    /// <summary>
+    /// Deletes an event from the database
+    /// </summary>
+    /// <param name="eventId"></param>
+    /// <returns>Bool true if the event was successfully deleted, false otherwise</returns>
     public async Task<bool> DeleteEventAsync(int eventId)
     {
         var eventToDelete = await GetEventAsync(eventId);
@@ -44,6 +53,11 @@ public class EventRepository : IEventRepository
         return false;
     }
 
+    /// <summary>
+    /// Gets event from db with the specified Id
+    /// </summary>
+    /// <param name="eventId"></param>
+    /// <returns>The EventModel with the specified Id, or null if it doesn't exist.</returns>
     public async Task<EventModel?> GetEventAsync(int eventId)
     {
         EventModel? eventModel = await _mainDbContext.Events.Include(e => e.Bookings).FirstOrDefaultAsync(e => e.Id == eventId);
@@ -56,11 +70,19 @@ public class EventRepository : IEventRepository
         return null;
     }
 
+    /// <summary>
+    /// Gets list of all events from MainDb
+    /// </summary>
+    /// <returns>A List of all events, or null if there are no events in MainDb</returns>
     public Task<List<EventModel>?> GetEventsAsync()
     {
         return _mainDbContext.Events?.Include(e => e.Bookings).ToListAsync();
     }
 
+    /// <summary>
+    /// Adds an event to the database.
+    /// </summary>
+    /// <param name="eventModel"></param>
     public async Task AddEventAsync(EventModel eventModel)
     {
         var eventModelNameExists = await _mainDbContext.Events.AnyAsync(e => e.Name == eventModel.Name);
@@ -75,6 +97,12 @@ public class EventRepository : IEventRepository
 
     }
 
+    /// <summary>
+    /// Books an event for a user and updates MainDb 
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="eventId"></param>
+    /// <param name="quantity"></param>
     public async Task BookEventAsync(string userId, int eventId, int quantity)
     {
         EventModel? eventModel = await GetEventAsync(eventId);
