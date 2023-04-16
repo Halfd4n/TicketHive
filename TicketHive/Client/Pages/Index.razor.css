@@ -1,7 +1,7 @@
 ﻿.container {
     box-sizing: border-box;
     background-color: rgb(48, 80, 118 );
-    max-height:790px !important;
+    max-height:100% !important;
     max-width: 100% !important;
 }
 
