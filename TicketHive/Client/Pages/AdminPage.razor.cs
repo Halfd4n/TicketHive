@@ -22,10 +22,9 @@ using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Pages{
     public partial class AdminPage{
+
         private List<EventModel> allEvents;
-
-
-
+        private string alertType;
         private bool isEventAddedSuccessFully { get; set; }
         private EventModel newEvent = new(){
             
@@ -37,23 +36,9 @@ namespace TicketHive.Client.Pages{
         public DateTime StartHoursAndMinutes { get; set; } = new();
         public DateTime EndHoursAndMinutes { get; set; } = new();
 
-        //private EventType eventType { get; set; } = new();
-        private bool showAlert = false;
-
-        private string alertMessage;
-
-        //private int selectedId;
-        private string alertType;
-        //protected override async Task OnInitializedAsync(){
-        //    allEvents = await eventService.GetEventsAsync();
-        //}
-
-
         private async Task AddEvent(){
             try{
-                    StateHasChanged();
-                showAlert = true;
-                // Add a random picture to the event
+             
                 newEvent.ImageUrl = $"image {new Random().Next(1, 27)}.png";
 
                 newEvent.StartTime = new DateTime(newEvent.StartTime.Year,
@@ -70,26 +55,23 @@ namespace TicketHive.Client.Pages{
                                   EndHoursAndMinutes.Minute,
                                   newEvent.EndTime.Second);
 
-
-
                 bool isEventAddedSuccessFully = await eventService.AddEventAsync(newEvent);
 
                 isEventAddedSuccessFully = await eventService.AddEventAsync(newEvent);
-                if (isEventAddedSuccessFully){
-                    alertMessage = newEvent.Name + "The event has been added!";
+
+                if (isEventAddedSuccessFully)
+                {
                     alertType = "Success!";
                     allEvents.Add(newEvent);
                     StateHasChanged();
                 }
-                else{
-                    alertMessage = "Something went wrong, try again!";
-                    alertType = "Warning";
-                    
+                else
+                {
+                    alertType = "Warning"; 
                 }
             }
-            catch (Exception ex){
-                // handle the exception and print out an error message
-                alertMessage = "An error occurred while adding the event: " + ex.Message;
+            catch (Exception ex)
+            { 
                 alertType = "Error";
             }
         }

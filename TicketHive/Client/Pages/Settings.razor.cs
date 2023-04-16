@@ -15,8 +15,6 @@ public partial class Settings
 {
 	[Parameter]
 	public string Id { get; set; } = null!;
-
-
 	public UserModel? SignedInUser { get; set; } = new();
 	public Dictionary<string, string> ValidationErrors { get; private set; } = new();
 	public string? SuccessMessageCountry { get; set; }
@@ -30,7 +28,6 @@ public partial class Settings
 
     [Required(ErrorMessage = "Please input new desired password")]
 	public string? NewPassword { get; set; }
-
 
 	protected async override Task OnInitializedAsync()
 	{

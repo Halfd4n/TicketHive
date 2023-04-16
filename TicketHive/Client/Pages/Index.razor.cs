@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Runtime.CompilerServices;
+using TicketHive.Client.Managers;
 using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Pages;
 
 public partial class Index
 {
-
     public string? UserName { get; set; }
     public string? SignedInUsersId { get; set; }
     public List<BookingModel>? SignedInUsersBookings { get; set; } = new();
@@ -79,7 +79,7 @@ public partial class Index
             }
         }
 
-        //CurrencyManager.CurrencyApiCall();
+        CurrencyManager.CurrencyApiCall();
     }
 
     private void Login()

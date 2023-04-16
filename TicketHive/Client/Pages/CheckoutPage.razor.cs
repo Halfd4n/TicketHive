@@ -32,6 +32,10 @@ public partial class CheckoutPage
 
     }
 
+    /// <summary>
+    /// Checks content of shopping cart in local storage and adds to local list.
+    /// </summary>
+    /// <returns></returns>
     private async Task CheckShoppingCartContent()
     {
         foreach (EventModel eventModel in AllEvents!)
