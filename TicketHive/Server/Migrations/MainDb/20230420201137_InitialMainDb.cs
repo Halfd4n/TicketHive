@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace TicketHive.Server.Migrations
+namespace TicketHive.Server.Migrations.MainDb
 {
     /// <inheritdoc />
     public partial class InitialMainDb : Migration

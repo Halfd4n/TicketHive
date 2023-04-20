@@ -10,7 +10,6 @@ namespace TicketHive.Client.Pages
 
         private EventModel newEvent = new()
         {
-            NumberOfTickets = 1,
             StartTime = DateTime.Now,
             EndTime = DateTime.Now
         };
@@ -43,7 +42,7 @@ namespace TicketHive.Client.Pages
                 }
                 else
                 {
-                    ResponseMessage = "The event has not been added. Please try again.";
+                    ResponseMessage = "The provided event name is not available. Please try again.";
                 }
             }
             catch (Exception ex)

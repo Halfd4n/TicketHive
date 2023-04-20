@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TicketHive.Server.Migrations.ApplicationDb
+namespace TicketHive.Server.Migrations
 {
     /// <inheritdoc />
     public partial class InitialApplicationDb : Migration

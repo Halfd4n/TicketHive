@@ -9,10 +9,10 @@ using TicketHive.Server.Data;
 
 #nullable disable
 
-namespace TicketHive.Server.Migrations.ApplicationDb
+namespace TicketHive.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230420101509_InitialApplicationDb")]
+    [Migration("20230420201108_InitialApplicationDb")]
     partial class InitialApplicationDb
     {
         /// <inheritdoc />

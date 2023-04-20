@@ -8,7 +8,7 @@ using TicketHive.Server.Data;
 
 #nullable disable
 
-namespace TicketHive.Server.Migrations.ApplicationDb
+namespace TicketHive.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
