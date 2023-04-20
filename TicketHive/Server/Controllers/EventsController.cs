@@ -40,9 +40,16 @@ namespace TicketHive.Server.Controllers
         /// </summary>
         /// <param name="eventModel"></param>
         [HttpPost]
-        public async Task AddEventAsync([FromBody] EventModel eventModel)
+        public async Task<ActionResult<EventModel>> AddEventAsync([FromBody] EventModel eventModel)
         {
-            await eventRepository.AddEventAsync(eventModel);
+            var eventWasAdded = await eventRepository.AddEventAsync(eventModel);
+
+            if (eventWasAdded)
+            {
+                return Ok(eventModel);
+            }
+
+            return BadRequest();
         }
 
         /// <summary>
