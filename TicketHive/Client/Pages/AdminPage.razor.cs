@@ -1,33 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using System.Net.Http;
-using System.Net.Http.Json;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Components.Routing;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.Web.Virtualization;
-using Microsoft.AspNetCore.Components.WebAssembly.Http;
-using Microsoft.JSInterop;
-using TicketHive.Client;
-using TicketHive.Client.Shared;
-using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Authorization;
-using TicketHive.Client.Services;
-using TicketHive.Shared.Enums;
 using TicketHive.Shared.Models;
 
-namespace TicketHive.Client.Pages{
-    public partial class AdminPage{
+namespace TicketHive.Client.Pages
+{
+    public partial class AdminPage
+    {
 
         private bool isEventAddedSuccessFully { get; set; }
 
         private string? ResponseMessage { get; set; }
-        private EventModel newEvent = new(){
-            
+        private EventModel newEvent = new()
+        {
+
             NumberOfTickets = 1,
             StartTime = DateTime.Now,
             EndTime = DateTime.Now.AddDays(1)
@@ -36,9 +19,11 @@ namespace TicketHive.Client.Pages{
         public DateTime StartHoursAndMinutes { get; set; } = new();
         public DateTime EndHoursAndMinutes { get; set; } = new();
 
-        private async Task AddEvent(){
-            try{
-             
+        private async Task AddEvent()
+        {
+            try
+            {
+
                 newEvent.ImageUrl = $"image {new Random().Next(1, 27)}.png";
 
                 newEvent.StartTime = new DateTime(newEvent.StartTime.Year,
@@ -55,11 +40,11 @@ namespace TicketHive.Client.Pages{
                                   EndHoursAndMinutes.Minute,
                                   newEvent.EndTime.Second);
 
-                bool isEventAddedSuccessFully = await eventService.AddEventAsync(newEvent);
+                EventModel addedEventModel = await eventService.AddEventAsync(newEvent);
 
-                isEventAddedSuccessFully = await eventService.AddEventAsync(newEvent);
+                addedEventModel = await eventService.AddEventAsync(newEvent);
 
-                if (isEventAddedSuccessFully)
+                if (addedEventModel != null)
                 {
                     ResponseMessage = "Event was successfully added to the application!";
                     StateHasChanged();

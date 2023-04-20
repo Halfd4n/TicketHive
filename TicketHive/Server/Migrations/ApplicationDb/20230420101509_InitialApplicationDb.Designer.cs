@@ -12,8 +12,8 @@ using TicketHive.Server.Data;
 namespace TicketHive.Server.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230412125317_ApplicationDb")]
-    partial class ApplicationDb
+    [Migration("20230420101509_InitialApplicationDb")]
+    partial class InitialApplicationDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
