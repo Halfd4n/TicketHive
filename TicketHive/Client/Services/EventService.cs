@@ -44,7 +44,7 @@ public class EventService : IEventService
     /// <returns>
     /// Returns a Task that contains a List of EventModel objects if it succeeds. Returns null otherwise. 
     /// </returns>
-    public async Task<List<EventModel>?> GetEventsAsync()
+    public async Task<List<EventModel?>> GetEventsAsync()
     {
         var response = await _client.GetAsync("api/Events");
 
@@ -69,18 +69,18 @@ public class EventService : IEventService
     /// <returns>
     /// Returns a Task that contains a bool indicating whether the operation succeeded or not.
     /// </returns>
-    public async Task<bool> AddEventAsync(EventModel eventModel)
+    public async Task<EventModel> AddEventAsync(EventModel eventModel)
     {
         var response = await _client.PostAsJsonAsync("api/Events", eventModel);
 
         if (response.IsSuccessStatusCode)
         {
-            Console.WriteLine(response.Content);
-            return true;
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<EventModel>(json);
         }
 
         Console.WriteLine(response.Content);
-        return false;
+        return null;
     }
 
     /// <summary>

@@ -6,8 +6,6 @@
 @attribute [Authorize(Roles = "Admin")]
 @inject IEventService eventService
 
-
-
 <div class="container overflow-scroll overflow-hidden" style="max-height:100% !important; max-width:100% !important;">
     <div class="row">
         <div class="col-12">
@@ -80,8 +78,10 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-lg btn-block mt-4">Add event</button>
-                
-                <h4>@ResponseMessage</h4>
+                @*Add space between button and h4*@
+                <div class="mt-2"></div>
+
+                <h4 class="text-warning">@ResponseMessage</h4>
             </EditForm>
         </div>
     </div>

@@ -1,5 +1,3 @@
-using TicketHive.Server.Enums;
-using TicketHive.Shared.Enums;
 using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Pages
@@ -16,11 +14,10 @@ namespace TicketHive.Client.Pages
             navigationManager.NavigateTo($"/allEvents/{eventId}");
         }
 
-        private EventType eventType = EventType.EventType;
-        private Country countries { get; set; }
-
         private List<EventModel> allEvents = new();
+
         private List<EventModel> filteredEvents = new();
+
         private void FilterList(string searchTerm)
         {
             if (string.IsNullOrEmpty(searchTerm))
@@ -42,6 +39,7 @@ namespace TicketHive.Client.Pages
             // filter list by descending from highest price to lowest
             filteredEvents = allEvents.OrderByDescending(e => e.Price).ToList();
         }
+
         // filter list by start time of all events in list
         private void FilterOrderByDate()
         {

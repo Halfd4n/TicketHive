@@ -1,15 +1,14 @@
-using TicketHive.Shared.Models;
 using Newtonsoft.Json;
 using TicketHive.Client.Managers;
-using TicketHive.Client.Services;
+using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Pages
 {
     public partial class ShowCart
     {
         public decimal TotalPrice { get; set; }
-        public List<EventModel>? ShoppingCart { get; set; } = new();
-        public List<EventModel>? AllEvents { get; set; } = new();
+        public List<EventModel?> ShoppingCart { get; set; } = new();
+        public List<EventModel?> AllEvents { get; set; } = new();
         public UserModel? SignedInUser { get; set; } = new();
         public decimal PricePerTicket { get; set; }
 
@@ -17,7 +16,7 @@ namespace TicketHive.Client.Pages
         {
             AllEvents = await _eventService.GetEventsAsync();
 
-            if(AllEvents != null)
+            if (AllEvents != null)
             {
                 await CheckShoppingCartContent();
             }
@@ -29,7 +28,7 @@ namespace TicketHive.Client.Pages
         {
             ShoppingCart.Clear();
 
-            foreach (EventModel eventModel in AllEvents)
+            foreach (EventModel? eventModel in AllEvents)
             {
                 string jsonCart = await _localStorage.GetItemAsStringAsync(eventModel.Id.ToString());
 
@@ -84,7 +83,6 @@ namespace TicketHive.Client.Pages
             return false;
         }
 
-
         private async void IncrementTickets(EventModel eventModel)
         {
             eventModel.NumberOfTickets++;
@@ -102,7 +100,7 @@ namespace TicketHive.Client.Pages
         {
             eventModel.NumberOfTickets--;
 
-            if(eventModel.NumberOfTickets >= 1)
+            if (eventModel.NumberOfTickets >= 1)
             {
                 string jsonEvent = JsonConvert.SerializeObject(eventModel);
 
@@ -120,7 +118,7 @@ namespace TicketHive.Client.Pages
 
         private async void RemoveEvent(EventModel eventToRemove)
         {
-            if(eventToRemove != null)
+            if (eventToRemove != null)
             {
                 await _localStorage.RemoveItemAsync(eventToRemove.Id.ToString());
             }

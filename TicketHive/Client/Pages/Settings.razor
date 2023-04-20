@@ -24,9 +24,9 @@
 
             <button class="ms-2 btn btn-outline-success" type="submit">Update country of origin</button>
         </div>
-        <span class="text-danger my-1">@(ValidationErrors.TryGetValue("sameSelection", out var sameSelectionError) ? sameSelectionError : "")</span>
-        <span class="text-danger my-1">@(ValidationErrors.TryGetValue("noSelection", out var noSelectionError) ? noSelectionError : "")</span>
-        <span class="text-success my-1">@StringHelper.ReplaceUnderScoreWithSpace(SuccessMessageCountry!)</span>
+        <span class="text-warning my-1">@(ValidationErrors.TryGetValue("sameSelection", out var sameSelectionError) ? sameSelectionError : "")</span>
+        <span class="text-warning my-1">@(ValidationErrors.TryGetValue("noSelection", out var noSelectionError) ? noSelectionError : "")</span>
+        <span class="text-warning my-1">@StringHelper.ReplaceUnderScoreWithSpace(SuccessMessageCountry!)</span>
     </form>
 
     <hr class ="my-3" />
@@ -38,8 +38,8 @@
         <input type="password" placeholder="New password" @bind="NewPassword" />
         <button class="ms-2 btn btn-outline-success" type="submit">Update password</button>
     </form>
-    <span class="text-danger">@(ValidationErrors.TryGetValue("noInput", out var noInputError) ? noInputError : "")</span>
-    <span class="text-success my-1">@SuccessMessagePassword</span>
+    <span class="text-warning">@(ValidationErrors.TryGetValue("noInput", out var noInputError) ? noInputError : "")</span>
+    <span class="text-warning my-1">@SuccessMessagePassword</span>
 
     <hr class="my-3" />
 

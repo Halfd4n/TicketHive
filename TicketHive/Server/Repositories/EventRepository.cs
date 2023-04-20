@@ -83,18 +83,29 @@ public class EventRepository : IEventRepository
     /// Adds an event to the database.
     /// </summary>
     /// <param name="eventModel"></param>
-    public async Task AddEventAsync(EventModel eventModel)
+    public async Task<bool> AddEventAsync(EventModel eventModel)
     {
-        var eventModelNameExists = await _mainDbContext.Events.AnyAsync(e => e.Name == eventModel.Name);
-
-        if (!eventModelNameExists)
+        try
         {
-            _mainDbContext.Add(eventModel);
+            if (!await _mainDbContext.Events.AnyAsync(e => e.Name == eventModel.Name))
+            {
+                _mainDbContext.Add(eventModel);
+                await _mainDbContext.SaveChangesAsync();
 
-            await _mainDbContext.SaveChangesAsync();
+                if (await _mainDbContext.Events.AnyAsync(e => e.Name == eventModel.Name))
+                {
+                    return true;
+                }
+            }
 
+            return false;
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
 
+            return false;
+        }
     }
 
     /// <summary>

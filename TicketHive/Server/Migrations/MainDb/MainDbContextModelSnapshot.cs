@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TicketHive.Server.Data;
 
 #nullable disable
 
-namespace TicketHive.Server.Migrations
+namespace TicketHive.Server.Migrations.MainDb
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20230411175258_ImagesFix")]
-    partial class ImagesFix
+    partial class MainDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,19 +22,44 @@ namespace TicketHive.Server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("EventModelUserModel", b =>
+            modelBuilder.Entity("TicketHive.Shared.Models.BookingModel", b =>
                 {
-                    b.Property<int>("BookingsId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("VisitorsId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("BookingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EventModelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EventName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserModelId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("BookingsId", "VisitorsId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("VisitorsId");
+                    b.HasIndex("EventModelId");
 
-                    b.ToTable("EventModelUserModel");
+                    b.HasIndex("UserModelId");
+
+                    b.ToTable("BookingModel");
                 });
 
             modelBuilder.Entity("TicketHive.Shared.Models.EventModel", b =>
@@ -93,7 +115,7 @@ namespace TicketHive.Server.Migrations
                             Id = 1,
                             Description = "A concert featuring various artists in the local park",
                             EndTime = new DateTime(2023, 8, 1, 23, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 0,
+                            EventType = 1,
                             Host = "The local community council",
                             ImageUrl = "image 1.png",
                             Location = "The local park",
@@ -107,7 +129,7 @@ namespace TicketHive.Server.Migrations
                             Id = 2,
                             Description = "A new exhibit featuring local artists",
                             EndTime = new DateTime(2023, 10, 14, 22, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 1,
+                            EventType = 2,
                             Host = "The local art museum",
                             ImageUrl = "image 2.png",
                             Location = "Center Art Museum",
@@ -121,7 +143,7 @@ namespace TicketHive.Server.Migrations
                             Id = 3,
                             Description = "A wine tasting featuring local wineries",
                             EndTime = new DateTime(2023, 8, 20, 21, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 2,
+                            EventType = 3,
                             Host = "The Wine Association",
                             ImageUrl = "image 3.png",
                             Location = "Hillside Wine Garden",
@@ -135,7 +157,7 @@ namespace TicketHive.Server.Migrations
                             Id = 4,
                             Description = "A charity run to raise funds for local causes",
                             EndTime = new DateTime(2023, 12, 31, 22, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 3,
+                            EventType = 4,
                             Host = "The local sports association",
                             ImageUrl = "image 4.png",
                             Location = "Downtown",
@@ -149,7 +171,7 @@ namespace TicketHive.Server.Migrations
                             Id = 5,
                             Description = "A comedy show featuring local comedians",
                             EndTime = new DateTime(2023, 11, 15, 21, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 4,
+                            EventType = 5,
                             Host = "The Comedy Club",
                             ImageUrl = "image 5.png",
                             Location = "Central Comedy Club House",
@@ -163,7 +185,7 @@ namespace TicketHive.Server.Migrations
                             Id = 6,
                             Description = "A film festival showcasing international films",
                             EndTime = new DateTime(2023, 1, 5, 22, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 5,
+                            EventType = 6,
                             Host = "The Film Society",
                             ImageUrl = "image 6.png",
                             Location = "Film Society Cinema",
@@ -177,7 +199,7 @@ namespace TicketHive.Server.Migrations
                             Id = 7,
                             Description = "A music festival featuring international musicians",
                             EndTime = new DateTime(2023, 9, 11, 19, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 6,
+                            EventType = 7,
                             Host = "Music Association",
                             ImageUrl = "image 7.png",
                             Location = "The local park",
@@ -191,7 +213,7 @@ namespace TicketHive.Server.Migrations
                             Id = 8,
                             Description = "A fair featuring local artisans selling their crafts",
                             EndTime = new DateTime(2023, 5, 21, 22, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 7,
+                            EventType = 8,
                             Host = "Local artisans association",
                             ImageUrl = "image 8.png",
                             Location = "Downtown market place",
@@ -205,7 +227,7 @@ namespace TicketHive.Server.Migrations
                             Id = 9,
                             Description = "A one day class on theater production of a classic play",
                             EndTime = new DateTime(2023, 6, 1, 13, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 10,
+                            EventType = 11,
                             Host = "Educate Theater Association",
                             ImageUrl = "image 9.png",
                             Location = "Central library",
@@ -219,7 +241,7 @@ namespace TicketHive.Server.Migrations
                             Id = 10,
                             Description = "A day of family fun featuring various activities for kids and adults",
                             EndTime = new DateTime(2023, 7, 30, 16, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 8,
+                            EventType = 9,
                             Host = "The local community center",
                             ImageUrl = "image 10.png",
                             Location = "Community Hall",
@@ -233,7 +255,7 @@ namespace TicketHive.Server.Migrations
                             Id = 11,
                             Description = "A science fair featuring local scientists and their research",
                             EndTime = new DateTime(2023, 10, 18, 18, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 9,
+                            EventType = 10,
                             Host = "The local science museum",
                             ImageUrl = "image 11.png",
                             Location = "The Central Museum",
@@ -247,7 +269,7 @@ namespace TicketHive.Server.Migrations
                             Id = 12,
                             Description = "A fashion show featuring various international designers",
                             EndTime = new DateTime(2023, 12, 15, 22, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 4,
+                            EventType = 5,
                             Host = "The Fashion association",
                             ImageUrl = "image 12.png",
                             Location = "The Central Mall",
@@ -261,7 +283,7 @@ namespace TicketHive.Server.Migrations
                             Id = 13,
                             Description = "A formal gala dinner featuring gourmet cuisine and live entertainment",
                             EndTime = new DateTime(2023, 6, 30, 22, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 2,
+                            EventType = 3,
                             Host = "Food&Wine Inc",
                             ImageUrl = "image 13.png",
                             Location = "Fine Food Restaurant",
@@ -275,7 +297,7 @@ namespace TicketHive.Server.Migrations
                             Id = 14,
                             Description = "A lecture series featuring renowned speakers on various topics",
                             EndTime = new DateTime(2023, 9, 8, 18, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 1,
+                            EventType = 2,
                             Host = "The local university",
                             ImageUrl = "image 14.png",
                             Location = "Central Library",
@@ -289,7 +311,7 @@ namespace TicketHive.Server.Migrations
                             Id = 15,
                             Description = "A tech meetup featuring local tech entrepreneurs and their startups",
                             EndTime = new DateTime(2023, 8, 17, 18, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 11,
+                            EventType = 12,
                             Host = "Local startup incubator",
                             ImageUrl = "image 15.png",
                             Location = "The House of Incubator",
@@ -303,7 +325,7 @@ namespace TicketHive.Server.Migrations
                             Id = 16,
                             Description = "A trivia night featuring various categories and fine prizes",
                             EndTime = new DateTime(2023, 10, 11, 23, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 12,
+                            EventType = 13,
                             Host = "The DownTown Pub",
                             ImageUrl = "image 16.png",
                             Location = "The DownTown Pub",
@@ -317,7 +339,7 @@ namespace TicketHive.Server.Migrations
                             Id = 17,
                             Description = "A party featuring international DJ:s and live entertainment",
                             EndTime = new DateTime(2023, 11, 25, 23, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 13,
+                            EventType = 14,
                             Host = "The local nightclub",
                             ImageUrl = "image 17.png",
                             Location = "The local nightclub",
@@ -331,7 +353,7 @@ namespace TicketHive.Server.Migrations
                             Id = 18,
                             Description = "An art workshop featuring a local artist teaching a new technique",
                             EndTime = new DateTime(2023, 12, 9, 16, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 14,
+                            EventType = 15,
                             Host = "The local art school",
                             ImageUrl = "image 18.png",
                             Location = "The Central School of Art",
@@ -345,7 +367,7 @@ namespace TicketHive.Server.Migrations
                             Id = 19,
                             Description = "A screening of a new surprise movie with Q&A session with the director",
                             EndTime = new DateTime(2023, 8, 5, 20, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 5,
+                            EventType = 6,
                             Host = "The local movie theatre",
                             ImageUrl = "image 19.png",
                             Location = "The DownTown Movie Theater",
@@ -359,7 +381,7 @@ namespace TicketHive.Server.Migrations
                             Id = 20,
                             Description = "A charity walk to raise funds for a local charity",
                             EndTime = new DateTime(2023, 10, 20, 22, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 3,
+                            EventType = 4,
                             Host = "Local community organizatio",
                             ImageUrl = "image 20.png",
                             Location = "Central town",
@@ -373,7 +395,7 @@ namespace TicketHive.Server.Migrations
                             Id = 21,
                             Description = "A night of stand-up comedy featuring local comedians",
                             EndTime = new DateTime(2023, 7, 28, 22, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 4,
+                            EventType = 5,
                             Host = "The HaveFun Comedy Club",
                             ImageUrl = "image 21.png",
                             Location = "The local comedy club",
@@ -385,14 +407,14 @@ namespace TicketHive.Server.Migrations
                         new
                         {
                             Id = 22,
-                            Description = "A wine tasting event featuring local wineries",
+                            Description = "Learn the fundamentals of how pottery is made",
                             EndTime = new DateTime(2023, 5, 5, 22, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 2,
-                            Host = "The local wine association",
+                            EventType = 15,
+                            Host = "The Pottery Arts Association",
                             ImageUrl = "image 22.png",
-                            Location = "The local park",
-                            Name = "Wine tasting",
-                            NumberOfTickets = 100,
+                            Location = "The local pottery",
+                            Name = "Pottery class",
+                            NumberOfTickets = 50,
                             Price = 300m,
                             StartTime = new DateTime(2023, 5, 5, 18, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -401,7 +423,7 @@ namespace TicketHive.Server.Migrations
                             Id = 23,
                             Description = "A fitness class featuring a local instructor",
                             EndTime = new DateTime(2023, 10, 12, 20, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 15,
+                            EventType = 16,
                             Host = "The local gym",
                             ImageUrl = "image 23.png",
                             Location = "The local park",
@@ -415,7 +437,7 @@ namespace TicketHive.Server.Migrations
                             Id = 24,
                             Description = "A tech workshop were you get to build your own miniature robot",
                             EndTime = new DateTime(2023, 8, 16, 17, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 14,
+                            EventType = 15,
                             Host = "International Robot Inc",
                             ImageUrl = "image 24.png",
                             Location = "The local university",
@@ -429,7 +451,7 @@ namespace TicketHive.Server.Migrations
                             Id = 25,
                             Description = "An unplugged concert featuring various artists in the local park",
                             EndTime = new DateTime(2023, 11, 5, 22, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 0,
+                            EventType = 1,
                             Host = "The local community council",
                             ImageUrl = "image 25.png",
                             Location = "The local park",
@@ -443,7 +465,7 @@ namespace TicketHive.Server.Migrations
                             Id = 26,
                             Description = "An art exhibition featuring international works of art",
                             EndTime = new DateTime(2023, 9, 17, 21, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventType = 1,
+                            EventType = 2,
                             Host = "Fine Arts Association",
                             ImageUrl = "image 26.png",
                             Location = "The local arts gallery",
@@ -472,19 +494,25 @@ namespace TicketHive.Server.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("EventModelUserModel", b =>
+            modelBuilder.Entity("TicketHive.Shared.Models.BookingModel", b =>
                 {
                     b.HasOne("TicketHive.Shared.Models.EventModel", null)
-                        .WithMany()
-                        .HasForeignKey("BookingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Bookings")
+                        .HasForeignKey("EventModelId");
 
                     b.HasOne("TicketHive.Shared.Models.UserModel", null)
-                        .WithMany()
-                        .HasForeignKey("VisitorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Bookings")
+                        .HasForeignKey("UserModelId");
+                });
+
+            modelBuilder.Entity("TicketHive.Shared.Models.EventModel", b =>
+                {
+                    b.Navigation("Bookings");
+                });
+
+            modelBuilder.Entity("TicketHive.Shared.Models.UserModel", b =>
+                {
+                    b.Navigation("Bookings");
                 });
 #pragma warning restore 612, 618
         }

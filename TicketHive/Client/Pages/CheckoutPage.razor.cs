@@ -1,6 +1,6 @@
-using TicketHive.Shared.Models;
 using Newtonsoft.Json;
 using TicketHive.Client.Managers;
+using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Pages;
 
@@ -17,7 +17,7 @@ public partial class CheckoutPage
     {
         AllEvents = await _eventService.GetEventsAsync();
 
-        if(AllEvents != null)
+        if (AllEvents != null)
         {
             await CheckShoppingCartContent();
         }
@@ -29,7 +29,6 @@ public partial class CheckoutPage
         SignedInUser = await _userService.GetUserByIdAsync(userId);
 
         GetFinalCost();
-
     }
 
     /// <summary>
@@ -68,7 +67,7 @@ public partial class CheckoutPage
 
     private async Task ConfirmPurchase()
     {
-        foreach(EventModel eventModel in MyTickets)
+        foreach (EventModel eventModel in MyTickets)
         {
             await _eventService.BookEventAsync(SignedInUser.Id, eventModel.Id, eventModel.NumberOfTickets);
         }
@@ -80,7 +79,7 @@ public partial class CheckoutPage
 
     private void GetFinalCost()
     {
-        foreach(EventModel eventModel in MyTickets)
+        foreach (EventModel eventModel in MyTickets)
         {
             FinalCost += (GetTicketCost(eventModel) * eventModel.NumberOfTickets);
         }
