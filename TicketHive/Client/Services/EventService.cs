@@ -44,7 +44,7 @@ public class EventService : IEventService
     /// <returns>
     /// Returns a Task that contains a List of EventModel objects if it succeeds. Returns null otherwise. 
     /// </returns>
-    public async Task<List<EventModel>?> GetEventsAsync()
+    public async Task<List<EventModel?>> GetEventsAsync()
     {
         var response = await _client.GetAsync("api/Events");
 

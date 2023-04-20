@@ -7,21 +7,21 @@ using TicketHive.Server.Models;
 namespace TicketHive.Server.Data;
 public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
 {
-	public ApplicationDbContext(
-		DbContextOptions options,
-		IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
-	{
-	}
+    public ApplicationDbContext(
+        DbContextOptions options,
+        IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+    {
+    }
 
-	// Add enum property "Country" to ApplicationUser in database
-	protected override void OnModelCreating(ModelBuilder builder)
-	{
-		// "Call base to make sure all other configurations are applied as well"...?
-		base.OnModelCreating(builder);
+    // Add enum property "Country" to ApplicationUser in database
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        // Call base to make sure all other configurations are applied as well
+        //base.OnModelCreating(builder);
 
-		// Make enum property "Country" values to be stored as string in the database
-		builder.Entity<ApplicationUser>()
-			.Property(u => u.Country)
-			.HasConversion<string>();
-	}
+        // Make enum property "Country" values to be stored as string in the database
+        builder.Entity<ApplicationUser>()
+            .Property(u => u.Country)
+            .HasConversion<string>();
+    }
 }

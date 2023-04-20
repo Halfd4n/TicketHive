@@ -4,26 +4,21 @@ namespace TicketHive.Client.Pages
 {
     public partial class AdminPage
     {
-
-        private bool isEventAddedSuccessFully { get; set; }
-
         private string? ResponseMessage { get; set; }
-        private EventModel newEvent = new()
-        {
-
-            NumberOfTickets = 1,
-            StartTime = DateTime.Now,
-            EndTime = DateTime.Now.AddDays(1)
-        };
-
         public DateTime StartHoursAndMinutes { get; set; } = new();
         public DateTime EndHoursAndMinutes { get; set; } = new();
+
+        private EventModel newEvent = new()
+        {
+            NumberOfTickets = 1,
+            StartTime = DateTime.Now,
+            EndTime = DateTime.Now
+        };
 
         private async Task AddEvent()
         {
             try
             {
-
                 newEvent.ImageUrl = $"image {new Random().Next(1, 27)}.png";
 
                 newEvent.StartTime = new DateTime(newEvent.StartTime.Year,
@@ -40,19 +35,15 @@ namespace TicketHive.Client.Pages
                                   EndHoursAndMinutes.Minute,
                                   newEvent.EndTime.Second);
 
-                EventModel addedEventModel = await eventService.AddEventAsync(newEvent);
-
-                addedEventModel = await eventService.AddEventAsync(newEvent);
-
-                if (addedEventModel != null)
+                if (await eventService.AddEventAsync(newEvent) != null)
                 {
-                    ResponseMessage = "Event was successfully added to the application!";
-                    StateHasChanged();
+                    ResponseMessage = "The event has been successfully added!";
 
+                    StateHasChanged();
                 }
                 else
                 {
-                    ResponseMessage = "Something went wrong, please try again";
+                    ResponseMessage = "The event has not been added. Please try again.";
                 }
             }
             catch (Exception ex)

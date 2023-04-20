@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using System.Runtime.CompilerServices;
-using TicketHive.Client.Managers;
-using TicketHive.Shared.Models;
+﻿using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Pages;
 
@@ -17,6 +13,7 @@ public partial class Index
     public List<EventModel> RandomEvents { get; set; } = new();
     private int ActiveIndex { get; set; }
     public int ActiveEventId { get; set; }
+
     /// <summary>
     /// Checks if user is authenticated and if so, gets the user.
     /// Then populates a list of all events in the database, a list of 
@@ -79,7 +76,7 @@ public partial class Index
             }
         }
 
-        CurrencyManager.CurrencyApiCall();
+        //CurrencyManager.CurrencyApiCall();
     }
 
     private void Login()
@@ -97,9 +94,11 @@ public partial class Index
         navigationManager.NavigateTo($"/allEvents/{eventId}");
     }
 
+    // Carousel methods for random events 
     private void NavigateCarousel(int direction)
     {
         ActiveIndex += direction;
+
         if (ActiveIndex < 0)
         {
             ActiveIndex = RandomEvents.Count - 1;
@@ -108,11 +107,7 @@ public partial class Index
         {
             ActiveIndex = 0;
         }
-        ActiveEventId = RandomEvents[ActiveIndex].Id;
-    }
 
-    private void ShowId(int eventID)
-    {
-        Console.WriteLine(eventID);
+        ActiveEventId = RandomEvents[ActiveIndex].Id;
     }
 }

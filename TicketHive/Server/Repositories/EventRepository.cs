@@ -87,15 +87,15 @@ public class EventRepository : IEventRepository
     {
         try
         {
-            var eventModelNameExists = await _mainDbContext.Events.AnyAsync(e => e.Name == eventModel.Name);
-
-            if (!eventModelNameExists)
+            if (!await _mainDbContext.Events.AnyAsync(e => e.Name == eventModel.Name))
             {
                 _mainDbContext.Add(eventModel);
-
                 await _mainDbContext.SaveChangesAsync();
 
-                return true;
+                if (await _mainDbContext.Events.AnyAsync(e => e.Name == eventModel.Name))
+                {
+                    return true;
+                }
             }
 
             return false;
